@@ -1,14 +1,13 @@
 import sqlite3
 import pandas as pd
 import numpy as np
-from scipy.stats import poisson
 from backend.stats import compute_team_stats
-from backend.model import DixonColes_adjustment, calculate_match_probabilities
+from backend.model import calculate_match_probabilities
 
-def run_backtest_exact_scores(db_path="data/database.db"):
+def run_backtest_1x2(db_path="data/database.db"):
     conn = sqlite3.connect(db_path)
     
-    # Selezioniamo solo le partite della stagione scorsa (es. 2025/2026) con risultato noto
+    # Selezioniamo solo le partite della stagione scorsa con risultato noto
     query = """
         SELECT date, league, home_team, away_team, home_goals, away_goals 
         FROM matches 
@@ -24,65 +23,96 @@ def run_backtest_exact_scores(db_path="data/database.db"):
         return
 
     total_matches = len(df_matches)
-    exact_match_count = 0
-    successful_samples = []  # Lista per raccogliere un campione di partite indovinate
+    correct_predictions = 0
     
-    print(f"Avvio backtesting sul singolo risultato esatto più probabile per {total_matches} partite (Stagione 2025/2026)...")
+    stats_1_correct = 0
+    stats_1_total = 0
+    stats_x_correct = 0
+    stats_x_total = 0
+    stats_2_correct = 0
+    stats_2_total = 0
+    
+    profit_flat = 0.0  # Profitto con stake fisso di 1 unità sul segno con probabilità maggiore
+
+    print(f"Avvio backtesting sul mercato 1X2 per {total_matches} partite (Stagione 2025/2026)...")
     
     stats_cache = compute_team_stats(db_path)
 
     for _, row in df_matches.iterrows():
         h_team = row['home_team']
         a_team = row['away_team']
-        real_score = f"{int(row['home_goals'])}-{int(row['away_goals'])}"
+        h_goals = int(row['home_goals'])
+        a_goals = int(row['away_goals'])
+        
+        # Determiniamo il segno reale
+        if h_goals > a_goals:
+            real_sign = "1"
+        elif h_goals == a_goals:
+            real_sign = "X"
+        else:
+            real_sign = "2"
+            
         league = row['league']
-        match_date = row['date']
         
         try:
             calc = calculate_match_probabilities(h_team, a_team, league=league, precomputed_stats=stats_cache)
-            exact_scores = calc.get("exact_scores", [])
             
-            if not exact_scores:
-                continue
+            p1 = max(calc["prob_1"], 0.03)
+            pX = max(calc["prob_X"], 0.03)
+            p2 = max(calc["prob_2"], 0.03)
+            total_p = p1 + pX + p2
+            p1, pX, p2 = p1 / total_p, pX / total_p, p2 / total_p
+            
+            # Quota implicita stimata dal modello
+            odd_1 = min(round(1.0 / p1, 2), 20.0)
+            odd_X = min(round(1.0 / pX, 2), 20.0)
+            odd_2 = min(round(1.0 / p2, 2), 20.0)
+            
+            # Scegliamo il segno con probabilità più alta predetto dal modello
+            probs = {"1": (p1, odd_1), "X": (pX, odd_X), "2": (p2, odd_2)}
+            predicted_sign = max(probs, key=lambda k: probs[k][0])
+            pred_odd = probs[predicted_sign][1]
+            
+            # Statistiche per singolo segno
+            if predicted_sign == "1":
+                stats_1_total += 1
+            elif predicted_sign == "X":
+                stats_x_total += 1
+            else:
+                stats_2_total += 1
                 
-            best_predicted = exact_scores[0]
-            best_score = best_predicted["score"]
-            best_odd = best_predicted["odd"]
-            best_prob = best_predicted["probability"]
-            
-            if best_score == real_score:
-                exact_match_count += 1
-                # Salviamo i dettagli se abbiamo meno di 10 campioni
-                if len(successful_samples) < 10:
-                    successful_samples.append({
-                        "date": match_date,
-                        "league": league,
-                        "match": f"{h_team} vs {a_team}",
-                        "score": real_score,
-                        "odd": best_odd,
-                        "prob": best_prob
-                    })
+            if predicted_sign == real_sign:
+                correct_predictions += 1
+                profit_flat += (pred_odd - 1.0)
+                if predicted_sign == "1": stats_1_correct += 1
+                elif predicted_sign == "X": stats_x_correct += 1
+                else: stats_2_correct += 1
+            else:
+                profit_flat -= 1.0
                 
         except Exception as e:
             continue
 
-    accuracy = (exact_match_count / total_matches) * 100 if total_matches > 0 else 0
+    accuracy = (correct_predictions / total_matches) * 100 if total_matches > 0 else 0
+    roi = (profit_flat / total_matches) * 100 if total_matches > 0 else 0
 
     print("\n" + "="*55)
-    print("REPORT BACKTESTING - SINGOLO RISULTATO ESATTO")
+    print("REPORT BACKTESTING - MERCATO 1X2 (SEGNO PRINCIPALE)")
     print("="*55)
     print(f"Partite analizzate (Stagione scorsa): {total_matches}")
-    print(f"Pronostici perfetti (#1 esatto)   : {exact_match_count}")
-    print(f"Accuratezza sul singolo pronostico : {accuracy:.2f}%")
+    print(f"Pronostici 1X2 azzeccati           : {correct_predictions}")
+    print(f"Accuratezza complessiva            : {accuracy:.2f}%")
+    print(f"Profitto Totale (Stake fisso 1U)   : {profit_flat:+.2f} unità")
+    print(f"ROI Simulato (Flat Stake)          : {roi:+.2f}%")
+    print("-" * 55)
+    print("Dettaglio per Segno:")
+    acc_1 = (stats_1_correct / stats_1_total * 100) if stats_1_total > 0 else 0
+    acc_x = (stats_x_correct / stats_x_total * 100) if stats_x_total > 0 else 0
+    acc_2 = (stats_2_correct / stats_2_total * 100) if stats_2_total > 0 else 0
+    print(f" - Segno 1 (Casa)    : {stats_1_correct}/{stats_1_total} ({acc_1:.2f}% presi)")
+    print(f" - Segno X (Pareggio): {stats_x_correct}/{stats_x_total} ({acc_x:.2f}% presi)")
+    print(f" - Segno 2 (Trasf.)  : {stats_2_correct}/{stats_2_total} ({acc_2:.2f}% presi)")
     print("="*55)
-    
-    if successful_samples:
-        print("\nCAMPIONE DI 10 RISULTATI ESATTI INDOVINATI DAL MODELLO:")
-        print("-" * 55)
-        for idx, sample in enumerate(successful_samples, 1):
-            print(f"{idx}. [{sample['date']}] {sample['league']} | {sample['match']}")
-            print(f"   -> Risultato Reale: {sample['score']} | Quota: {sample['odd']} (Prob: {sample['prob']}%)")
-            print("-" * 55)
 
 if __name__ == "__main__":
-    run_backtest_exact_scores()
+    run_backtest_1x2()

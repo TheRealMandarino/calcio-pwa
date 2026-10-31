@@ -69,6 +69,12 @@ def calculate_match_probabilities(home_team, away_team, league=None, precomputed
         avg_h = global_avg_h
         avg_a = global_avg_a
 
+    # --- ELIMINAZIONE DIFFERENZA CASA/TRASFERTA ---
+    # Unifichiamo la media gol di riferimento rendendola neutra
+    neutral_avg = (avg_h + avg_a) / 2.0
+    avg_h = neutral_avg
+    avg_a = neutral_avg
+
     raw_att_h = home_attack.get(home_team, 1.0)
     raw_def_a = away_defense.get(away_team, 1.0)
     raw_att_a = away_attack.get(away_team, 1.0)
@@ -81,15 +87,12 @@ def calculate_match_probabilities(home_team, away_team, league=None, precomputed
     att_a = 1.0 + (raw_att_a - 1.0) * hw_weight
     def_h = 1.0 + (raw_def_h - 1.0) * hw_weight
 
-    if league == "GER-Bundesliga":
-        home_advantage = 1.02
-        rho = -0.05
-        max_goals = 9
-    else:
-        home_advantage = 1.04
-        rho = -0.11
-        max_goals = 7
+    # Fattore campo completamente azzerato (1.0)
+    home_advantage = 1.0
+    rho = -0.11 if league != "GER-Bundesliga" else -0.05
+    max_goals = 9 if league == "GER-Bundesliga" else 7
 
+    # Il fattore H2H resta attivo per personalizzare la sfida sugli scontri diretti
     h2h_h, h2h_a = get_h2h_factor(home_team, away_team)
 
     lambda_home = max(att_h * def_a * avg_h * home_advantage * h2h_h, 0.70)
@@ -132,7 +135,6 @@ def calculate_match_probabilities(home_team, away_team, league=None, precomputed
                     "odd": odd_score
                 })
     
-    # Ordiniamo per probabilità decrescente e prendiamo i top 5
     exact_scores = sorted(exact_scores, key=lambda x: x["probability"], reverse=True)[:5]
 
     return {

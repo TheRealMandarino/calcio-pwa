@@ -14,8 +14,8 @@
                 <p class="text-sm text-slate-400">Modello Statistico Poisson & Dixon-Coles</p>
             </div>
             
-            <!-- Selettore Campionato -->
-            <div class="flex items-center gap-3">
+            <!-- Controlli Header: Campionato & Modalità Quote Reali -->
+            <div class="flex flex-wrap items-center gap-3">
                 <select id="leagueSelect" onchange="loadMatches()" class="bg-slate-900 border border-slate-800 text-slate-200 text-sm rounded-lg px-3 py-2 outline-none focus:border-emerald-500 cursor-pointer">
                     <option value="ita-serie_a.json">🇮🇹 Serie A</option>
                     <option value="eng-premier_league.json">🇬🇧 Premier League</option>
@@ -23,9 +23,27 @@
                     <option value="ger-bundesliga.json">🇩🇪 Bundesliga</option>
                     <option value="fra-ligue_1.json">🇫🇷 Ligue 1</option>
                 </select>
+                
+                <button onclick="toggleOddsModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg font-semibold transition cursor-pointer flex items-center gap-1">
+                    📊 Incolla Quote Reali
+                </button>
+
                 <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs px-3 py-1 rounded-full font-mono">Live Engine v1.0</span>
             </div>
         </header>
+
+        <!-- Box a comparsa per incollare le quote reali -->
+        <div id="oddsModal" class="hidden mb-6 bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-2xl">
+            <h3 class="text-sm font-bold text-white mb-2">Incolla JSON Quote Reali dei Bookmaker</h3>
+            <p class="text-xs text-slate-400 mb-3">Formato atteso: Array di oggetti con <code>home_team</code>, <code>away_team</code>, <code>market</code> ("1", "X", o "2") e <code>real_odd</code>.</p>
+            <textarea id="realOddsInput" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-slate-200 font-mono outline-none focus:border-emerald-500" placeholder='[
+  {"home_team": "Napoli", "away_team": "Inter", "market": "1", "real_odd": 2.45}
+]'></textarea>
+            <div class="flex justify-end gap-2 mt-3">
+                <button onclick="toggleOddsModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg text-slate-300">Chiudi</button>
+                <button onclick="processRealOdds()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-xs rounded-lg font-bold text-white">Applica e Calcola Kelly</button>
+            </div>
+        </div>
 
         <!-- Contenitore Principale delle Partite -->
         <div id="matches-container" class="space-y-6">
@@ -34,6 +52,10 @@
     </div>
 
     <script>
+        let currentMatches = [];
+        let realOddsMap = {}; 
+        const BANKROLL = 1000.0; // Bankroll di riferimento (€)
+
         async function loadMatches() {
             const selectElement = document.getElementById('leagueSelect');
             const fileName = selectElement ? selectElement.value : 'ita-serie_a.json';
@@ -48,8 +70,8 @@
             try {
                 const response = await fetch(fileName);
                 if (!response.ok) throw new Error("File non trovato");
-                const matches = await response.json();
-                renderDashboard(matches);
+                currentMatches = await response.json();
+                renderDashboard(currentMatches);
             } catch (error) {
                 container.innerHTML = `
                     <div class="p-4 bg-red-950 border border-red-800 text-red-300 rounded-lg text-center">
@@ -57,6 +79,61 @@
                     </div>
                 `;
             }
+        }
+
+        function toggleOddsModal() {
+            const modal = document.getElementById('oddsModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function processRealOdds() {
+            const text = document.getElementById('realOddsInput').value.trim();
+            if (!text) return;
+
+            try {
+                const oddsArray = JSON.parse(text);
+                realOddsMap = {};
+                
+                oddsArray.forEach(item => {
+                    const key = `${item.home_team}-${item.away_team}-${item.market}`;
+                    realOddsMap[key] = parseFloat(item.real_odd);
+                });
+
+                toggleOddsModal();
+                renderDashboard(currentMatches);
+                alert("Quote reali applicate con successo! Controlla i segnali di Value Bet e Kelly Stake.");
+            } catch (e) {
+                alert("Errore nel formato JSON inserito. Assicurati che sia sintatticamente corretto.");
+            }
+        }
+
+        function calculateKelly(prob, odd) {
+            if (odd <= 1.0 || prob <= 0) return { isValue: false };
+            
+            const ev = (prob * odd) - 1.0;
+            const evPercentage = ev * 100.0;
+            
+            if (ev <= 0) return { isValue: false, ev: evPercentage.toFixed(1) };
+
+            const netOdds = odd - 1.0;
+            const kellyFull = ((prob * odd) - 1.0) / netOdds;
+
+            if (kellyFull <= 0) return { isValue: false, ev: evPercentage.toFixed(1) };
+
+            // Kelly Frazionario al 25% (0.25)
+            const kellyAdjusted = kellyFull * 0.25;
+            let stakeMoney = BANKROLL * kellyAdjusted;
+
+            // Cap di sicurezza aggiornato al 3% del bankroll
+            const maxCap = BANKROLL * 0.03;
+            if (stakeMoney > maxCap) stakeMoney = maxCap;
+
+            return {
+                isValue: true,
+                ev: evPercentage.toFixed(1),
+                kellyPct: (kellyAdjusted * 100).toFixed(1),
+                stake: stakeMoney.toFixed(2)
+            };
         }
 
         function renderDashboard(matches) {
@@ -76,6 +153,22 @@
                 const card = document.createElement('div');
                 card.className = "bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl transition-all";
                 
+                const key1 = `${match.home_team}-${match.away_team}-1`;
+                const keyX = `${match.home_team}-${match.away_team}-X`;
+                const key2 = `${match.home_team}-${match.away_team}-2`;
+
+                const real1 = realOddsMap[key1] || null;
+                const realX = realOddsMap[keyX] || null;
+                const real2 = realOddsMap[key2] || null;
+
+                const prob1Num = match.probabilities["1"] / 100;
+                const probXNum = match.probabilities["X"] / 100;
+                const prob2Num = match.probabilities["2"] / 100;
+
+                const kelly1 = real1 ? calculateKelly(prob1Num, real1) : null;
+                const kellyX = realX ? calculateKelly(probXNum, realX) : null;
+                const kelly2 = real2 ? calculateKelly(prob2Num, real2) : null;
+
                 card.innerHTML = `
                     <div class="flex justify-between items-center mb-4 text-xs text-slate-400 border-b border-slate-800 pb-2">
                         <span>📅 ${match.date}</span>
@@ -116,22 +209,75 @@
                         </div>
                     </div>
 
-                    <!-- Quote e Probabilità -->
-                    <div class="grid grid-cols-3 gap-3 text-center" id="odds-box-${index}">
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                    <!-- Quote e Probabilità (Confronto Modello vs Bookmaker) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-center" id="odds-box-${index}">
+                        <!-- Segno 1 -->
+                        <div class="bg-slate-950 p-3 rounded-lg border ${kelly1 && kelly1.isValue ? 'border-emerald-500 shadow-emerald-900/30 shadow-lg' : 'border-slate-800'}">
                             <span class="block text-xs text-slate-400 mb-1">1 (Casa)</span>
-                            <span class="text-lg font-black text-white" id="odd-1-${index}">${match.odds["1"]}</span>
-                            <span class="block text-[10px] text-emerald-400 mt-1" id="prob-1-${index}">${match.probabilities["1"]}%</span>
+                            <div class="flex justify-center items-center gap-3 my-1">
+                                <div>
+                                    <span class="block text-[10px] text-slate-500 uppercase">Modello</span>
+                                    <span class="text-base font-bold text-slate-300" id="odd-1-${index}">${match.odds["1"]}</span>
+                                </div>
+                                ${real1 ? `
+                                    <div class="border-l border-slate-800 pl-3">
+                                        <span class="block text-[10px] text-emerald-400 uppercase font-bold">Bookmaker</span>
+                                        <span class="text-lg font-black text-white">${real1}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <span class="block text-[10px] text-emerald-400 mt-1" id="prob-1-${index}">Prob: ${match.probabilities["1"]}%</span>
+                            ${kelly1 && kelly1.isValue ? `
+                                <div class="mt-2 pt-2 border-t border-emerald-900/50 text-[11px] text-emerald-300 font-mono">
+                                    🔥 <strong>VALUE BET!</strong><br>EV: +${kelly1.ev}% | Stake: <strong>€${kelly1.stake}</strong>
+                                </div>
+                            ` : ''}
                         </div>
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+
+                        <!-- Segno X -->
+                        <div class="bg-slate-950 p-3 rounded-lg border ${kellyX && kellyX.isValue ? 'border-amber-500 shadow-amber-900/30 shadow-lg' : 'border-slate-800'}">
                             <span class="block text-xs text-slate-400 mb-1">X (Pareggio)</span>
-                            <span class="text-lg font-black text-white" id="odd-X-${index}">${match.odds["X"]}</span>
-                            <span class="block text-[10px] text-amber-400 mt-1" id="prob-X-${index}">${match.probabilities["X"]}%</span>
+                            <div class="flex justify-center items-center gap-3 my-1">
+                                <div>
+                                    <span class="block text-[10px] text-slate-500 uppercase">Modello</span>
+                                    <span class="text-base font-bold text-slate-300" id="odd-X-${index}">${match.odds["X"]}</span>
+                                </div>
+                                ${realX ? `
+                                    <div class="border-l border-slate-800 pl-3">
+                                        <span class="block text-[10px] text-amber-400 uppercase font-bold">Bookmaker</span>
+                                        <span class="text-lg font-black text-white">${realX}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <span class="block text-[10px] text-amber-400 mt-1" id="prob-X-${index}">Prob: ${match.probabilities["X"]}%</span>
+                            ${kellyX && kellyX.isValue ? `
+                                <div class="mt-2 pt-2 border-t border-amber-900/50 text-[11px] text-amber-300 font-mono">
+                                    🔥 <strong>VALUE BET!</strong><br>EV: +${kellyX.ev}% | Stake: <strong>€${kellyX.stake}</strong>
+                                </div>
+                            ` : ''}
                         </div>
-                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+
+                        <!-- Segno 2 -->
+                        <div class="bg-slate-950 p-3 rounded-lg border ${kelly2 && kelly2.isValue ? 'border-sky-500 shadow-sky-900/30 shadow-lg' : 'border-slate-800'}">
                             <span class="block text-xs text-slate-400 mb-1">2 (Ospite)</span>
-                            <span class="text-lg font-black text-white" id="odd-2-${index}">${match.odds["2"]}</span>
-                            <span class="block text-[10px] text-sky-400 mt-1" id="prob-2-${index}">${match.probabilities["2"]}%</span>
+                            <div class="flex justify-center items-center gap-3 my-1">
+                                <div>
+                                    <span class="block text-[10px] text-slate-500 uppercase">Modello</span>
+                                    <span class="text-base font-bold text-slate-300" id="odd-2-${index}">${match.odds["2"]}</span>
+                                </div>
+                                ${real2 ? `
+                                    <div class="border-l border-slate-800 pl-3">
+                                        <span class="block text-[10px] text-sky-400 uppercase font-bold">Bookmaker</span>
+                                        <span class="text-lg font-black text-white">${real2}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <span class="block text-[10px] text-sky-400 mt-1" id="prob-2-${index}">Prob: ${match.probabilities["2"]}%</span>
+                            ${kelly2 && kelly2.isValue ? `
+                                <div class="mt-2 pt-2 border-t border-sky-900/50 text-[11px] text-sky-300 font-mono">
+                                    🔥 <strong>VALUE BET!</strong><br>EV: +${kelly2.ev}% | Stake: <strong>€${kelly2.stake}</strong>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
 
@@ -206,9 +352,9 @@
             document.getElementById(`odd-X-${index}`).innerText = oddX;
             document.getElementById(`odd-2-${index}`).innerText = odd2;
 
-            document.getElementById(`prob-1-${index}`).innerText = (finalP1 * 100).toFixed(1) + '%';
-            document.getElementById(`prob-X-${index}`).innerText = (finalPX * 100).toFixed(1) + '%';
-            document.getElementById(`prob-2-${index}`).innerText = (finalP2 * 100).toFixed(1) + '%';
+            document.getElementById(`prob-1-${index}`).innerText = 'Prob: ' + (finalP1 * 100).toFixed(1) + '%';
+            document.getElementById(`prob-X-${index}`).innerText = 'Prob: ' + (finalPX * 100).toFixed(1) + '%';
+            document.getElementById(`prob-2-${index}`).innerText = 'Prob: ' + (finalP2 * 100).toFixed(1) + '%';
         }
 
         function factorial(n) {
