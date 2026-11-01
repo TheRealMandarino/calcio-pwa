@@ -167,7 +167,7 @@
             showOddsStatus('Controllo aggiornamento giornaliero di calendario e risultati...');
             try {
                 let response = await fetch('/api/refresh', { cache: 'no-store' });
-                let state = await response.json();
+                let state = await readApiJson(response);
                 if (!response.ok) throw new Error(state.error || 'Impossibile avviare l’aggiornamento giornaliero.');
 
                 const refreshDeadline = Date.now() + 16 * 60 * 1000;
@@ -178,7 +178,7 @@
                     showOddsStatus(state.message || 'Aggiornamento giornaliero in corso...');
                     await new Promise(resolve => setTimeout(resolve, 3000));
                     response = await fetch('/api/refresh-status', { cache: 'no-store' });
-                    state = await response.json();
+                    state = await readApiJson(response);
                     if (!response.ok) throw new Error(state.error || 'Impossibile verificare l’aggiornamento giornaliero.');
                 }
 
@@ -203,6 +203,24 @@
             }`;
         }
 
+        async function readApiJson(response) {
+            const contentType = response.headers.get('content-type') || '';
+            if (!contentType.toLowerCase().includes('json')) {
+                throw new Error(
+                    'API backend non disponibile. GitHub Pages ospita solo file statici: avvia il backend Python per aggiornare calendario e quote.'
+                );
+            }
+
+            try {
+                return await response.json();
+            } catch (error) {
+                if (error instanceof SyntaxError) {
+                    throw new Error('Il backend ha restituito una risposta non valida. Verifica la configurazione API.');
+                }
+                throw error;
+            }
+        }
+
         async function loadBookmakerOdds() {
             const button = document.getElementById('fetchOddsButton');
             const league = document.getElementById('leagueSelect').value;
@@ -212,7 +230,7 @@
 
             try {
                 const response = await fetch(`/api/odds?league=${encodeURIComponent(league)}`);
-                const result = await response.json();
+                const result = await readApiJson(response);
                 if (!response.ok) throw new Error(result.error || 'Errore nel recupero delle quote.');
 
                 const eventsByTeams = new Map(
