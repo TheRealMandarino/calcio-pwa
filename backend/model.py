@@ -1,8 +1,49 @@
 import sqlite3
+import re
+import unicodedata
 import pandas as pd
 import numpy as np
 from scipy.stats import poisson
 from backend.stats import compute_team_stats
+
+TEAM_ALIASES = {
+    "blackburnrovers": "Blackburn",
+    "charltonathletic": "Charlton",
+    "boltonwanderers": "Bolton",
+    "queensparkrangers": "QPR",
+    "lincolncity": "Lincoln",
+    "prestonnorthend": "Preston",
+    "birminghamcity": "Birmingham",
+    "norwichcity": "Norwich",
+    "stokecity": "Stoke",
+    "swanseacity": "Swansea",
+    "westhamunited": "West Ham",
+    "wolverhamptonwanderers": "Wolves",
+    "hellasverona": "Verona",
+    "cesenafc": "Cesena",
+    "uscatanzaro1929": "Catanzaro",
+    "sudtirol": "Sudtirol",
+}
+
+
+def normalize_team_name(team_name):
+    normalized = unicodedata.normalize("NFKD", team_name)
+    normalized = "".join(character for character in normalized if not unicodedata.combining(character))
+    return re.sub(r"[^a-z0-9]", "", normalized.lower())
+
+
+def resolve_team_name(team_name, known_teams):
+    normalized = normalize_team_name(team_name)
+    alias = TEAM_ALIASES.get(normalized)
+    if alias in known_teams:
+        return alias
+    if team_name in known_teams:
+        return team_name
+    for candidate in known_teams:
+        if normalize_team_name(candidate) == normalized:
+            return candidate
+    return team_name
+
 
 def DixonColes_adjustment(x, y, lambda_h, lambda_a, rho):
     if x == 0 and y == 0:
@@ -16,19 +57,42 @@ def DixonColes_adjustment(x, y, lambda_h, lambda_a, rho):
     else:
         return 1.0
 
-def get_h2h_factor(home_team, away_team, db_path="data/database.db"):
+def get_h2h_factor(
+    home_team,
+    away_team,
+    league=None,
+    db_path="data/database.db",
+    historical_matches=None,
+):
+    scope_to_league = league in {"ITA-Serie B", "ENG-Championship"}
     try:
-        conn = sqlite3.connect(db_path)
-        query = """
-            SELECT home_team, away_team, home_goals, away_goals 
-            FROM matches 
-            WHERE ((home_team = ? AND away_team = ?) 
-               OR (home_team = ? AND away_team = ?))
-            AND home_goals IS NOT NULL AND away_goals IS NOT NULL
-        """
-        df = pd.read_sql(query, conn, params=(home_team, away_team, away_team, home_team))
-        conn.close()
-        
+        if historical_matches is None:
+            conn = sqlite3.connect(db_path)
+            query = """
+                SELECT home_team, away_team, home_goals, away_goals
+                FROM matches
+                WHERE ((home_team = ? AND away_team = ?)
+                   OR (home_team = ? AND away_team = ?))
+                AND home_goals IS NOT NULL AND away_goals IS NOT NULL
+            """
+            params = [home_team, away_team, away_team, home_team]
+            if scope_to_league:
+                query += " AND league = ?"
+                params.append(league)
+            df = pd.read_sql(query, conn, params=params)
+            conn.close()
+        else:
+            df = historical_matches
+            if scope_to_league and "league" in df.columns:
+                df = df[df["league"] == league]
+            df = df[
+                (
+                    (df["home_team"] == home_team) & (df["away_team"] == away_team)
+                ) | (
+                    (df["home_team"] == away_team) & (df["away_team"] == home_team)
+                )
+            ]
+
         if len(df) < 2:
             return 1.0, 1.0
         
@@ -56,11 +120,38 @@ def get_h2h_factor(home_team, away_team, db_path="data/database.db"):
     except Exception:
         return 1.0, 1.0
 
-def calculate_match_probabilities(home_team, away_team, league=None, precomputed_stats=None):
+def calculate_match_probabilities(
+    home_team,
+    away_team,
+    league=None,
+    precomputed_stats=None,
+    historical_matches=None,
+    model_parameters=None,
+    h2h_factor=None,
+):
+    parameters = model_parameters or {}
+    history = None
+    needs_history = precomputed_stats is None or (
+        h2h_factor is None and parameters.get("use_h2h", True)
+    )
+    if historical_matches is not None and needs_history:
+        history = pd.DataFrame(historical_matches)
+        if league in {"ITA-Serie B", "ENG-Championship"} and "league" in history.columns:
+            history = history[history["league"] == league]
+        if precomputed_stats is None:
+            precomputed_stats = compute_team_stats(
+                matches_df=history,
+                half_life_days=parameters.get("half_life_days", 90),
+                league=league,
+            )
+
     if precomputed_stats:
         home_attack, home_defense, away_attack, away_defense, league_avg_h, league_avg_a, global_avg_h, global_avg_a = precomputed_stats
     else:
         home_attack, home_defense, away_attack, away_defense, league_avg_h, league_avg_a, global_avg_h, global_avg_a = compute_team_stats()
+
+    home_team = resolve_team_name(home_team, home_attack.keys())
+    away_team = resolve_team_name(away_team, away_attack.keys())
     
     if league and league in league_avg_h:
         avg_h = league_avg_h[league]
@@ -81,19 +172,31 @@ def calculate_match_probabilities(home_team, away_team, league=None, precomputed
     raw_def_h = home_defense.get(home_team, 1.0)
 
     # Shrinkage a 0.4 per limitare i picchi dovuti al poco storico
-    hw_weight = 0.4
+    hw_weight = parameters.get("shrinkage", 0.4)
     att_h = 1.0 + (raw_att_h - 1.0) * hw_weight
     def_a = 1.0 + (raw_def_a - 1.0) * hw_weight
     att_a = 1.0 + (raw_att_a - 1.0) * hw_weight
     def_h = 1.0 + (raw_def_h - 1.0) * hw_weight
 
     # Fattore campo completamente azzerato (1.0)
-    home_advantage = 1.0
-    rho = -0.11 if league != "GER-Bundesliga" else -0.05
+    default_home_advantage = 1.05 if league in {"ITA-Serie B", "ENG-Championship"} else 1.0
+    home_advantage = parameters.get("home_advantage", default_home_advantage)
+    default_rho = -0.11 if league != "GER-Bundesliga" else -0.05
+    rho = parameters.get("rho", default_rho)
     max_goals = 9 if league == "GER-Bundesliga" else 7
 
     # Il fattore H2H resta attivo per personalizzare la sfida sugli scontri diretti
-    h2h_h, h2h_a = get_h2h_factor(home_team, away_team)
+    if h2h_factor is not None:
+        h2h_h, h2h_a = h2h_factor
+    elif not parameters.get("use_h2h", True):
+        h2h_h, h2h_a = 1.0, 1.0
+    else:
+        h2h_h, h2h_a = get_h2h_factor(
+            home_team,
+            away_team,
+            league=league,
+            historical_matches=history if historical_matches is not None else None,
+        )
 
     lambda_home = max(att_h * def_a * avg_h * home_advantage * h2h_h, 0.70)
     lambda_away = max(att_a * def_h * avg_a * h2h_a, 0.65)

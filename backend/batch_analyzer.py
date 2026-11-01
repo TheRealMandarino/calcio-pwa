@@ -32,31 +32,47 @@ def generate_league_json():
     print("Calcolo delle statistiche di squadra in corso...")
     stats_cache = compute_team_stats(db_path)
     
-    # Estraiamo solo le partite future a partire dalla giornata corrente
+    # Manteniamo i risultati recenti insieme alle partite future.
     query = """
-        SELECT date, league, home_team, away_team 
+        SELECT date, league, home_team, away_team, home_goals, away_goals
         FROM matches 
-        WHERE date >= ? 
+        WHERE date >= ?
+           OR (
+                home_goals IS NOT NULL
+                AND away_goals IS NOT NULL
+                AND date >= datetime(?, '-7 days')
+           )
         ORDER BY league ASC, date ASC
     """
-    df = pd.read_sql(query, conn, params=(target_date,))
+    df = pd.read_sql(query, conn, params=(target_date, target_date))
     conn.close()
     
-    if df.empty:
-        print("Nessuna partita futura trovata nel database.")
-        return
-
     os.makedirs(output_dir, exist_ok=True)
 
     print("Generazione dei file JSON nella cartella docs...")
-    for league_name, group_df in df.groupby('league'):
+    league_groups = {
+        league_name: group_df
+        for league_name, group_df in df.groupby('league')
+    }
+    for league_name in ("ITA-Serie B", "ENG-Championship"):
+        league_groups.setdefault(league_name, df.iloc[0:0].copy())
+
+    if df.empty:
+        print("Nessuna partita futura o recente trovata nel database.")
+
+    for league_name, group_df in league_groups.items():
         matches_output = []
+        league_stats = (
+            compute_team_stats(db_path, league=league_name)
+            if league_name in ("ITA-Serie B", "ENG-Championship")
+            else stats_cache
+        )
         
         for _, row in group_df.iterrows():
             h_team = row['home_team']
             a_team = row['away_team']
             
-            calc = calculate_match_probabilities(h_team, a_team, league=league_name, precomputed_stats=stats_cache)
+            calc = calculate_match_probabilities(h_team, a_team, league=league_name, precomputed_stats=league_stats)
             
             p1 = max(calc["prob_1"], 0.03)
             pX = max(calc["prob_X"], 0.03)
@@ -68,12 +84,14 @@ def generate_league_json():
             odd_1 = min(round(1.0 / p1, 2), 20.0)
             odd_X = min(round(1.0 / pX, 2), 20.0)
             odd_2 = min(round(1.0 / p2, 2), 20.0)
+            is_finished = pd.notna(row['home_goals']) and pd.notna(row['away_goals'])
             
-            matches_output.append({
+            match_output = {
                 "date": str(row['date']),
                 "league": league_name,
                 "home_team": h_team,
                 "away_team": a_team,
+                "status": "finished" if is_finished else "scheduled",
                 "lambda_home": calc["lambda_home"],
                 "lambda_away": calc["lambda_away"],
                 "probabilities": {
@@ -87,7 +105,11 @@ def generate_league_json():
                     "2": odd_2
                 },
                 "exact_scores": calc["exact_scores"]  # Inclusione dei risultati esatti calcolati dal modello
-            })
+            }
+            if is_finished:
+                match_output["home_goals"] = int(row['home_goals'])
+                match_output["away_goals"] = int(row['away_goals'])
+            matches_output.append(match_output)
         
         safe_league_name = league_name.replace(" ", "_").lower()
         file_name = f"{safe_league_name}.json"

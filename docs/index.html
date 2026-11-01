@@ -18,7 +18,9 @@
             <div class="flex flex-wrap items-center gap-3">
                 <select id="leagueSelect" onchange="loadMatches()" class="bg-slate-900 border border-slate-800 text-slate-200 text-sm rounded-lg px-3 py-2 outline-none focus:border-emerald-500 cursor-pointer">
                     <option value="ita-serie_a.json">🇮🇹 Serie A</option>
+                    <option value="ita-serie_b.json">🇮🇹 Serie B</option>
                     <option value="eng-premier_league.json">🇬🇧 Premier League</option>
+                    <option value="eng-championship.json">🇬🇧 Championship</option>
                     <option value="esp-la_liga.json">🇪🇸 La Liga</option>
                     <option value="ger-bundesliga.json">🇩🇪 Bundesliga</option>
                     <option value="fra-ligue_1.json">🇫🇷 Ligue 1</option>
@@ -28,9 +30,15 @@
                     📊 Incolla Quote Reali
                 </button>
 
+                <button id="fetchOddsButton" onclick="loadBookmakerOdds()" class="bg-sky-700 hover:bg-sky-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition cursor-pointer flex items-center gap-1">
+                    🌐 Aggiorna quote e orari
+                </button>
+
                 <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs px-3 py-1 rounded-full font-mono">Live Engine v1.0</span>
             </div>
         </header>
+
+        <p id="oddsStatus" class="hidden mb-4 rounded-lg border px-3 py-2 text-xs" role="status" aria-live="polite"></p>
 
         <!-- Box a comparsa per incollare le quote reali -->
         <div id="oddsModal" class="hidden mb-6 bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-2xl">
@@ -45,18 +53,34 @@
             </div>
         </div>
 
-        <!-- Contenitore Principale delle Partite -->
-        <div id="matches-container" class="space-y-6">
-            <!-- Popolato dinamicamente da JavaScript -->
-        </div>
+        <section id="finished-matches-section" class="hidden mb-8">
+            <details class="bg-slate-900 border border-slate-800 rounded-xl">
+                <summary class="cursor-pointer list-none px-4 py-3 text-sm font-bold text-slate-300">
+                    <span aria-hidden="true">▶</span>
+                    Partite concluse
+                    <span id="finished-matches-count" class="ml-1 text-slate-500 font-mono"></span>
+                </summary>
+                <div id="finished-matches-container" class="space-y-6 p-4 pt-1"></div>
+            </details>
+        </section>
+
+        <section>
+            <h2 class="mb-4 text-lg font-bold text-white">Partite in programma</h2>
+            <div id="matches-container" class="space-y-6">
+                <!-- Popolato dinamicamente da JavaScript -->
+            </div>
+        </section>
     </div>
 
     <script>
         let currentMatches = [];
         let realOddsMap = {}; 
+        let realOddsBookmakers = {};
+        let realOddsKickoffMap = {};
+        let dailyRefreshStarted = false;
         const BANKROLL = 1000.0; // Bankroll di riferimento (€)
 
-        async function loadMatches() {
+        async function loadMatches(checkDailyRefresh = false) {
             const selectElement = document.getElementById('leagueSelect');
             const fileName = selectElement ? selectElement.value : 'ita-serie_a.json';
             
@@ -68,9 +92,10 @@
             `;
 
             try {
-                const response = await fetch(fileName);
+                const response = await fetch(fileName, { cache: 'no-store' });
                 if (!response.ok) throw new Error("File non trovato");
                 currentMatches = await response.json();
+                restoreOddsForCurrentLeague();
                 renderDashboard(currentMatches);
             } catch (error) {
                 container.innerHTML = `
@@ -79,11 +104,217 @@
                     </div>
                 `;
             }
+
+            if (checkDailyRefresh && !dailyRefreshStarted) {
+                dailyRefreshStarted = true;
+                refreshCalendarOnceDaily();
+            }
         }
 
         function toggleOddsModal() {
             const modal = document.getElementById('oddsModal');
             modal.classList.toggle('hidden');
+        }
+
+        function normalizeTeamName(name) {
+            return name.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .replace(/\b(fc|cf|afc|sc|ac|as|ssc|calcio|club)\b/g, '')
+                .replace(/[^a-z0-9]/g, '');
+        }
+
+        function oddsStorageKey() {
+            return `calcio-pwa-odds:${document.getElementById('leagueSelect').value}`;
+        }
+
+        function saveOddsForCurrentLeague() {
+            try {
+                localStorage.setItem(oddsStorageKey(), JSON.stringify({
+                    odds: realOddsMap,
+                    bookmakers: realOddsBookmakers,
+                    kickoffs: realOddsKickoffMap
+                }));
+                return true;
+            } catch (error) {
+                showOddsStatus(`Impossibile salvare le quote nel browser: ${error.message}`, true);
+                return false;
+            }
+        }
+
+        function restoreOddsForCurrentLeague() {
+            realOddsMap = {};
+            realOddsBookmakers = {};
+            realOddsKickoffMap = {};
+
+            try {
+                const saved = JSON.parse(localStorage.getItem(oddsStorageKey()) || '{}');
+                realOddsMap = saved.odds || {};
+                realOddsBookmakers = saved.bookmakers || {};
+                realOddsKickoffMap = saved.kickoffs || {};
+            } catch (error) {
+                showOddsStatus(`Quote salvate non leggibili: ${error.message}`, true);
+                return;
+            }
+
+            currentMatches.forEach(match => {
+                const key = `${normalizeTeamName(match.home_team)}-${normalizeTeamName(match.away_team)}`;
+                if (realOddsKickoffMap[key]) match.commence_time = realOddsKickoffMap[key];
+            });
+        }
+
+        async function refreshCalendarOnceDaily() {
+            showOddsStatus('Controllo aggiornamento giornaliero di calendario e risultati...');
+            try {
+                let response = await fetch('/api/refresh', { cache: 'no-store' });
+                let state = await response.json();
+                if (!response.ok) throw new Error(state.error || 'Impossibile avviare l’aggiornamento giornaliero.');
+
+                const refreshDeadline = Date.now() + 16 * 60 * 1000;
+                while (state.status === 'running') {
+                    if (Date.now() >= refreshDeadline) {
+                        throw new Error('Aggiornamento ancora in corso dopo 16 minuti. Le partite già caricate restano disponibili; controlla lo stato più tardi.');
+                    }
+                    showOddsStatus(state.message || 'Aggiornamento giornaliero in corso...');
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    response = await fetch('/api/refresh-status', { cache: 'no-store' });
+                    state = await response.json();
+                    if (!response.ok) throw new Error(state.error || 'Impossibile verificare l’aggiornamento giornaliero.');
+                }
+
+                if (state.status !== 'complete') {
+                    throw new Error(state.message || 'Aggiornamento giornaliero non riuscito.');
+                }
+
+                await loadMatches();
+                showOddsStatus(state.message || 'Calendario e risultati aggiornati.');
+            } catch (error) {
+                showOddsStatus(error.message, true);
+            }
+        }
+
+        function showOddsStatus(message, isError = false) {
+            const status = document.getElementById('oddsStatus');
+            status.textContent = message;
+            status.className = `mb-4 rounded-lg border px-3 py-2 text-xs ${
+                isError
+                    ? 'border-red-800 bg-red-950 text-red-300'
+                    : 'border-sky-800 bg-sky-950 text-sky-300'
+            }`;
+        }
+
+        async function loadBookmakerOdds() {
+            const button = document.getElementById('fetchOddsButton');
+            const league = document.getElementById('leagueSelect').value;
+            button.disabled = true;
+            button.textContent = 'Caricamento quote e orari...';
+            showOddsStatus('Recupero quote 1X2 e orari dai bookmaker...');
+
+            try {
+                const response = await fetch(`/api/odds?league=${encodeURIComponent(league)}`);
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Errore nel recupero delle quote.');
+
+                const eventsByTeams = new Map(
+                    result.map(event => [
+                        `${normalizeTeamName(event.home_team)}-${normalizeTeamName(event.away_team)}`,
+                        event
+                    ])
+                );
+                const nextOdds = {};
+                const nextBookmakers = {};
+                const nextKickoffs = {};
+                let matchedMatches = 0;
+
+                currentMatches.forEach(match => {
+                    const event = eventsByTeams.get(
+                        `${normalizeTeamName(match.home_team)}-${normalizeTeamName(match.away_team)}`
+                    );
+                    if (!event) return;
+                    matchedMatches += 1;
+                    if (event.commence_time) {
+                        match.commence_time = event.commence_time;
+                        nextKickoffs[`${normalizeTeamName(match.home_team)}-${normalizeTeamName(match.away_team)}`] = event.commence_time;
+                    }
+
+                    for (const market of ['1', 'X', '2']) {
+                        const quote = event.odds[market];
+                        if (!quote) continue;
+                        const key = `${match.home_team}-${match.away_team}-${market}`;
+                        nextOdds[key] = quote.price;
+                        nextBookmakers[key] = quote.bookmaker;
+                    }
+                });
+
+                realOddsMap = nextOdds;
+                realOddsBookmakers = nextBookmakers;
+                realOddsKickoffMap = nextKickoffs;
+                const oddsSaved = saveOddsForCurrentLeague();
+                renderDashboard(currentMatches);
+
+                if (matchedMatches === 0) {
+                    showOddsStatus('Nessuna partita trovata tra le quote disponibili. Verifica le partite e riprova.', true);
+                } else if (!oddsSaved) {
+                    showOddsStatus('Quote aggiornate, ma non salvate nel browser. Verifica le impostazioni di archiviazione.', true);
+                } else {
+                    showOddsStatus(
+                        `Quote e orari aggiornati per ${matchedMatches} partite su ${currentMatches.length}. Per ogni esito è mostrata la quota migliore disponibile.`
+                    );
+                }
+            } catch (error) {
+                showOddsStatus(error.message, true);
+            } finally {
+                button.disabled = false;
+                button.textContent = '🌐 Aggiorna quote e orari';
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        function isMatchFinished(match) {
+            const status = String(match.status || '').toLowerCase();
+            if (['finished', 'complete', 'completed', 'ft', 'full_time'].includes(status)) return true;
+
+            const hasFinalScore = Number.isFinite(Number(match.home_goals))
+                && match.home_goals !== null
+                && match.home_goals !== ''
+                && Number.isFinite(Number(match.away_goals))
+                && match.away_goals !== null
+                && match.away_goals !== '';
+            if (hasFinalScore) return true;
+
+            const matchDate = String(match.date || '').slice(0, 10);
+            const todayInItaly = new Intl.DateTimeFormat('sv-SE', {
+                timeZone: 'Europe/Rome'
+            }).format(new Date());
+            return /^\d{4}-\d{2}-\d{2}$/.test(matchDate) && matchDate < todayInItaly;
+        }
+
+        function formatMatchDate(match) {
+            const kickoff = match.commence_time || match.kickoff_time;
+            const rawDate = kickoff || match.date;
+            if (!rawDate) return 'Orario non disponibile';
+
+            const date = new Date(rawDate.includes('T') ? rawDate : rawDate.replace(' ', 'T'));
+            if (Number.isNaN(date.getTime())) return rawDate;
+
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Rome' };
+            const dateHasTime = /(?:T|\s)\d{2}:\d{2}/.test(rawDate);
+            const hasKickoff = Boolean(kickoff)
+                || (dateHasTime && !/00:00(?::00)?$/.test(rawDate));
+            if (hasKickoff) {
+                options.hour = '2-digit';
+                options.minute = '2-digit';
+            }
+            return new Intl.DateTimeFormat('it-IT', options).format(date);
         }
 
         function processRealOdds() {
@@ -93,15 +324,19 @@
             try {
                 const oddsArray = JSON.parse(text);
                 realOddsMap = {};
+                realOddsBookmakers = {};
                 
                 oddsArray.forEach(item => {
                     const key = `${item.home_team}-${item.away_team}-${item.market}`;
                     realOddsMap[key] = parseFloat(item.real_odd);
                 });
 
+                const oddsSaved = saveOddsForCurrentLeague();
                 toggleOddsModal();
                 renderDashboard(currentMatches);
-                alert("Quote reali applicate con successo! Controlla i segnali di Value Bet e Kelly Stake.");
+                alert(oddsSaved
+                    ? "Quote reali applicate e salvate! Controlla i segnali di Value Bet e Kelly Stake."
+                    : "Quote applicate, ma non salvate nel browser. Verifica le impostazioni di archiviazione.");
             } catch (e) {
                 alert("Errore nel formato JSON inserito. Assicurati che sia sintatticamente corretto.");
             }
@@ -136,20 +371,61 @@
             };
         }
 
+        function formatValueBet(kelly) {
+            if (!kelly || kelly.ev === undefined) return '';
+            const ev = Number(kelly.ev);
+            const evLabel = `${ev > 0 ? '+' : ''}${ev.toFixed(1)}%`;
+            return kelly.isValue
+                ? `🔥 <strong>VALUE BET!</strong><br>EV: ${evLabel} | Stake: <strong>€${kelly.stake}</strong>`
+                : `<strong>Nessuna value bet</strong><br>EV: ${evLabel}`;
+        }
+
+        function updateValueBet(index, market, probability) {
+            const marketCard = document.getElementById(`market-card-${market}-${index}`);
+            const valueBet = document.getElementById(`value-bet-${market}-${index}`);
+            const bookmakerOdd = Number(marketCard.dataset.realOdd);
+            const kelly = bookmakerOdd > 1 ? calculateKelly(probability, bookmakerOdd) : null;
+            const borderColors = {
+                '1': ['border-emerald-500', 'shadow-emerald-900/30', 'shadow-lg'],
+                'X': ['border-amber-500', 'shadow-amber-900/30', 'shadow-lg'],
+                '2': ['border-sky-500', 'shadow-sky-900/30', 'shadow-lg']
+            }[market];
+
+            valueBet.innerHTML = formatValueBet(kelly);
+            valueBet.classList.toggle('hidden', !kelly);
+            marketCard.classList.remove(...borderColors, 'border-slate-800');
+            marketCard.classList.add(...(kelly && kelly.isValue ? borderColors : ['border-slate-800']));
+        }
+
         function renderDashboard(matches) {
             const container = document.getElementById('matches-container');
+            const finishedContainer = document.getElementById('finished-matches-container');
+            const finishedSection = document.getElementById('finished-matches-section');
+            const finishedCount = document.getElementById('finished-matches-count');
             container.innerHTML = '';
+            finishedContainer.innerHTML = '';
 
+            const finishedMatches = matches.filter(isMatchFinished);
+            const upcomingMatches = matches.filter(match => !isMatchFinished(match));
+
+            finishedSection.classList.toggle('hidden', finishedMatches.length === 0);
+            finishedCount.textContent = `(${finishedMatches.length})`;
+            renderMatchCards(finishedMatches, finishedContainer, 0);
+            renderMatchCards(upcomingMatches, container, finishedMatches.length);
+        }
+
+        function renderMatchCards(matches, container, indexOffset) {
             if (matches.length === 0) {
                 container.innerHTML = `
                     <div class="p-8 text-center text-slate-500 bg-slate-900 border border-slate-800 rounded-xl">
-                        Nessuna partita futura trovata per questo campionato.
+                        Nessuna partita in programma trovata per questo campionato.
                     </div>
                 `;
                 return;
             }
 
-            matches.forEach((match, index) => {
+            matches.forEach((match, matchOffset) => {
+                const index = indexOffset + matchOffset;
                 const card = document.createElement('div');
                 card.className = "bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl transition-all";
                 
@@ -171,7 +447,8 @@
 
                 card.innerHTML = `
                     <div class="flex justify-between items-center mb-4 text-xs text-slate-400 border-b border-slate-800 pb-2">
-                        <span>📅 ${match.date}</span>
+                        <span>📅 ${escapeHtml(formatMatchDate(match))}</span>
+                        ${isMatchFinished(match) ? `<span class="font-bold text-slate-300">Risultato: ${match.home_goals} - ${match.away_goals}</span>` : ''}
                         <span class="font-mono">Expected Goals (λ) - H: <strong id="lam-h-${index}">${match.lambda_home}</strong> | A: <strong id="lam-a-${index}">${match.lambda_away}</strong></span>
                     </div>
 
@@ -212,7 +489,7 @@
                     <!-- Quote e Probabilità (Confronto Modello vs Bookmaker) -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-center" id="odds-box-${index}">
                         <!-- Segno 1 -->
-                        <div class="bg-slate-950 p-3 rounded-lg border ${kelly1 && kelly1.isValue ? 'border-emerald-500 shadow-emerald-900/30 shadow-lg' : 'border-slate-800'}">
+                        <div id="market-card-1-${index}" data-real-odd="${real1 || ''}" class="bg-slate-950 p-3 rounded-lg border ${kelly1 && kelly1.isValue ? 'border-emerald-500 shadow-emerald-900/30 shadow-lg' : 'border-slate-800'}">
                             <span class="block text-xs text-slate-400 mb-1">1 (Casa)</span>
                             <div class="flex justify-center items-center gap-3 my-1">
                                 <div>
@@ -223,19 +500,16 @@
                                     <div class="border-l border-slate-800 pl-3">
                                         <span class="block text-[10px] text-emerald-400 uppercase font-bold">Bookmaker</span>
                                         <span class="text-lg font-black text-white">${real1}</span>
+                                        ${realOddsBookmakers[key1] ? `<span class="block text-[9px] text-slate-400">${escapeHtml(realOddsBookmakers[key1])}</span>` : ''}
                                     </div>
                                 ` : ''}
                             </div>
                             <span class="block text-[10px] text-emerald-400 mt-1" id="prob-1-${index}">Prob: ${match.probabilities["1"]}%</span>
-                            ${kelly1 && kelly1.isValue ? `
-                                <div class="mt-2 pt-2 border-t border-emerald-900/50 text-[11px] text-emerald-300 font-mono">
-                                    🔥 <strong>VALUE BET!</strong><br>EV: +${kelly1.ev}% | Stake: <strong>€${kelly1.stake}</strong>
-                                </div>
-                            ` : ''}
+                            <div id="value-bet-1-${index}" class="mt-2 pt-2 border-t border-emerald-900/50 text-[11px] text-emerald-300 font-mono ${real1 ? '' : 'hidden'}">${real1 ? formatValueBet(kelly1) : ''}</div>
                         </div>
 
                         <!-- Segno X -->
-                        <div class="bg-slate-950 p-3 rounded-lg border ${kellyX && kellyX.isValue ? 'border-amber-500 shadow-amber-900/30 shadow-lg' : 'border-slate-800'}">
+                        <div id="market-card-X-${index}" data-real-odd="${realX || ''}" class="bg-slate-950 p-3 rounded-lg border ${kellyX && kellyX.isValue ? 'border-amber-500 shadow-amber-900/30 shadow-lg' : 'border-slate-800'}">
                             <span class="block text-xs text-slate-400 mb-1">X (Pareggio)</span>
                             <div class="flex justify-center items-center gap-3 my-1">
                                 <div>
@@ -246,19 +520,16 @@
                                     <div class="border-l border-slate-800 pl-3">
                                         <span class="block text-[10px] text-amber-400 uppercase font-bold">Bookmaker</span>
                                         <span class="text-lg font-black text-white">${realX}</span>
+                                        ${realOddsBookmakers[keyX] ? `<span class="block text-[9px] text-slate-400">${escapeHtml(realOddsBookmakers[keyX])}</span>` : ''}
                                     </div>
                                 ` : ''}
                             </div>
                             <span class="block text-[10px] text-amber-400 mt-1" id="prob-X-${index}">Prob: ${match.probabilities["X"]}%</span>
-                            ${kellyX && kellyX.isValue ? `
-                                <div class="mt-2 pt-2 border-t border-amber-900/50 text-[11px] text-amber-300 font-mono">
-                                    🔥 <strong>VALUE BET!</strong><br>EV: +${kellyX.ev}% | Stake: <strong>€${kellyX.stake}</strong>
-                                </div>
-                            ` : ''}
+                            <div id="value-bet-X-${index}" class="mt-2 pt-2 border-t border-amber-900/50 text-[11px] text-amber-300 font-mono ${realX ? '' : 'hidden'}">${realX ? formatValueBet(kellyX) : ''}</div>
                         </div>
 
                         <!-- Segno 2 -->
-                        <div class="bg-slate-950 p-3 rounded-lg border ${kelly2 && kelly2.isValue ? 'border-sky-500 shadow-sky-900/30 shadow-lg' : 'border-slate-800'}">
+                        <div id="market-card-2-${index}" data-real-odd="${real2 || ''}" class="bg-slate-950 p-3 rounded-lg border ${kelly2 && kelly2.isValue ? 'border-sky-500 shadow-sky-900/30 shadow-lg' : 'border-slate-800'}">
                             <span class="block text-xs text-slate-400 mb-1">2 (Ospite)</span>
                             <div class="flex justify-center items-center gap-3 my-1">
                                 <div>
@@ -269,15 +540,12 @@
                                     <div class="border-l border-slate-800 pl-3">
                                         <span class="block text-[10px] text-sky-400 uppercase font-bold">Bookmaker</span>
                                         <span class="text-lg font-black text-white">${real2}</span>
+                                        ${realOddsBookmakers[key2] ? `<span class="block text-[9px] text-slate-400">${escapeHtml(realOddsBookmakers[key2])}</span>` : ''}
                                     </div>
                                 ` : ''}
                             </div>
                             <span class="block text-[10px] text-sky-400 mt-1" id="prob-2-${index}">Prob: ${match.probabilities["2"]}%</span>
-                            ${kelly2 && kelly2.isValue ? `
-                                <div class="mt-2 pt-2 border-t border-sky-900/50 text-[11px] text-sky-300 font-mono">
-                                    🔥 <strong>VALUE BET!</strong><br>EV: +${kelly2.ev}% | Stake: <strong>€${kelly2.stake}</strong>
-                                </div>
-                            ` : ''}
+                            <div id="value-bet-2-${index}" class="mt-2 pt-2 border-t border-sky-900/50 text-[11px] text-sky-300 font-mono ${real2 ? '' : 'hidden'}">${real2 ? formatValueBet(kelly2) : ''}</div>
                         </div>
                     </div>
 
@@ -299,19 +567,7 @@
             });
         }
 
-        function updateSimulation(index, baseLamH, baseLamA) {
-            const boostH = parseFloat(document.getElementById(`slider-h-${index}`).value);
-            const boostA = parseFloat(document.getElementById(`slider-a-${index}`).value);
-
-            document.getElementById(`val-boost-h-${index}`).innerText = boostH.toFixed(2) + 'x';
-            document.getElementById(`val-boost-a-${index}`).innerText = boostA.toFixed(2) + 'x';
-
-            const newLamH = Math.max(baseLamH * boostH, 0.70);
-            const newLamA = Math.max(baseLamA * boostA, 0.65);
-
-            document.getElementById(`lam-h-${index}`).innerText = newLamH.toFixed(2);
-            document.getElementById(`lam-a-${index}`).innerText = newLamA.toFixed(2);
-
+        function calculateScenarioProbabilities(lambdaHome, lambdaAway) {
             const maxG = 6;
             let matrixSum = 0;
             let pPoisson = (lambda, k) => Math.exp(-lambda) * Math.pow(lambda, k) / factorial(k);
@@ -319,7 +575,7 @@
             let matrix = Array(maxG + 1).fill(0).map(() => Array(maxG + 1).fill(0));
             for(let i=0; i<=maxG; i++) {
                 for(let j=0; j<=maxG; j++) {
-                    let prob = pPoisson(newLamH, i) * pPoisson(newLamA, j);
+                    let prob = pPoisson(lambdaHome, i) * pPoisson(lambdaAway, j);
                     matrix[i][j] = prob;
                     matrixSum += prob;
                 }
@@ -344,24 +600,44 @@
             finalPX /= totalP;
             finalP2 /= totalP;
 
-            let odd1 = Math.min(1 / finalP1, 28.5).toFixed(2);
-            let oddX = Math.min(1 / finalPX, 28.5).toFixed(2);
-            let odd2 = Math.min(1 / finalP2, 28.5).toFixed(2);
+            return { '1': finalP1, 'X': finalPX, '2': finalP2 };
+        }
 
-            document.getElementById(`odd-1-${index}`).innerText = odd1;
-            document.getElementById(`odd-X-${index}`).innerText = oddX;
-            document.getElementById(`odd-2-${index}`).innerText = odd2;
+        function updateSimulation(index, baseLamH, baseLamA) {
+            const boostH = parseFloat(document.getElementById(`slider-h-${index}`).value);
+            const boostA = parseFloat(document.getElementById(`slider-a-${index}`).value);
 
-            document.getElementById(`prob-1-${index}`).innerText = 'Prob: ' + (finalP1 * 100).toFixed(1) + '%';
-            document.getElementById(`prob-X-${index}`).innerText = 'Prob: ' + (finalPX * 100).toFixed(1) + '%';
-            document.getElementById(`prob-2-${index}`).innerText = 'Prob: ' + (finalP2 * 100).toFixed(1) + '%';
+            document.getElementById(`val-boost-h-${index}`).innerText = boostH.toFixed(2) + 'x';
+            document.getElementById(`val-boost-a-${index}`).innerText = boostA.toFixed(2) + 'x';
+
+            const newLamH = Math.max(baseLamH * boostH, 0.70);
+            const newLamA = Math.max(baseLamA * boostA, 0.65);
+
+            document.getElementById(`lam-h-${index}`).innerText = newLamH.toFixed(2);
+            document.getElementById(`lam-a-${index}`).innerText = newLamA.toFixed(2);
+
+            const probabilities = calculateScenarioProbabilities(newLamH, newLamA);
+            const markets = [
+                { key: '1', odd: '1' },
+                { key: 'X', odd: 'X' },
+                { key: '2', odd: '2' }
+            ];
+
+            markets.forEach(market => {
+                const probability = probabilities[market.key];
+                const modelOdd = Math.min(1 / probability, 28.5).toFixed(2);
+                document.getElementById(`odd-${market.odd}-${index}`).innerText = modelOdd;
+                document.getElementById(`prob-${market.odd}-${index}`).innerText =
+                    'Prob: ' + (probability * 100).toFixed(1) + '%';
+                updateValueBet(index, market.key, probability);
+            });
         }
 
         function factorial(n) {
             return n <= 1 ? 1 : n * factorial(n - 1);
         }
 
-        window.onload = loadMatches;
+        window.addEventListener('load', () => loadMatches(true));
     </script>
 </body>
 </html>

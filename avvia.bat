@@ -2,8 +2,10 @@
 title Calcio PWA - Server & Browser
 color 0A
 
+cd /d "%~dp0"
+
 echo Avvio del server locale in corso...
-start /b python -m http.server 8000
+start /b python backend\server.py
 
 :: Attende un secondo che il server sia attivo
 timeout /t 1 /nobreak > nul

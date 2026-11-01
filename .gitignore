@@ -1,4 +1,7 @@
 __pycache__/
 *.pyc
 .vscode/
+backend/.env
+backend/.refresh-state.json
+backend/.refresh-state.tmp
 data/database.db  *(opzionale: se non vuoi metterlo pubblico)*

@@ -1,8 +1,13 @@
 import sqlite3
+import os
 import soccerdata as sd
 import pandas as pd
 
-def init_db(db_path="data/database.db"):
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "data", "database.db")
+
+
+def init_db(db_path=DEFAULT_DB_PATH):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute("""
@@ -22,7 +27,7 @@ def init_db(db_path="data/database.db"):
     conn.commit()
     conn.close()
 
-def update_soccer_data():
+def update_soccer_data(db_path=DEFAULT_DB_PATH):
     # Leghe supportate da soccerdata FBref
     leagues = [
         "ITA-Serie A",
@@ -67,11 +72,11 @@ def update_soccer_data():
         except:
             a_goals = None
 
-        h_xg = row.get('home_xg', 0.0)
-        if pd.isna(h_xg): h_xg = 0.0
+        h_xg = row.get('home_xg')
+        if pd.isna(h_xg): h_xg = None
         
-        a_xg = row.get('away_xg', 0.0)
-        if pd.isna(a_xg): a_xg = 0.0
+        a_xg = row.get('away_xg')
+        if pd.isna(a_xg): a_xg = None
 
         league_name = row.get('league', '')
 
@@ -82,8 +87,8 @@ def update_soccer_data():
             'away_team': row.get('away_team'),
             'home_goals': h_goals,
             'away_goals': a_goals,
-            'home_xg': float(h_xg),
-            'away_xg': float(a_xg),
+            'home_xg': float(h_xg) if h_xg is not None else None,
+            'away_xg': float(a_xg) if a_xg is not None else None,
             'status': str(row.get('status', 'scheduled')),
             'season': str(row.get('season', ''))
         })
@@ -92,9 +97,33 @@ def update_soccer_data():
     completed_count = df['home_goals'].notna().sum()
     print(f"Totale match scaricati: {len(df)} | Match con gol registrati correttamente: {completed_count}")
     
-    conn = sqlite3.connect("data/database.db")
-    df.to_sql("matches", conn, if_exists="replace", index=False)
-    conn.close()
+    if not df.empty:
+        conn = sqlite3.connect(db_path)
+        try:
+            with conn:
+                conn.execute("""
+                    CREATE TABLE IF NOT EXISTS matches (
+                        date TEXT,
+                        league TEXT,
+                        home_team TEXT,
+                        away_team TEXT,
+                        home_goals INTEGER,
+                        away_goals INTEGER,
+                        home_xg REAL,
+                        away_xg REAL,
+                        status TEXT,
+                        season TEXT
+                    )
+                """)
+                league_names = df['league'].dropna().unique().tolist()
+                placeholders = ",".join("?" for _ in league_names)
+                conn.execute(
+                    f"DELETE FROM matches WHERE league IN ({placeholders})",
+                    league_names,
+                )
+                df.to_sql("matches", conn, if_exists="append", index=False)
+        finally:
+            conn.close()
     print("Database aggiornato con successo.")
 
 if __name__ == "__main__":
