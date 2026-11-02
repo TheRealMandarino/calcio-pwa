@@ -8,20 +8,30 @@ from zoneinfo import ZoneInfo
 
 
 BASE_URL = "https://www.football-data.co.uk/mmz4281/{season}/{division}.csv"
+PRIMARY_LEAGUES = {
+    "I1": "ITA-Serie A",
+    "E0": "ENG-Premier League",
+    "SP1": "ESP-La Liga",
+    "D1": "GER-Bundesliga",
+    "F1": "FRA-Ligue 1",
+}
 LEAGUES = {
     "I2": "ITA-Serie B",
     "E1": "ENG-Championship",
 }
+ALL_LEAGUES = {**PRIMARY_LEAGUES, **LEAGUES}
+
+
 def current_season_start(today=None):
     today = today or datetime.now().date()
     return today.year if today.month >= 7 else today.year - 1
 
 
-def seasons_to_import(today=None):
+def seasons_to_import(today=None, count=3):
     current_start = current_season_start(today)
     return [
         (f"{start % 100:02d}{(start + 1) % 100:02d}", f"{start}/{start + 1}")
-        for start in range(current_start - 2, current_start + 1)
+        for start in range(current_start - count + 1, current_start + 1)
     ]
 
 
@@ -121,11 +131,11 @@ def parse_season_csv(content, division, league, season_name):
     return matches, details
 
 
-def download_lower_league_data(today=None, fetcher=fetch_csv):
+def download_league_data(leagues, today=None, fetcher=fetch_csv, season_count=3):
     matches = []
     details = []
-    for season_code, season_name in seasons_to_import(today):
-        for division, league in LEAGUES.items():
+    for season_code, season_name in seasons_to_import(today, count=season_count):
+        for division, league in leagues.items():
             url = BASE_URL.format(season=season_code, division=division)
             content = fetcher(url)
             season_matches, season_details = parse_season_csv(content, division, league, season_name)
@@ -134,6 +144,19 @@ def download_lower_league_data(today=None, fetcher=fetch_csv):
             matches.extend(season_matches)
             details.extend(season_details)
     return matches, details
+
+
+def download_lower_league_data(today=None, fetcher=fetch_csv):
+    return download_league_data(LEAGUES, today=today, fetcher=fetcher)
+
+
+def download_primary_league_data(today=None, fetcher=fetch_csv):
+    return download_league_data(
+        PRIMARY_LEAGUES,
+        today=today,
+        fetcher=fetcher,
+        season_count=6,
+    )
 
 
 def update_lower_leagues(db_path, today=None, fetcher=fetch_csv):
@@ -188,6 +211,31 @@ def update_lower_leagues(db_path, today=None, fetcher=fetch_csv):
         "Aggiornate da football-data.co.uk: "
         f"{sum(match[1] == 'ITA-Serie B' for match in matches)} partite di Serie B e "
         f"{sum(match[1] == 'ENG-Championship' for match in matches)} di Championship."
+    )
+
+
+def update_primary_leagues(db_path, today=None, fetcher=fetch_csv):
+    matches, _ = download_primary_league_data(today=today, fetcher=fetcher)
+    conn = sqlite3.connect(db_path)
+    try:
+        with conn:
+            league_placeholders = ",".join("?" for _ in PRIMARY_LEAGUES.values())
+            conn.execute(
+                f"DELETE FROM matches WHERE league IN ({league_placeholders})",
+                tuple(PRIMARY_LEAGUES.values()),
+            )
+            conn.executemany("""
+                INSERT INTO matches (
+                    date, league, home_team, away_team, home_goals, away_goals,
+                    home_xg, away_xg, status, season
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, matches)
+    finally:
+        conn.close()
+
+    print(
+        "Aggiornate da football-data.co.uk: "
+        f"{len(matches)} partite nei cinque campionati principali."
     )
 
 

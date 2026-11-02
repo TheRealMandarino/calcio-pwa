@@ -9,10 +9,12 @@ import pandas as pd
 from backend.backtest_lower_leagues import run_backtest
 from backend.lower_league_data import (
     download_lower_league_data,
+    download_primary_league_data,
     parse_season_csv,
     seasons_to_import,
     update_scheduled_fixtures,
     update_lower_leagues,
+    update_primary_leagues,
 )
 from backend.model import calculate_match_probabilities, get_h2h_factor, resolve_team_name
 from backend.scraper import init_db
@@ -93,6 +95,62 @@ class LowerLeagueDataTests(unittest.TestCase):
         self.assertTrue(any("/2425/I2.csv" in url for url in requested))
         self.assertTrue(any("/2627/E1.csv" in url for url in requested))
         self.assertEqual(len(matches), 12)
+
+    def test_downloads_five_primary_leagues_for_each_season(self):
+        requested = []
+
+        def fake_fetch(url):
+            requested.append(url)
+            return self.csv_for_season(url)
+
+        matches, _ = download_primary_league_data(
+            date(2026, 11, 1),
+            fetcher=fake_fetch,
+        )
+
+        self.assertEqual(len(requested), 30)
+        for division in ("I1", "E0", "SP1", "D1", "F1"):
+            self.assertTrue(any(f"/2122/{division}.csv" in url for url in requested))
+            self.assertTrue(any(f"/2627/{division}.csv" in url for url in requested))
+        self.assertEqual(len(matches), 60)
+
+    def test_primary_league_import_replaces_only_primary_leagues(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            db_path = str(Path(temp_dir) / "matches.db")
+            init_db(db_path)
+            conn = sqlite3.connect(db_path)
+            conn.executemany(
+                "INSERT INTO matches VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [
+                    ("2026-08-01 15:00:00", "ITA-Serie A", "Old", "Team", 1, 0, None, None, "finished", "2026/2027"),
+                    ("2026-08-01 15:00:00", "ITA-Serie B", "Keep", "Team", 1, 0, None, None, "finished", "2026/2027"),
+                ],
+            )
+            conn.commit()
+            conn.close()
+
+            update_primary_leagues(
+                db_path,
+                today=date(2026, 11, 1),
+                fetcher=self.csv_for_season,
+            )
+
+            conn = sqlite3.connect(db_path)
+            self.assertEqual(
+                conn.execute("SELECT COUNT(*) FROM matches WHERE league='ITA-Serie A'").fetchone()[0],
+                12,
+            )
+            self.assertEqual(
+                conn.execute("SELECT COUNT(*) FROM matches WHERE league='ITA-Serie B'").fetchone()[0],
+                1,
+            )
+            self.assertEqual(
+                conn.execute(
+                    "SELECT COUNT(*) FROM matches WHERE league='ITA-Serie A' AND home_team='Old'"
+                ).fetchone()[0],
+                0,
+            )
+            conn.close()
 
     def test_database_import_preserves_other_leagues_and_stores_nullable_xg(self):
         with tempfile.TemporaryDirectory() as temp_dir:
