@@ -11,6 +11,14 @@ football-data.co.uk; così l'aggiornamento non dipende più dallo scraping di FB
 che può bloccare le richieste automatiche con un CAPTCHA. La fonte dichiara i dati
 destinati all'uso personale non commerciale.
 
+Serie B e Championship vengono valutate separatamente con backtest walk-forward.
+La configurazione attuale applica forma recente, statistiche dei tiri in porta,
+decadimento dei dati delle stagioni precedenti e un prior prudente per le squadre
+senza storico nella lega solo alla Serie B; la Championship mantiene la
+configurazione di base finché i test non mostrano un miglioramento sufficientemente
+coerente. Questi risultati sono stime storiche e non garantiscono la precisione
+delle previsioni future.
+
 Per abilitare anche le quote bookmaker:
 
 1. Aprire **Settings → Secrets and variables → Actions** nel repository.

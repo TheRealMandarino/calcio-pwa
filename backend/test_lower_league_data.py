@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from backend.backtest_lower_leagues import run_backtest
+from backend.backtest_lower_leagues import load_matches, run_backtest
 from backend.lower_league_data import (
     download_lower_league_data,
     download_primary_league_data,
@@ -302,7 +302,14 @@ class LowerLeagueDataTests(unittest.TestCase):
             conn.commit()
             conn.close()
 
-            reports = run_backtest(db_path, min_history=30)
+            reports = run_backtest(
+                db_path,
+                min_history=30,
+                parameters_by_league={
+                    "ITA-Serie B": {"recent_form_weight": 0.3},
+                    "ENG-Championship": {"previous_season_weight": 0.8},
+                },
+            )
 
             self.assertEqual(reports["ITA-Serie B"]["predictions"], 3)
             self.assertEqual(reports["ENG-Championship"]["predictions"], 3)
@@ -320,6 +327,46 @@ class LowerLeagueDataTests(unittest.TestCase):
                 ],
             )
             self.assertAlmostEqual(model["prob_1"] + model["prob_X"] + model["prob_2"], 1.0)
+
+    def test_lower_league_database_reads_shot_details(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            db_path = str(Path(temp_dir) / "details.db")
+            conn = sqlite3.connect(db_path)
+            conn.execute("""
+                CREATE TABLE matches (
+                    date TEXT, league TEXT, home_team TEXT, away_team TEXT,
+                    home_goals INTEGER, away_goals INTEGER, home_xg REAL,
+                    away_xg REAL, season TEXT
+                )
+            """)
+            conn.execute("""
+                CREATE TABLE lower_league_details (
+                    league TEXT, date TEXT, home_team TEXT, away_team TEXT,
+                    home_shots_on_target INTEGER, away_shots_on_target INTEGER
+                )
+            """)
+            match = (
+                "2026-08-01 15:00:00", "ITA-Serie B", "Home", "Away",
+                2, 1, None, None, "2026/2027",
+            )
+            conn.execute("INSERT INTO matches VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", match)
+            conn.execute(
+                "INSERT INTO lower_league_details VALUES (?, ?, ?, ?, ?, ?)",
+                ("ITA-Serie B", *match[:1], *match[2:4], 5, 3),
+            )
+            conn.commit()
+            conn.close()
+
+            loaded = load_matches(db_path)
+            stats = compute_team_stats(
+                db_path,
+                league="ITA-Serie B",
+                recent_form_weight=0.3,
+            )
+
+        self.assertEqual(loaded[0]["home_shots_on_target"], 5)
+        self.assertEqual(loaded[0]["away_shots_on_target"], 3)
+        self.assertIn("Home", stats[0])
 
     def test_lower_league_stats_pool_venues_unless_difference_is_material(self):
         balanced = []
@@ -415,6 +462,69 @@ class LowerLeagueDataTests(unittest.TestCase):
         stats_with_goals = compute_team_stats(matches_df=goals_only, league="ITA-Serie B")
 
         self.assertGreater(stats_with_xg[0]["XG Team"], stats_with_goals[0]["XG Team"])
+
+    def test_lower_league_recent_form_uses_only_recent_match_stats(self):
+        matches = []
+        start = date(2026, 8, 1)
+        for index in range(8):
+            matches.append({
+                "date": str(start + timedelta(days=index * 7)),
+                "league": "ITA-Serie B",
+                "home_team": "Form Team",
+                "away_team": f"Opponent {index}",
+                "home_goals": 1,
+                "away_goals": 1,
+                "home_shots_on_target": 5 if index < 4 else 1,
+                "away_shots_on_target": 2,
+            })
+
+        baseline = compute_team_stats(
+            matches_df=pd.DataFrame(matches),
+            league="ITA-Serie B",
+        )
+        recent_form = compute_team_stats(
+            matches_df=pd.DataFrame(matches),
+            league="ITA-Serie B",
+            recent_form_weight=1.0,
+            recent_form_window=4,
+        )
+
+        self.assertLess(recent_form[0]["Form Team"], baseline[0]["Form Team"])
+
+    def test_promoted_team_prior_shrinks_small_current_season_sample(self):
+        matches = []
+        previous_season = date(2025, 8, 1)
+        for index in range(10):
+            matches.append({
+                "date": str(previous_season + timedelta(days=index * 7)),
+                "league": "ENG-Championship",
+                "home_team": f"Established {index}",
+                "away_team": f"Opponent {index}",
+                "home_goals": 1,
+                "away_goals": 1,
+                "season": "2025/2026",
+            })
+        matches.append({
+            "date": "2026-08-01",
+            "league": "ENG-Championship",
+            "home_team": "Promoted Team",
+            "away_team": "Established 0",
+            "home_goals": 4,
+            "away_goals": 0,
+            "season": "2026/2027",
+        })
+
+        unshrunk = compute_team_stats(
+            matches_df=pd.DataFrame(matches),
+            league="ENG-Championship",
+        )
+        shrunk = compute_team_stats(
+            matches_df=pd.DataFrame(matches),
+            league="ENG-Championship",
+            new_team_prior_matches=8,
+        )
+
+        self.assertLess(shrunk[0]["Promoted Team"], unshrunk[0]["Promoted Team"])
 
     def test_home_advantage_is_small_and_only_applied_to_requested_leagues(self):
         neutral_stats = (

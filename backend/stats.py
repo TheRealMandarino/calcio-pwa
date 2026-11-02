@@ -8,20 +8,61 @@ MIN_VENUE_MATCHES = 8
 MIN_VENUE_DIFFERENCE = 0.30
 
 
-def compute_team_stats(db_path="data/database.db", half_life_days=90, matches_df=None, league=None):
+def compute_team_stats(
+    db_path="data/database.db",
+    half_life_days=90,
+    matches_df=None,
+    league=None,
+    recent_form_weight=0.0,
+    recent_form_window=5,
+    previous_season_weight=1.0,
+    new_team_prior_matches=0,
+):
     """
     Calcola le statistiche di attacco e difesa separate per Casa e Trasferta,
     applicando un fattore di Time Decay basato sulla data del match.
     """
     if matches_df is None:
         conn = sqlite3.connect(db_path)
-        query = """
-            SELECT date, league, home_team, away_team, home_goals, away_goals
-            FROM matches
-            WHERE home_goals IS NOT NULL AND away_goals IS NOT NULL
-            ORDER BY date ASC
-        """
-        df = pd.read_sql(query, conn)
+        if league in LOWER_LEAGUES:
+            has_details = conn.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='lower_league_details'"
+            ).fetchone()
+            detail_columns = (
+                "details.home_shots_on_target, details.away_shots_on_target"
+                if has_details
+                else "NULL AS home_shots_on_target, NULL AS away_shots_on_target"
+            )
+            detail_join = (
+                """
+                LEFT JOIN lower_league_details AS details
+                    ON details.league = matches.league
+                   AND details.date = matches.date
+                   AND details.home_team = matches.home_team
+                   AND details.away_team = matches.away_team
+                """
+                if has_details
+                else ""
+            )
+            query = f"""
+                SELECT matches.date, matches.league, matches.home_team, matches.away_team,
+                       matches.home_goals, matches.away_goals, matches.home_xg,
+                       matches.away_xg, matches.season, {detail_columns}
+                FROM matches
+                {detail_join}
+                WHERE matches.home_goals IS NOT NULL AND matches.away_goals IS NOT NULL
+                  AND matches.league = ?
+                ORDER BY matches.date ASC
+            """
+            df = pd.read_sql(query, conn, params=(league,))
+        else:
+            query = """
+                SELECT date, league, home_team, away_team, home_goals, away_goals
+                FROM matches
+                WHERE home_goals IS NOT NULL AND away_goals IS NOT NULL
+                ORDER BY date ASC
+            """
+            df = pd.read_sql(query, conn)
         conn.close()
     else:
         df = matches_df.copy()
@@ -52,6 +93,14 @@ def compute_team_stats(db_path="data/database.db", half_life_days=90, matches_df
             np.exp(-np.log(2) * age_days / half_life_days),
             0.1,
         )
+        season_starts = pd.Series(0, index=df.index, dtype=int)
+        if "season" in df:
+            season_years = df["season"].astype(str).str.extract(r"^(\d{4})")[0]
+            season_starts = pd.to_numeric(season_years, errors="coerce").fillna(0).astype(int)
+        latest_season = int(season_starts.max())
+        if latest_season and previous_season_weight < 1:
+            season_age = (latest_season - season_starts).clip(lower=0)
+            df["_weight"] *= np.power(previous_season_weight, season_age)
         total_goals = (
             (df["_home_scored"] + df["_away_scored"]) * df["_weight"]
         ).sum()
@@ -59,36 +108,164 @@ def compute_team_stats(db_path="data/database.db", half_life_days=90, matches_df
         league_average = total_goals / total_team_appearances if total_team_appearances else 1.3
         league_average = max(float(league_average), 0.1)
 
+        teams = set(df["home_team"]).union(df["away_team"])
+        current_teams = set(df.loc[season_starts == latest_season, "home_team"]).union(
+            df.loc[season_starts == latest_season, "away_team"]
+        ) if latest_season else set()
+        previous_teams = set(
+            df.loc[season_starts == latest_season - 1, "home_team"]
+        ).union(
+            df.loc[season_starts == latest_season - 1, "away_team"]
+        ) if latest_season else set()
+        new_teams = current_teams - previous_teams if previous_teams else set()
+        shot_column_names = {
+            "home_shots_on_target",
+            "away_shots_on_target",
+        }
+        has_shot_data = shot_column_names.issubset(df.columns)
+        if has_shot_data:
+            df["_home_shots_on_target"] = pd.to_numeric(
+                df["home_shots_on_target"], errors="coerce"
+            )
+            df["_away_shots_on_target"] = pd.to_numeric(
+                df["away_shots_on_target"], errors="coerce"
+            )
+
+        home_aggregates = df.assign(
+            _scored_weighted=df["_home_scored"] * df["_weight"],
+            _conceded_weighted=df["_away_scored"] * df["_weight"],
+        ).groupby("home_team", sort=False).agg(
+            scored_weighted=("_scored_weighted", "sum"),
+            conceded_weighted=("_conceded_weighted", "sum"),
+            weight=("_weight", "sum"),
+            appearances=("_weight", "size"),
+        ).to_dict(orient="index")
+        away_aggregates = df.assign(
+            _scored_weighted=df["_away_scored"] * df["_weight"],
+            _conceded_weighted=df["_home_scored"] * df["_weight"],
+        ).groupby("away_team", sort=False).agg(
+            scored_weighted=("_scored_weighted", "sum"),
+            conceded_weighted=("_conceded_weighted", "sum"),
+            weight=("_weight", "sum"),
+            appearances=("_weight", "size"),
+        ).to_dict(orient="index")
+
+        recent_adjustments = {}
+        if league in LOWER_LEAGUES and recent_form_weight and recent_form_window > 0:
+            observations = []
+            for _, row in df.iterrows():
+                observations.extend((
+                    {
+                        "team": row["home_team"],
+                        "date": row["date"],
+                        "scored": row["_home_scored"],
+                        "conceded": row["_away_scored"],
+                        "shots_for": row.get("_home_shots_on_target", np.nan),
+                        "shots_against": row.get("_away_shots_on_target", np.nan),
+                    },
+                    {
+                        "team": row["away_team"],
+                        "date": row["date"],
+                        "scored": row["_away_scored"],
+                        "conceded": row["_home_scored"],
+                        "shots_for": row.get("_away_shots_on_target", np.nan),
+                        "shots_against": row.get("_home_shots_on_target", np.nan),
+                    },
+                ))
+            observations_by_team = pd.DataFrame(observations).groupby("team", sort=False)
+
+            def relative_rate(recent_rate, baseline_rate):
+                return float(np.clip(recent_rate / max(baseline_rate, 0.1), 0.5, 1.5))
+
+            def adjustment(goal_ratio, shot_ratio):
+                ratio = goal_ratio
+                if shot_ratio is not None:
+                    ratio = np.exp(0.7 * np.log(goal_ratio) + 0.3 * np.log(shot_ratio))
+                return float(ratio ** recent_form_weight)
+
+            for team, team_observations in observations_by_team:
+                recent = team_observations.sort_values("date").tail(recent_form_window)
+                baseline_scored = team_observations["scored"].mean()
+                baseline_conceded = team_observations["conceded"].mean()
+                recent_scored = recent["scored"].mean()
+                recent_conceded = recent["conceded"].mean()
+                shot_for_baseline = team_observations["shots_for"].mean()
+                shot_against_baseline = team_observations["shots_against"].mean()
+                shot_for_recent = recent["shots_for"].mean()
+                shot_against_recent = recent["shots_against"].mean()
+                shot_for_ratio = None
+                shot_against_ratio = None
+                minimum_shot_samples = max(3, recent_form_window // 2)
+                if (
+                    recent["shots_for"].notna().sum() >= minimum_shot_samples
+                    and pd.notna(shot_for_baseline)
+                    and pd.notna(shot_for_recent)
+                ):
+                    shot_for_ratio = relative_rate(shot_for_recent, shot_for_baseline)
+                if (
+                    recent["shots_against"].notna().sum() >= minimum_shot_samples
+                    and pd.notna(shot_against_baseline)
+                    and pd.notna(shot_against_recent)
+                ):
+                    shot_against_ratio = relative_rate(
+                        shot_against_recent,
+                        shot_against_baseline,
+                    )
+                recent_adjustments[team] = (
+                    adjustment(
+                        relative_rate(recent_scored, baseline_scored),
+                        shot_for_ratio,
+                    ),
+                    adjustment(
+                        relative_rate(recent_conceded, baseline_conceded),
+                        shot_against_ratio,
+                    ),
+                )
+
         team_stats = {}
-        for team in set(df["home_team"]).union(df["away_team"]):
-            home = df[df["home_team"] == team]
-            away = df[df["away_team"] == team]
+
+        def aggregate_value(aggregates, team, key):
+            return aggregates.get(team, {}).get(key, 0)
+
+        for team in teams:
+            home_weight = aggregate_value(home_aggregates, team, "weight")
+            away_weight = aggregate_value(away_aggregates, team, "weight")
             combined_scored = (
-                (home["_home_scored"] * home["_weight"]).sum()
-                + (away["_away_scored"] * away["_weight"]).sum()
+                aggregate_value(home_aggregates, team, "scored_weighted")
+                + aggregate_value(away_aggregates, team, "scored_weighted")
             )
             combined_conceded = (
-                (home["_away_scored"] * home["_weight"]).sum()
-                + (away["_home_scored"] * away["_weight"]).sum()
+                aggregate_value(home_aggregates, team, "conceded_weighted")
+                + aggregate_value(away_aggregates, team, "conceded_weighted")
             )
-            combined_weight = home["_weight"].sum() + away["_weight"].sum()
+            combined_weight = home_weight + away_weight
+            prior_weight = new_team_prior_matches if team in new_teams else 0
+            combined_scored += league_average * prior_weight
+            combined_conceded += league_average * prior_weight
+            combined_weight += prior_weight
             combined_scored_rate = combined_scored / combined_weight if combined_weight else league_average
             combined_conceded_rate = combined_conceded / combined_weight if combined_weight else league_average
 
-            def venue_rate(frame, scored_column, reference_rate):
-                weight = frame["_weight"].sum()
+            def venue_rate(aggregates, team, metric, weight, reference_rate):
                 return (
-                    (frame[scored_column].astype(float) * frame["_weight"]).sum()
-                    + reference_rate * 5
+                    aggregate_value(aggregates, team, metric) + reference_rate * 5
                 ) / (weight + 5)
 
-            home_scored_rate = venue_rate(home, "_home_scored", combined_scored_rate)
-            away_scored_rate = venue_rate(away, "_away_scored", combined_scored_rate)
-            home_conceded_rate = venue_rate(home, "_away_scored", combined_conceded_rate)
-            away_conceded_rate = venue_rate(away, "_home_scored", combined_conceded_rate)
+            home_scored_rate = venue_rate(
+                home_aggregates, team, "scored_weighted", home_weight, combined_scored_rate
+            )
+            away_scored_rate = venue_rate(
+                away_aggregates, team, "scored_weighted", away_weight, combined_scored_rate
+            )
+            home_conceded_rate = venue_rate(
+                home_aggregates, team, "conceded_weighted", home_weight, combined_conceded_rate
+            )
+            away_conceded_rate = venue_rate(
+                away_aggregates, team, "conceded_weighted", away_weight, combined_conceded_rate
+            )
 
-            enough_home = len(home) >= MIN_VENUE_MATCHES
-            enough_away = len(away) >= MIN_VENUE_MATCHES
+            enough_home = aggregate_value(home_aggregates, team, "appearances") >= MIN_VENUE_MATCHES
+            enough_away = aggregate_value(away_aggregates, team, "appearances") >= MIN_VENUE_MATCHES
             split_attack = (
                 enough_home
                 and enough_away
@@ -102,10 +279,18 @@ def compute_team_stats(db_path="data/database.db", half_life_days=90, matches_df
                 >= MIN_VENUE_DIFFERENCE
             )
             team_stats[team] = {
-                "home_attack": home_scored_rate if split_attack else combined_scored_rate,
-                "away_attack": away_scored_rate if split_attack else combined_scored_rate,
-                "home_defense": home_conceded_rate if split_defense else combined_conceded_rate,
-                "away_defense": away_conceded_rate if split_defense else combined_conceded_rate,
+                "home_attack": (
+                    home_scored_rate if split_attack else combined_scored_rate
+                ) * recent_adjustments.get(team, (1.0, 1.0))[0],
+                "away_attack": (
+                    away_scored_rate if split_attack else combined_scored_rate
+                ) * recent_adjustments.get(team, (1.0, 1.0))[0],
+                "home_defense": (
+                    home_conceded_rate if split_defense else combined_conceded_rate
+                ) * recent_adjustments.get(team, (1.0, 1.0))[1],
+                "away_defense": (
+                    away_conceded_rate if split_defense else combined_conceded_rate
+                ) * recent_adjustments.get(team, (1.0, 1.0))[1],
             }
 
         home_attack = {

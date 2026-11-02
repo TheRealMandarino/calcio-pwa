@@ -7,6 +7,22 @@ from zoneinfo import ZoneInfo
 from backend.stats import compute_team_stats
 from backend.model import calculate_match_probabilities
 
+LOWER_LEAGUE_PARAMETERS = {
+    "ITA-Serie B": {
+        "half_life_days": 60,
+        "shrinkage": 0.2,
+        "recent_form_weight": 0.3,
+        "recent_form_window": 5,
+        "previous_season_weight": 0.6,
+        "new_team_prior_matches": 8,
+        "home_advantage": 1.05,
+        "rho": -0.11,
+        "use_h2h": True,
+    },
+    "ENG-Championship": {},
+}
+
+
 def generate_league_json():
     # Trova automaticamente la cartella radice del progetto
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -63,8 +79,23 @@ def generate_league_json():
 
     for league_name, group_df in league_groups.items():
         matches_output = []
+        model_parameters = LOWER_LEAGUE_PARAMETERS.get(league_name, {})
         league_stats = (
-            compute_team_stats(db_path, league=league_name)
+            compute_team_stats(
+                db_path,
+                league=league_name,
+                **{
+                    key: model_parameters[key]
+                    for key in (
+                        "half_life_days",
+                        "recent_form_weight",
+                        "recent_form_window",
+                        "previous_season_weight",
+                        "new_team_prior_matches",
+                    )
+                    if key in model_parameters
+                },
+            )
             if league_name in ("ITA-Serie B", "ENG-Championship")
             else stats_cache
         )
@@ -73,7 +104,13 @@ def generate_league_json():
             h_team = row['home_team']
             a_team = row['away_team']
             
-            calc = calculate_match_probabilities(h_team, a_team, league=league_name, precomputed_stats=league_stats)
+            calc = calculate_match_probabilities(
+                h_team,
+                a_team,
+                league=league_name,
+                precomputed_stats=league_stats,
+                model_parameters=model_parameters,
+            )
             
             p1 = max(calc["prob_1"], 0.03)
             pX = max(calc["prob_X"], 0.03)

@@ -20,35 +20,87 @@ DEFAULT_PARAMETERS = {
     "home_advantage": 1.05,
     "rho": -0.11,
     "use_h2h": True,
+    "recent_form_weight": 0.0,
+    "recent_form_window": 5,
+    "previous_season_weight": 1.0,
+    "new_team_prior_matches": 0,
 }
+FEATURE_PROFILES = (
+    {},
+    {"recent_form_weight": 0.3},
+    {"previous_season_weight": 0.6, "new_team_prior_matches": 8},
+    {
+        "recent_form_weight": 0.3,
+        "previous_season_weight": 0.6,
+        "new_team_prior_matches": 8,
+    },
+)
 TUNING_GRID = [
     {
+        **DEFAULT_PARAMETERS,
+        **profile,
+        "half_life_days": 90,
+        "shrinkage": 0.4,
+    }
+    for profile in FEATURE_PROFILES
+]
+TUNING_GRID.extend(
+    {
+        **DEFAULT_PARAMETERS,
+        **FEATURE_PROFILES[-1],
         "half_life_days": half_life,
         "shrinkage": shrinkage,
-        "home_advantage": home_advantage,
-        "rho": rho,
-        "use_h2h": use_h2h,
     }
-    for half_life in (60, 90, 180)
-    for shrinkage in (0.2, 0.4, 0.6)
-    for home_advantage in (1.0, 1.05)
-    for rho in (-0.11, -0.05, 0.0)
-    for use_h2h in (False, True)
-]
+    for half_life, shrinkage in ((60, 0.2), (180, 0.6))
+)
+
+
+def stats_parameters(parameters):
+    return {
+        key: parameters[key]
+        for key in (
+            "half_life_days",
+            "recent_form_weight",
+            "recent_form_window",
+            "previous_season_weight",
+            "new_team_prior_matches",
+        )
+    }
 
 
 def load_matches(db_path):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     try:
-        rows = conn.execute("""
-            SELECT date, league, home_team, away_team, home_goals, away_goals,
-                   home_xg, away_xg, season
+        has_details = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='lower_league_details'"
+        ).fetchone()
+        detail_columns = (
+            "details.home_shots_on_target, details.away_shots_on_target"
+            if has_details
+            else "NULL AS home_shots_on_target, NULL AS away_shots_on_target"
+        )
+        detail_join = (
+            """
+            LEFT JOIN lower_league_details AS details
+                ON details.league = matches.league
+               AND details.date = matches.date
+               AND details.home_team = matches.home_team
+               AND details.away_team = matches.away_team
+            """
+            if has_details
+            else ""
+        )
+        rows = conn.execute(f"""
+            SELECT matches.date, matches.league, matches.home_team, matches.away_team,
+                   matches.home_goals, matches.away_goals, matches.home_xg,
+                   matches.away_xg, matches.season, {detail_columns}
             FROM matches
-            WHERE league IN (?, ?)
-              AND home_goals IS NOT NULL
-              AND away_goals IS NOT NULL
-            ORDER BY league, date, home_team, away_team
+            {detail_join}
+            WHERE matches.league IN (?, ?)
+              AND matches.home_goals IS NOT NULL
+              AND matches.away_goals IS NOT NULL
+            ORDER BY matches.league, matches.date, matches.home_team, matches.away_team
         """, LEAGUES).fetchall()
     finally:
         conn.close()
@@ -104,7 +156,32 @@ def summarize_predictions(predictions):
     }
 
 
-def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
+def update_h2h_totals(totals, matches):
+    for match in matches:
+        pair = tuple(sorted((match["home_team"], match["away_team"])))
+        entry = totals.setdefault(
+            pair,
+            {"matches": 0, "goals_for": defaultdict(float)},
+        )
+        entry["matches"] += 1
+        entry["goals_for"][match["home_team"]] += match["home_goals"]
+        entry["goals_for"][match["away_team"]] += match["away_goals"]
+
+
+def get_cached_h2h_factor(totals, home_team, away_team):
+    entry = totals.get(tuple(sorted((home_team, away_team))))
+    if entry is None or entry["matches"] < 2:
+        return 1.0, 1.0
+
+    total = entry["matches"]
+    avg_home = entry["goals_for"][home_team] / total
+    avg_away = entry["goals_for"][away_team] / total
+    factor_home = max(0.95, min(1.05, 1.0 + ((avg_home - 1.3) * 0.03)))
+    factor_away = max(0.95, min(1.05, 1.0 + ((avg_away - 1.1) * 0.03)))
+    return factor_home, factor_away
+
+
+def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY, parameters_by_league=None):
     matches = load_matches(db_path)
     if not matches:
         raise ValueError("Non ci sono risultati storici per Serie B o Championship nel database.")
@@ -117,7 +194,12 @@ def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
 
     reports = {}
     for league in LEAGUES:
+        parameters = {
+            **DEFAULT_PARAMETERS,
+            **(parameters_by_league or {}).get(league, {}),
+        }
         history = []
+        h2h_totals = {}
         predictions = []
         season_predictions = defaultdict(list)
         matches_by_date = defaultdict(list)
@@ -128,14 +210,23 @@ def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
             todays_matches = matches_by_date[match_date]
             if len(history) >= min_history:
                 history_frame = pd.DataFrame(history)
-                stats = compute_team_stats(matches_df=history_frame, league=league)
+                stats = compute_team_stats(
+                    matches_df=history_frame,
+                    league=league,
+                    **stats_parameters(parameters),
+                )
                 for match in todays_matches:
                     model = calculate_match_probabilities(
                         match["home_team"],
                         match["away_team"],
                         league=league,
                         precomputed_stats=stats,
-                        historical_matches=history,
+                        model_parameters=parameters,
+                        h2h_factor=get_cached_h2h_factor(
+                            h2h_totals,
+                            match["home_team"],
+                            match["away_team"],
+                        ),
                     )
                     probabilities = {
                         "1": model["prob_1"],
@@ -158,6 +249,7 @@ def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
                     season_predictions[match["season"]].append(prediction)
 
             history.extend(todays_matches)
+            update_h2h_totals(h2h_totals, todays_matches)
 
         reports[league] = {
             "matches_available": len(matches_by_league[league]),
@@ -172,13 +264,21 @@ def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
     return reports
 
 
-def evaluate_season(league, matches, season, parameters, min_history=MIN_HISTORY):
+def evaluate_season(
+    league,
+    matches,
+    season,
+    parameters,
+    min_history=MIN_HISTORY,
+    shared_stats_cache=None,
+):
+    parameters = {**DEFAULT_PARAMETERS, **parameters}
     history = sorted(
         (match for match in matches if match["season"] < season),
         key=lambda match: match["date"],
     )
     predictions = []
-    stats_cache = {}
+    stats_cache = shared_stats_cache if shared_stats_cache is not None else {}
     h2h_cache = {}
     matches_by_date = defaultdict(list)
     for match in matches:
@@ -189,12 +289,17 @@ def evaluate_season(league, matches, season, parameters, min_history=MIN_HISTORY
         todays_matches = matches_by_date[match_date]
         if len(history) >= min_history:
             history_frame = pd.DataFrame(history)
-            stats_key = (match_date, parameters["half_life_days"])
+            stats_key = (
+                league,
+                season,
+                match_date,
+                *stats_parameters(parameters).values(),
+            )
             if stats_key not in stats_cache:
                 stats_cache[stats_key] = compute_team_stats(
                     matches_df=history_frame,
-                    half_life_days=parameters["half_life_days"],
                     league=league,
+                    **stats_parameters(parameters),
                 )
 
             for match in todays_matches:
@@ -250,6 +355,7 @@ def optimize_previous_season(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
         matches_by_league[match["league"]].append(match)
 
     results = {}
+    shared_stats_cache = {}
     for league in LEAGUES:
         league_matches = matches_by_league[league]
         seasons = sorted({match["season"] for match in league_matches})
@@ -266,6 +372,7 @@ def optimize_previous_season(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
                 validation_season,
                 parameters,
                 min_history,
+                shared_stats_cache,
             )
             candidates.append((metrics, parameters))
 
@@ -283,6 +390,7 @@ def optimize_previous_season(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
             validation_season,
             DEFAULT_PARAMETERS,
             min_history,
+            shared_stats_cache,
         )
         baseline_holdout = evaluate_season(
             league,
@@ -290,6 +398,7 @@ def optimize_previous_season(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
             holdout_season,
             DEFAULT_PARAMETERS,
             min_history,
+            shared_stats_cache,
         )
         tuned_holdout = evaluate_season(
             league,
@@ -297,6 +406,7 @@ def optimize_previous_season(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
             holdout_season,
             selected_parameters,
             min_history,
+            shared_stats_cache,
         )
         results[league] = {
             "validation_season": validation_season,
