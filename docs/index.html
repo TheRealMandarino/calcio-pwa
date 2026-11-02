@@ -415,10 +415,10 @@
         let realOddsMap = {}; 
         let realOddsBookmakers = {};
         let realOddsKickoffMap = {};
-        let dailyRefreshStarted = false;
+        let publicationStatusChecked = false;
         const BANKROLL = 1000.0; // Bankroll di riferimento (€)
 
-        async function loadMatches(checkDailyRefresh = false) {
+        async function loadMatches(checkPublicationStatus = false) {
             const selectElement = document.getElementById('leagueSelect');
             const fileName = selectElement ? selectElement.value : 'ita-serie_a.json';
             
@@ -439,9 +439,9 @@
                 `;
             }
 
-            if (checkDailyRefresh && !dailyRefreshStarted) {
-                dailyRefreshStarted = true;
-                refreshCalendarOnceDaily();
+            if (checkPublicationStatus && !publicationStatusChecked) {
+                publicationStatusChecked = true;
+                loadPublicationStatus();
             }
         }
 
@@ -680,33 +680,29 @@
             });
         }
 
-        async function refreshCalendarOnceDaily() {
-            showOddsStatus('Controllo aggiornamento giornaliero di calendario e risultati...');
+        async function loadPublicationStatus() {
             try {
-                let response = await fetch('/api/refresh', { cache: 'no-store' });
-                let state = await readApiJson(response);
-                if (!response.ok) throw new Error(state.error || 'Impossibile avviare l’aggiornamento giornaliero.');
-
-                const refreshDeadline = Date.now() + 16 * 60 * 1000;
-                while (state.status === 'running') {
-                    if (Date.now() >= refreshDeadline) {
-                        throw new Error('Aggiornamento ancora in corso dopo 16 minuti. Le partite già caricate restano disponibili; controlla lo stato più tardi.');
-                    }
-                    showOddsStatus(state.message || 'Aggiornamento giornaliero in corso...');
-                    await new Promise(resolve => setTimeout(resolve, 3000));
-                    response = await fetch('/api/refresh-status', { cache: 'no-store' });
-                    state = await readApiJson(response);
-                    if (!response.ok) throw new Error(state.error || 'Impossibile verificare l’aggiornamento giornaliero.');
+                const response = await fetch('data-status.json', { cache: 'no-store' });
+                if (!response.ok) throw new Error('Stato aggiornamento non disponibile.');
+                const state = await response.json();
+                if (!state.generated_at) {
+                    showOddsStatus('Aggiornamento automatico GitHub Actions pronto; in attesa della prima esecuzione.');
+                    return;
                 }
-
-                if (state.status !== 'complete') {
-                    throw new Error(state.message || 'Aggiornamento giornaliero non riuscito.');
-                }
-
-                await loadMatches();
-                showOddsStatus(state.message || 'Calendario e risultati aggiornati.');
+                const updatedAt = new Intl.DateTimeFormat('it-IT', {
+                    dateStyle: 'short',
+                    timeStyle: 'short',
+                    timeZone: 'Europe/Rome'
+                }).format(new Date(state.generated_at));
+                showOddsStatus(
+                    `Dati aggiornati automaticamente il ${updatedAt}. ` +
+                    (state.odds_available ? 'Quote bookmaker incluse.' : 'Quote bookmaker non configurate.')
+                );
             } catch (error) {
-                showOddsStatus(error.message, true);
+                showOddsStatus(
+                    `Dati statici caricati, ma non è possibile verificare l’ultimo aggiornamento: ${error.message}`,
+                    true
+                );
             }
         }
 
@@ -720,7 +716,7 @@
             const contentType = response.headers.get('content-type') || '';
             if (!contentType.toLowerCase().includes('json')) {
                 throw new Error(
-                    'API backend non disponibile. GitHub Pages ospita solo file statici: avvia il backend Python per aggiornare calendario e quote.'
+                    'File dati non disponibile. Verifica che l’aggiornamento automatico GitHub Actions sia riuscito.'
                 );
             }
 
@@ -728,7 +724,7 @@
                 return await response.json();
             } catch (error) {
                 if (error instanceof SyntaxError) {
-                    throw new Error('Il backend ha restituito una risposta non valida. Verifica la configurazione API.');
+                    throw new Error('Il file dati pubblicato non contiene JSON valido.');
                 }
                 throw error;
             }
@@ -742,9 +738,13 @@
             showOddsStatus('Recupero quote 1X2 e orari dai bookmaker...');
 
             try {
-                const response = await fetch(`/api/odds?league=${encodeURIComponent(league)}`);
-                const result = await readApiJson(response);
-                if (!response.ok) throw new Error(result.error || 'Errore nel recupero delle quote.');
+                const response = await fetch('bookmaker-odds.json', { cache: 'no-store' });
+                const oddsData = await readApiJson(response);
+                if (!response.ok) throw new Error(oddsData.error || 'Errore nel recupero delle quote.');
+                if (!oddsData.leagues || !Array.isArray(oddsData.leagues[league])) {
+                    throw new Error('Quote bookmaker non disponibili. Verifica la chiave ODDS_API_KEY nei Secrets GitHub.');
+                }
+                const result = oddsData.leagues[league];
 
                 const eventsByTeams = new Map(
                     result.map(event => [

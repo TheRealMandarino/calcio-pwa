@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from backend.stats import compute_team_stats
 from backend.model import calculate_match_probabilities
 
@@ -15,7 +16,7 @@ def generate_league_json():
     conn = sqlite3.connect(db_path)
     
     # Data di riferimento odierna
-    today_str = datetime.now().strftime('%Y-%m-%d')
+    today_str = datetime.now(ZoneInfo("Europe/Rome")).strftime('%Y-%m-%d')
     
     # Rileva automaticamente la data della prima partita non ancora giocata da oggi in poi
     query_date = "SELECT MIN(date) as next_date FROM matches WHERE home_goals IS NULL AND date >= ?"
