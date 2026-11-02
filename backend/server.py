@@ -11,7 +11,7 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, urlencode, urlsplit
 from urllib.request import Request, urlopen
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -211,7 +211,19 @@ class CalcioRequestHandler(SimpleHTTPRequestHandler):
             self.handle_odds_request()
             return
         if request_path == "/api/refresh":
-            self.send_json(200, start_daily_refresh())
+            try:
+                self.send_json(200, start_daily_refresh())
+            except ZoneInfoNotFoundError:
+                logging.exception("Dati dei fusi orari non disponibili.")
+                self.send_json(
+                    503,
+                    {
+                        "error": (
+                            "Dati dei fusi orari non disponibili. Avvia il server "
+                            "con venv\\Scripts\\python.exe o installa requirements.txt."
+                        )
+                    },
+                )
             return
         if request_path == "/api/refresh-status":
             with REFRESH_LOCK:

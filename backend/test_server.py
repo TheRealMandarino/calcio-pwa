@@ -8,6 +8,7 @@ from tempfile import TemporaryDirectory
 from urllib.error import HTTPError
 from urllib.request import urlopen
 from unittest.mock import patch
+from zoneinfo import ZoneInfoNotFoundError
 
 from backend import server
 
@@ -179,6 +180,30 @@ class OddsNormalizationTests(unittest.TestCase):
             with self.assertRaises(HTTPError) as error:
                 urlopen(f"{base_url}/backend/server.py")
             self.assertEqual(error.exception.code, 404)
+            error.exception.close()
+        finally:
+            http_server.shutdown()
+            http_server.server_close()
+            thread.join()
+
+    def test_refresh_reports_missing_timezone_data(self):
+        http_server = ThreadingHTTPServer(("127.0.0.1", 0), server.CalcioRequestHandler)
+        thread = Thread(target=http_server.serve_forever, daemon=True)
+        thread.start()
+        base_url = f"http://127.0.0.1:{http_server.server_port}"
+
+        try:
+            with patch.object(
+                server,
+                "today_in_italy",
+                side_effect=ZoneInfoNotFoundError("Europe/Rome"),
+            ):
+                with self.assertRaises(HTTPError) as error:
+                    urlopen(f"{base_url}/api/refresh")
+
+            self.assertEqual(error.exception.code, 503)
+            payload = json.loads(error.exception.read().decode("utf-8"))
+            self.assertIn("Dati dei fusi orari non disponibili", payload["error"])
             error.exception.close()
         finally:
             http_server.shutdown()

@@ -4,19 +4,323 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcio PWA - Match Analytics</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <meta name="theme-color" content="#080c12">
+    <style>
+        :root {
+            color-scheme: dark;
+            --page: #080c12;
+            --surface: #101720;
+            --surface-raised: #151e29;
+            --line: #25313d;
+            --text: #f2f6f7;
+            --muted: #91a0ad;
+            --green: #73e0ae;
+            --green-soft: #163c32;
+            --amber: #f2c879;
+            --blue: #8eb8fa;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: radial-gradient(ellipse at 82% -15%, #18342a 0, transparent 36%), var(--page);
+            color: var(--text);
+            font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+
+        button, select, textarea { font: inherit; }
+        button, select { color: inherit; }
+        button { cursor: pointer; }
+        .hidden, [hidden] { display: none !important; }
+        .app-shell { width: min(100% - 60px, 1080px); margin: 0 auto; padding-bottom: 48px; }
+
+        .topbar {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            border-bottom: 1px solid #ffffff12;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #70d9aa55;
+            border-radius: 12px;
+            background: linear-gradient(145deg, #193a30, #12231f);
+            color: var(--green);
+        }
+        .brand-mark svg { width: 22px; }
+        .brand-name { font-size: 15px; font-weight: 760; letter-spacing: .015em; }
+        .brand-name span { color: var(--green); }
+        .brand-caption { margin-top: 1px; color: var(--muted); font-size: 11px; }
+        .header-actions { display: flex; align-items: center; gap: 9px; }
+        .league-select, .action-button {
+            min-height: 39px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #111922;
+            padding: 0 12px;
+            font-size: 12px;
+        }
+        .league-select { min-width: 150px; }
+        .action-button { white-space: nowrap; transition: border-color .15s, transform .15s; }
+        .action-button:hover { border-color: #71817d; }
+        .action-button:active { transform: translateY(1px); }
+        .action-button:disabled { cursor: wait; opacity: .7; }
+        .action-button.secondary { background: #121c24; }
+        .action-button.primary { border-color: #9be5be; background: #9be5be; color: #0b2117; font-weight: 700; }
+
+        .hero {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 36px 0 25px;
+        }
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--green);
+            font-size: 10px;
+            font-weight: 750;
+            letter-spacing: .13em;
+            text-transform: uppercase;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: #71e1ad;
+            box-shadow: 0 0 12px #71e1ad88;
+        }
+        .hero h1 { margin: 11px 0 7px; font-size: clamp(27px, 4vw, 36px); letter-spacing: -.045em; line-height: 1.08; }
+        .hero p { margin: 0; color: var(--muted); font-size: 13px; }
+        .refresh-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 3px;
+            padding: 8px 11px;
+            border: 1px solid #244c3c;
+            border-radius: 999px;
+            background: #101a18;
+            color: #a6e2c3;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 2px 0 30px; }
+        .summary-card {
+            min-width: 0;
+            padding: 15px 17px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: linear-gradient(140deg, #111a23, #0e151d);
+        }
+        .summary-label { color: var(--muted); font-size: 10px; letter-spacing: .06em; }
+        .summary-value { margin-top: 3px; font-size: 22px; font-weight: 720; letter-spacing: -.03em; }
+        .summary-detail { margin-top: 1px; color: #738391; font-size: 10px; }
+        .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin: 0 0 13px; }
+        .section-heading h2 { margin: 0; font-size: 16px; letter-spacing: -.02em; }
+        .section-heading p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+        .date-tag {
+            flex: 0 0 auto;
+            padding: 6px 9px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: #b3c0ca;
+            font-size: 10px;
+        }
+        .match-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+        .match-card {
+            min-width: 0;
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: linear-gradient(150deg, #121b25, #0e151d 75%);
+            box-shadow: 0 10px 24px #00000014;
+            transition: border-color .18s, transform .18s;
+        }
+        .match-card:hover { border-color: #354854; transform: translateY(-1px); }
+        .fixture-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-bottom: 12px; border-bottom: 1px solid #ffffff0c; }
+        .fixture-meta.is-finished { flex-wrap: wrap; }
+        .fixture-meta.is-finished .competition { flex: 1 1 100%; }
+        .competition { min-width: 0; overflow: hidden; color: #cbd5dc; font-size: 10px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+        .kickoff { flex: 0 0 auto; color: #d8e2e8; font-size: 10px; }
+        .finished-score { color: var(--green); font-weight: 700; }
+        .teams-line { display: grid; grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr); align-items: center; padding: 16px 0 14px; text-align: center; }
+        .team { min-width: 0; }
+        .team-crest-wrap { width: 42px; height: 42px; display: grid; place-items: center; margin: 0 auto 7px; }
+        .team-crest { display: block; width: 100%; height: 100%; object-fit: contain; }
+        .team-crest-fallback { color: #afc0c8; font-size: 12px; font-weight: 750; letter-spacing: .02em; }
+        .team-name { overflow: hidden; margin: 0; font-size: 13px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+        .team-label { margin-top: 2px; color: #81909b; font-size: 10px; }
+        .versus { color: #64717a; font-size: 9px; font-weight: 700; letter-spacing: .1em; }
+        .market-label { display: flex; justify-content: space-between; gap: 8px; margin: 0 0 7px; color: var(--muted); font-size: 9px; letter-spacing: .045em; }
+        .odds-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+        .market-card { min-width: 0; padding: 8px 5px; border: 1px solid #293540; border-radius: 10px; background: #0a1118; text-align: center; }
+        .market-card.is-value { border-color: #3e9b72; background: linear-gradient(145deg, #143528, #0f211b); }
+        .market-name { display: block; color: #a1afb9; font-size: 9px; }
+        .market-prices { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 3px 0 2px; }
+        .price-group + .price-group { padding-left: 7px; border-left: 1px solid #293540; }
+        .price-label { display: block; color: #72818c; font-size: 8px; text-transform: uppercase; }
+        .price-value { display: block; color: #e2e9ed; font-size: 15px; font-weight: 750; }
+        .price-group.bookmaker .price-label { color: var(--green); }
+        .probability { display: block; margin-top: 2px; color: #91a0ad; font-size: 9px; }
+        .value-bet { margin: 7px 0 0; padding-top: 6px; border-top: 1px solid #ffffff12; color: #a6e2c3; font-size: 9px; line-height: 1.5; }
+        .value-bet strong { color: var(--green); }
+        .scenario { margin-top: 13px; padding-top: 11px; border-top: 1px solid #ffffff0c; }
+        .scenario-heading { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; color: #bdc8cf; font-size: 10px; }
+        .scenario-heading span:last-child { color: #7d8b94; }
+        .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .slider-label { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 3px; color: #8f9da7; font-size: 9px; }
+        .slider-label strong { color: #c5d3d9; font-weight: 650; }
+        input[type="range"] { width: 100%; height: 4px; margin: 6px 0 2px; accent-color: var(--green); }
+        .match-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #ffffff0c; color: #81909b; font-size: 9px; }
+        .exact-section { margin-top: 12px; padding-top: 10px; border-top: 1px solid #ffffff0c; }
+        .exact-title { display: block; margin-bottom: 7px; color: #aab6bd; font-size: 10px; font-weight: 650; }
+        .exact-scores { display: flex; flex-wrap: wrap; gap: 6px; }
+        .exact-score { display: flex; align-items: center; gap: 6px; padding: 5px 7px; border: 1px solid #293540; border-radius: 8px; background: #0a1118; font-size: 9px; }
+        .exact-score strong { color: #eef4f5; }
+        .exact-score .odd { color: var(--green); }
+        .exact-score .prob { color: #81909b; }
+        .empty-state { padding: 30px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--muted); text-align: center; }
+
+        .status-banner { margin: 12px 0; padding: 10px 12px; border: 1px solid #244c3c; border-radius: 10px; background: #101a18; color: #a6e2c3; font-size: 11px; }
+        .status-banner.is-error { border-color: #6b3035; background: #241316; color: #ffb6b6; }
+        .odds-modal { margin: 0 0 18px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+        .odds-modal h3 { margin: 0 0 6px; font-size: 14px; }
+        .odds-modal p { margin: 0 0 10px; color: var(--muted); font-size: 11px; }
+        .odds-modal textarea { width: 100%; resize: vertical; padding: 11px; border: 1px solid var(--line); border-radius: 9px; background: #080d13; color: var(--text); font: 11px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+        .finished-section { margin: 0 0 25px; border: 1px solid var(--line); border-radius: 14px; background: #101720; }
+        .finished-section summary { padding: 13px 15px; color: #cbd5dc; font-size: 12px; font-weight: 700; cursor: pointer; list-style: none; }
+        .finished-section summary::-webkit-details-marker { display: none; }
+        .finished-section summary::before { content: "＋"; margin-right: 9px; color: var(--green); }
+        .finished-section details[open] summary::before { content: "−"; }
+        .finished-section .match-list { padding: 0 12px 12px; }
+        .bottom-nav { display: none; }
+        .app-footer { margin-top: 20px; color: #71808b; font-size: 9px; text-align: center; }
+        .app-footer a { color: #9bcbb5; text-decoration: none; }
+        .app-footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 760px) {
+            .app-shell { width: min(100% - 34px, 600px); padding-bottom: 26px; }
+            .topbar { min-height: 0; padding: 12px 0; align-items: flex-start; flex-wrap: wrap; }
+            .brand { gap: 9px; }
+            .brand-mark { width: 34px; height: 34px; border-radius: 11px; }
+            .brand-name { font-size: 13px; }
+            .brand-caption { font-size: 10px; }
+            .header-actions { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 7px; }
+            .league-select { min-width: 0; width: 100%; }
+            .header-actions .action-button { min-height: 38px; padding: 0 10px; font-size: 11px; }
+            #fetchOddsButton { grid-column: 1 / -1; }
+            .hero { padding: 25px 0 18px; align-items: flex-start; flex-direction: column; gap: 12px; }
+            .hero h1 { margin-top: 9px; font-size: 29px; }
+            .hero p { font-size: 12px; }
+            .refresh-pill { margin: 0; padding: 6px 9px; font-size: 10px; }
+            .summary-grid { gap: 8px; margin-bottom: 24px; }
+            .summary-card { padding: 11px 10px; border-radius: 12px; }
+            .summary-label { min-height: 23px; font-size: 9px; line-height: 1.3; }
+            .summary-value { font-size: 18px; }
+            .summary-detail { font-size: 9px; }
+            .section-heading h2 { font-size: 15px; }
+            .section-heading p { font-size: 10px; }
+            .date-tag { padding: 5px 7px; font-size: 9px; }
+            .match-list { grid-template-columns: 1fr; gap: 10px; }
+            .match-card { padding: 13px; border-radius: 14px; }
+            .fixture-meta { padding-bottom: 10px; }
+            .teams-line { grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr); padding: 14px 0 13px; }
+            .team-crest-wrap { width: 37px; height: 37px; margin-bottom: 6px; }
+            .team-name { font-size: 12px; }
+            .team-label { font-size: 9px; }
+            .market-card { padding: 7px 3px; }
+            .market-prices { gap: 5px; }
+            .price-group + .price-group { padding-left: 5px; }
+            .price-value { font-size: 14px; }
+            .scenario { margin-top: 11px; padding-top: 10px; }
+            .sliders { gap: 12px; }
+            .bottom-nav {
+                position: fixed;
+                z-index: 5;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                min-height: 57px;
+                padding: 7px 10px max(7px, env(safe-area-inset-bottom));
+                border-top: 1px solid #ffffff14;
+                background: #0b1118ed;
+                backdrop-filter: blur(16px);
+            }
+            .bottom-nav a, .bottom-nav button {
+                display: grid;
+                justify-items: center;
+                gap: 2px;
+                border: 0;
+                background: transparent;
+                color: #80909b;
+                font-size: 9px;
+                text-decoration: none;
+            }
+            .bottom-nav a:first-child { color: var(--green); }
+            .nav-icon { font-size: 16px; line-height: 1.1; }
+            .app-shell { padding-bottom: 75px; }
+        }
+
+        @media (max-width: 370px) {
+            .app-shell { width: calc(100% - 24px); }
+            .match-card { padding: 11px; }
+            .summary-grid { gap: 6px; }
+            .summary-card { padding: 10px 8px; }
+            .header-actions .action-button { padding: 0 7px; font-size: 10px; }
+            .team-name { font-size: 11px; }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) and (max-width: 950px) {
+            .app-shell { width: calc(100% - 40px); padding-bottom: 20px; }
+            .topbar { min-height: 54px; flex-wrap: nowrap; padding: 0; }
+            .header-actions { width: auto; display: flex; }
+            #fetchOddsButton { grid-column: auto; }
+            .hero { padding: 16px 0 13px; flex-direction: row; align-items: end; }
+            .hero h1 { margin: 5px 0; font-size: 26px; }
+            .summary-grid { margin-bottom: 18px; }
+            .summary-card { padding: 9px 13px; }
+            .match-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .bottom-nav { display: none; }
+            .app-shell { padding-bottom: 20px; }
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8">
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-8 border-b border-slate-800 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-3xl font-black tracking-tight text-emerald-400">CALCIO PWA ANALYTICS</h1>
-                <p class="text-sm text-slate-400">Modello Statistico Poisson & Dixon-Coles</p>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                        <path d="M4 5.5 12 3l8 2.5v13L12 21l-8-2.5v-13Z"/>
+                        <path d="M4.5 6 12 8.5 19.5 6M12 8.5V20M8.2 4.2l2.2 3.9m5.4-3.9-2.2 3.9"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-name">CALCIO <span>/</span> ANALYTICS</div>
+                    <div class="brand-caption">Match intelligence, senza rumore.</div>
+                </div>
             </div>
-            
-            <!-- Controlli Header: Campionato & Modalità Quote Reali -->
-            <div class="flex flex-wrap items-center gap-3">
-                <select id="leagueSelect" onchange="loadMatches()" class="bg-slate-900 border border-slate-800 text-slate-200 text-sm rounded-lg px-3 py-2 outline-none focus:border-emerald-500 cursor-pointer">
+
+            <div class="header-actions">
+                <select id="leagueSelect" onchange="loadMatches()" class="league-select" aria-label="Seleziona campionato">
                     <option value="ita-serie_a.json">🇮🇹 Serie A</option>
                     <option value="ita-serie_b.json">🇮🇹 Serie B</option>
                     <option value="eng-premier_league.json">🇬🇧 Premier League</option>
@@ -25,52 +329,86 @@
                     <option value="ger-bundesliga.json">🇩🇪 Bundesliga</option>
                     <option value="fra-ligue_1.json">🇫🇷 Ligue 1</option>
                 </select>
-                
-                <button onclick="toggleOddsModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg font-semibold transition cursor-pointer flex items-center gap-1">
-                    📊 Incolla Quote Reali
+                <button onclick="toggleOddsModal()" class="action-button secondary">
+                    + Quote manuali
                 </button>
-
-                <button id="fetchOddsButton" onclick="loadBookmakerOdds()" class="bg-sky-700 hover:bg-sky-600 text-white text-xs px-3 py-2 rounded-lg font-semibold transition cursor-pointer flex items-center gap-1">
-                    🌐 Aggiorna quote e orari
+                <button id="fetchOddsButton" onclick="loadBookmakerOdds()" class="action-button primary">
+                    Aggiorna quote e orari
                 </button>
-
-                <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs px-3 py-1 rounded-full font-mono">Live Engine v1.0</span>
             </div>
         </header>
 
-        <p id="oddsStatus" class="hidden mb-4 rounded-lg border px-3 py-2 text-xs" role="status" aria-live="polite"></p>
+        <section class="hero">
+            <div>
+                <div class="eyebrow"><span class="status-dot"></span> MODELLO POISSON · DIXON–COLES</div>
+                <h1>Il calcio, letto meglio.</h1>
+                <p>Probabilità, quote e calendario in un’unica vista.</p>
+            </div>
+            <div class="refresh-pill"><span class="status-dot"></span> Analisi pre-partita</div>
+        </section>
 
-        <!-- Box a comparsa per incollare le quote reali -->
-        <div id="oddsModal" class="hidden mb-6 bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-2xl">
-            <h3 class="text-sm font-bold text-white mb-2">Incolla JSON Quote Reali dei Bookmaker</h3>
-            <p class="text-xs text-slate-400 mb-3">Formato atteso: Array di oggetti con <code>home_team</code>, <code>away_team</code>, <code>market</code> ("1", "X", o "2") e <code>real_odd</code>.</p>
-            <textarea id="realOddsInput" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-slate-200 font-mono outline-none focus:border-emerald-500" placeholder='[
+        <p id="oddsStatus" class="status-banner hidden" role="status" aria-live="polite"></p>
+
+        <section class="summary-grid" aria-label="Riepilogo campionato">
+            <div class="summary-card">
+                <div class="summary-label">PARTITE IN PROGRAMMA</div>
+                <div id="upcomingCount" class="summary-value">—</div>
+                <div class="summary-detail">calendario selezionato</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">PARTITE CONCLUSE</div>
+                <div id="finishedCountSummary" class="summary-value">—</div>
+                <div class="summary-detail">risultati disponibili</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">MODELLO</div>
+                <div class="summary-value">Attivo <span class="status-dot" style="display:inline-block"></span></div>
+                <div class="summary-detail">Poisson + Dixon–Coles</div>
+            </div>
+        </section>
+
+        <div id="oddsModal" class="odds-modal hidden">
+            <h3>Incolla JSON Quote Reali dei Bookmaker</h3>
+            <p>Formato atteso: array di oggetti con <code>home_team</code>, <code>away_team</code>, <code>market</code> ("1", "X" o "2") e <code>real_odd</code>.</p>
+            <textarea id="realOddsInput" rows="5" placeholder='[
   {"home_team": "Napoli", "away_team": "Inter", "market": "1", "real_odd": 2.45}
 ]'></textarea>
-            <div class="flex justify-end gap-2 mt-3">
-                <button onclick="toggleOddsModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg text-slate-300">Chiudi</button>
-                <button onclick="processRealOdds()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-xs rounded-lg font-bold text-white">Applica e Calcola Kelly</button>
+            <div class="modal-actions">
+                <button onclick="toggleOddsModal()" class="action-button secondary">Chiudi</button>
+                <button onclick="processRealOdds()" class="action-button primary">Applica e calcola Kelly</button>
             </div>
         </div>
 
-        <section id="finished-matches-section" class="hidden mb-8">
-            <details class="bg-slate-900 border border-slate-800 rounded-xl">
-                <summary class="cursor-pointer list-none px-4 py-3 text-sm font-bold text-slate-300">
-                    <span aria-hidden="true">▶</span>
-                    Partite concluse
-                    <span id="finished-matches-count" class="ml-1 text-slate-500 font-mono"></span>
-                </summary>
-                <div id="finished-matches-container" class="space-y-6 p-4 pt-1"></div>
+        <section id="finished-matches-section" class="finished-section hidden">
+            <details>
+                <summary>Partite concluse <span id="finished-matches-count"></span></summary>
+                <div id="finished-matches-container" class="match-list"></div>
             </details>
         </section>
 
-        <section>
-            <h2 class="mb-4 text-lg font-bold text-white">Partite in programma</h2>
-            <div id="matches-container" class="space-y-6">
-                <!-- Popolato dinamicamente da JavaScript -->
+        <section id="matches-section">
+            <div class="section-heading">
+                <div>
+                    <h2>Prossime partite</h2>
+                    <p>Analisi e quote previste dal modello</p>
+                </div>
+                <span id="selectedLeagueLabel" class="date-tag">CAMPIONATO</span>
+            </div>
+            <div id="matches-container" class="match-list">
+                <div class="empty-state">Caricamento partite in corso…</div>
             </div>
         </section>
+        <footer class="app-footer">
+            Stemmi: <a href="https://www.football-data.org/" target="_blank" rel="noopener noreferrer">football-data.org</a>.
+            Marchi e loghi appartengono ai rispettivi titolari.
+        </footer>
     </div>
+
+    <nav class="bottom-nav" aria-label="Navigazione rapida">
+        <a href="#matches-section"><span class="nav-icon" aria-hidden="true">◫</span>Partite</a>
+        <a href="#finished-matches-section"><span class="nav-icon" aria-hidden="true">◷</span>Risultati</a>
+        <button onclick="toggleOddsModal()"><span class="nav-icon" aria-hidden="true">▤</span>Quote</button>
+    </nav>
 
     <script>
         let currentMatches = [];
@@ -85,11 +423,7 @@
             const fileName = selectElement ? selectElement.value : 'ita-serie_a.json';
             
             const container = document.getElementById('matches-container');
-            container.innerHTML = `
-                <div class="p-8 text-center text-slate-500 animate-pulse">
-                    Caricamento partite in corso...
-                </div>
-            `;
+            container.innerHTML = '<div class="empty-state">Caricamento partite in corso…</div>';
 
             try {
                 const response = await fetch(fileName, { cache: 'no-store' });
@@ -99,7 +433,7 @@
                 renderDashboard(currentMatches);
             } catch (error) {
                 container.innerHTML = `
-                    <div class="p-4 bg-red-950 border border-red-800 text-red-300 rounded-lg text-center">
+                    <div class="empty-state status-banner is-error">
                         Impossibile caricare il file <strong>${fileName}</strong>. Assicurati di aver eseguito il batch analyzer sul backend.
                     </div>
                 `;
@@ -114,6 +448,10 @@
         function toggleOddsModal() {
             const modal = document.getElementById('oddsModal');
             modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                modal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('realOddsInput').focus({ preventScroll: true });
+            }
         }
 
         function normalizeTeamName(name) {
@@ -122,6 +460,185 @@
                 .toLowerCase()
                 .replace(/\b(fc|cf|afc|sc|ac|as|ssc|calcio|club)\b/g, '')
                 .replace(/[^a-z0-9]/g, '');
+        }
+
+        const TEAM_CREST_IDS = {
+            atalanta: 102,
+            bologna: 103,
+            cagliari: 104,
+            fiorentina: 99,
+            genoa: 107,
+            inter: 108,
+            juventus: 109,
+            lazio: 110,
+            milan: 98,
+            napoli: 113,
+            parma: 112,
+            roma: 100,
+            sassuolo: 471,
+            udinese: 115,
+            venezia: 454,
+            arsenal: 57,
+            astonvilla: 58,
+            bournemouth: 1044,
+            brentford: 402,
+            brighton: 397,
+            chelsea: 61,
+            coventrycity: 1076,
+            crystalpalace: 354,
+            everton: 62,
+            fulham: 63,
+            hullcity: 322,
+            ipswichtown: 349,
+            leedsunited: 341,
+            liverpool: 64,
+            manchestercity: 65,
+            manchesterutd: 66,
+            newcastle: 67,
+            nottingham: 351,
+            sunderland: 71,
+            tottenham: 73,
+            westhamunited: 563,
+            wolverhamptonwanderers: 76,
+            birmingham: 332,
+            birminghamcity: 332,
+            blackburn: 59,
+            blackburnrovers: 59,
+            bolton: 60,
+            boltonwanderers: 60,
+            bristolcity: 387,
+            burnley: 328,
+            cardiff: 715,
+            cardiffcity: 715,
+            charlton: 348,
+            charltonathletic: 348,
+            derby: 342,
+            derbycounty: 342,
+            lincoln: 1126,
+            lincolncity: 1126,
+            middlesbrough: 343,
+            millwall: 384,
+            norwich: 68,
+            norwichcity: 68,
+            portsmouth: 325,
+            preston: 1081,
+            prestonnorthend: 1081,
+            qpr: 69,
+            queensparkrangers: 69,
+            sheffieldunited: 356,
+            southampton: 340,
+            stoke: 70,
+            stokecity: 70,
+            swansea: 72,
+            swanseacity: 72,
+            watford: 346,
+            westbrom: 74,
+            westbromwichalbion: 74,
+            westham: 563,
+            wolves: 76,
+            wrexham: 404,
+            bayernmunich: 5,
+            dortmund: 4,
+            frankfurt: 19,
+            freiburg: 17,
+            gladbach: 18,
+            mgladbach: 18,
+            hamburgersv: 7,
+            hoffenheim: 2,
+            koln: 1,
+            leverkusen: 3,
+            mainz05: 15,
+            paderborn07: 29,
+            rbleipzig: 721,
+            schalke04: 9,
+            stuttgart: 10,
+            unionberlin: 28,
+            werderbremen: 12,
+            augsburg: 16,
+            elversberg: 719,
+            barcelona: 81,
+            realmadrid: 86,
+            atleticomadrid: 78,
+            alaves: 263,
+            athletic: 77,
+            celtavigo: 558,
+            depacoruna: 560,
+            elche: 285,
+            espanyol: 80,
+            getafe: 82,
+            levante: 88,
+            malaga: 84,
+            osasuna: 79,
+            racingsant: 5335,
+            rayovallecano: 87,
+            realbetis: 90,
+            realsociedad: 92,
+            sevilla: 559,
+            valencia: 95,
+            villarreal: 94,
+            parissg: 524,
+            marseille: 516,
+            monaco: 548,
+            lyon: 523,
+            lille: 521,
+            rennes: 529,
+            toulouse: 511,
+            lens: 546,
+            angers: 532,
+            auxerre: 519,
+            brest: 512,
+            lehavre: 533,
+            lemans: 535,
+            lorient: 525,
+            nice: 522,
+            paris: 1045,
+            parisfc: 1045,
+            strasbourg: 576,
+            troyes: 543,
+            como: 7397,
+            frosinone: 470,
+            lecce: 5890,
+            monza: 5911,
+            torino: 586,
+            arezzo: 489,
+            ascoli: 446,
+            avellino: 486,
+            benevento: 1106,
+            carrarese: 5901,
+            catanzaro: 490,
+            cesena: 591,
+            cremonese: 457,
+            empoli: 445,
+            hellasverona: 450,
+            juvestabia: 588,
+            mantova: 8453,
+            modena: 460,
+            padova: 458,
+            palermo: 114,
+            pisa: 487,
+            sampdoria: 584,
+            sudtirol: 10031,
+            uscatanzaro1929: 490,
+            verona: 450,
+            vicenza: 451,
+            virtusentella: 747
+        };
+
+        function renderTeamCrest(teamName) {
+            const crestId = TEAM_CREST_IDS[normalizeTeamName(teamName)];
+            const initials = String(teamName).trim().split(/\s+/).slice(0, 2)
+                .map(part => part.charAt(0)).join('').toLocaleUpperCase('it-IT');
+            const fallback = `<span class="team-crest team-crest-fallback" aria-hidden="true">${escapeHtml(initials)}</span>`;
+            if (!crestId) return fallback;
+
+            return `
+                <span class="team-crest-wrap">
+                    <img class="team-crest" src="https://crests.football-data.org/${crestId}.png"
+                        alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+                        onerror="this.hidden=true; this.nextElementSibling.hidden=false">
+                    <span class="team-crest team-crest-fallback" aria-hidden="true" hidden>${escapeHtml(initials)}</span>
+                </span>
+            `;
         }
 
         function oddsStorageKey() {
@@ -196,11 +713,7 @@
         function showOddsStatus(message, isError = false) {
             const status = document.getElementById('oddsStatus');
             status.textContent = message;
-            status.className = `mb-4 rounded-lg border px-3 py-2 text-xs ${
-                isError
-                    ? 'border-red-800 bg-red-950 text-red-300'
-                    : 'border-sky-800 bg-sky-950 text-sky-300'
-            }`;
+            status.className = `status-banner${isError ? ' is-error' : ''}`;
         }
 
         async function readApiJson(response) {
@@ -225,7 +738,7 @@
             const button = document.getElementById('fetchOddsButton');
             const league = document.getElementById('leagueSelect').value;
             button.disabled = true;
-            button.textContent = 'Caricamento quote e orari...';
+            button.textContent = 'Caricamento quote e orari…';
             showOddsStatus('Recupero quote 1X2 e orari dai bookmaker...');
 
             try {
@@ -283,7 +796,7 @@
                 showOddsStatus(error.message, true);
             } finally {
                 button.disabled = false;
-                button.textContent = '🌐 Aggiorna quote e orari';
+                button.textContent = 'Aggiorna quote e orari';
             }
         }
 
@@ -403,16 +916,10 @@
             const valueBet = document.getElementById(`value-bet-${market}-${index}`);
             const bookmakerOdd = Number(marketCard.dataset.realOdd);
             const kelly = bookmakerOdd > 1 ? calculateKelly(probability, bookmakerOdd) : null;
-            const borderColors = {
-                '1': ['border-emerald-500', 'shadow-emerald-900/30', 'shadow-lg'],
-                'X': ['border-amber-500', 'shadow-amber-900/30', 'shadow-lg'],
-                '2': ['border-sky-500', 'shadow-sky-900/30', 'shadow-lg']
-            }[market];
 
             valueBet.innerHTML = formatValueBet(kelly);
             valueBet.classList.toggle('hidden', !kelly);
-            marketCard.classList.remove(...borderColors, 'border-slate-800');
-            marketCard.classList.add(...(kelly && kelly.isValue ? borderColors : ['border-slate-800']));
+            marketCard.classList.toggle('is-value', Boolean(kelly && kelly.isValue));
         }
 
         function renderDashboard(matches) {
@@ -426,6 +933,10 @@
             const finishedMatches = matches.filter(isMatchFinished);
             const upcomingMatches = matches.filter(match => !isMatchFinished(match));
 
+            document.getElementById('upcomingCount').textContent = upcomingMatches.length;
+            document.getElementById('finishedCountSummary').textContent = finishedMatches.length;
+            document.getElementById('selectedLeagueLabel').textContent =
+                document.getElementById('leagueSelect').selectedOptions[0].textContent.toLocaleUpperCase('it-IT');
             finishedSection.classList.toggle('hidden', finishedMatches.length === 0);
             finishedCount.textContent = `(${finishedMatches.length})`;
             renderMatchCards(finishedMatches, finishedContainer, 0);
@@ -435,8 +946,8 @@
         function renderMatchCards(matches, container, indexOffset) {
             if (matches.length === 0) {
                 container.innerHTML = `
-                    <div class="p-8 text-center text-slate-500 bg-slate-900 border border-slate-800 rounded-xl">
-                        Nessuna partita in programma trovata per questo campionato.
+                    <div class="empty-state">
+                        Nessuna partita ${container.id === 'finished-matches-container' ? 'conclusa' : 'in programma'} trovata per questo campionato.
                     </div>
                 `;
                 return;
@@ -445,7 +956,7 @@
             matches.forEach((match, matchOffset) => {
                 const index = indexOffset + matchOffset;
                 const card = document.createElement('div');
-                card.className = "bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl transition-all";
+                card.className = 'match-card';
                 
                 const key1 = `${match.home_team}-${match.away_team}-1`;
                 const keyX = `${match.home_team}-${match.away_team}-X`;
@@ -462,124 +973,93 @@
                 const kelly1 = real1 ? calculateKelly(prob1Num, real1) : null;
                 const kellyX = realX ? calculateKelly(probXNum, realX) : null;
                 const kelly2 = real2 ? calculateKelly(prob2Num, real2) : null;
+                const finished = isMatchFinished(match);
+                const markets = [
+                    { key: '1', name: '1 · CASA', real: real1, bookmaker: realOddsBookmakers[key1], kelly: kelly1 },
+                    { key: 'X', name: 'X · PARI', real: realX, bookmaker: realOddsBookmakers[keyX], kelly: kellyX },
+                    { key: '2', name: '2 · OSPITI', real: real2, bookmaker: realOddsBookmakers[key2], kelly: kelly2 }
+                ];
 
                 card.innerHTML = `
-                    <div class="flex justify-between items-center mb-4 text-xs text-slate-400 border-b border-slate-800 pb-2">
-                        <span>📅 ${escapeHtml(formatMatchDate(match))}</span>
-                        ${isMatchFinished(match) ? `<span class="font-bold text-slate-300">Risultato: ${match.home_goals} - ${match.away_goals}</span>` : ''}
-                        <span class="font-mono">Expected Goals (λ) - H: <strong id="lam-h-${index}">${match.lambda_home}</strong> | A: <strong id="lam-a-${index}">${match.lambda_away}</strong></span>
+                    <div class="fixture-meta${finished ? ' is-finished' : ''}">
+                        <span class="competition">${escapeHtml(match.league || 'Campionato')}</span>
+                        <span class="kickoff">${escapeHtml(formatMatchDate(match))}</span>
+                        ${finished ? `<span class="kickoff finished-score">FINALE ${escapeHtml(match.home_goals)} – ${escapeHtml(match.away_goals)}</span>` : ''}
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-6">
-                        <div class="text-center md:text-left">
-                            <h3 class="text-xl font-bold text-white">${match.home_team}</h3>
-                            <span class="text-xs text-emerald-400">Casa</span>
+                    <div class="teams-line">
+                        <div class="team">
+                            ${renderTeamCrest(match.home_team)}
+                            <h3 class="team-name">${escapeHtml(match.home_team)}</h3>
+                            <div class="team-label">Casa</div>
                         </div>
-                        <div class="text-center font-mono text-slate-500 font-bold">VS</div>
-                        <div class="text-center md:text-right">
-                            <h3 class="text-xl font-bold text-white">${match.away_team}</h3>
-                            <span class="text-xs text-sky-400">Trasferta</span>
+                        <div class="versus">VS</div>
+                        <div class="team">
+                            ${renderTeamCrest(match.away_team)}
+                            <h3 class="team-name">${escapeHtml(match.away_team)}</h3>
+                            <div class="team-label">Trasferta</div>
                         </div>
                     </div>
-
-                    <!-- Cursori Interattivi di Scenario (Fatica / Boost) -->
-                    <div class="bg-slate-950/60 p-4 rounded-lg mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 border border-slate-800/60">
-                        <div>
-                            <label class="text-xs text-slate-400 flex justify-between mb-1">
-                                <span>Boost/Fatica Casa</span>
-                                <span id="val-boost-h-${index}" class="text-emerald-400 font-mono">1.00x</span>
+                    <div class="market-label"><span>QUOTE MODELLO</span><span>PROBABILITÀ 1X2</span></div>
+                    <div class="odds-grid" id="odds-box-${index}">
+                        ${markets.map(market => `
+                            <div id="market-card-${market.key}-${index}" data-real-odd="${market.real || ''}"
+                                class="market-card ${market.kelly && market.kelly.isValue ? 'is-value' : ''}">
+                                <span class="market-name">${market.name}</span>
+                                <div class="market-prices">
+                                    <div class="price-group">
+                                        <span class="price-label">Modello</span>
+                                        <span class="price-value" id="odd-${market.key}-${index}">${match.odds[market.key]}</span>
+                                    </div>
+                                    ${market.real ? `
+                                        <div class="price-group bookmaker">
+                                            <span class="price-label">Bookmaker</span>
+                                            <span class="price-value">${market.real}</span>
+                                            ${market.bookmaker ? `<span class="price-label">${escapeHtml(market.bookmaker)}</span>` : ''}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <span class="probability" id="prob-${market.key}-${index}">Prob: ${match.probabilities[market.key]}%</span>
+                                <div id="value-bet-${market.key}-${index}" class="value-bet ${market.real ? '' : 'hidden'}">
+                                    ${market.real ? formatValueBet(market.kelly) : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="scenario">
+                        <div class="scenario-heading"><span>Simula scenario</span><span>Impatto sulla probabilità</span></div>
+                        <div class="sliders">
+                            <label>
+                                <span class="slider-label"><span>Boost casa</span><strong id="val-boost-h-${index}">1,00×</strong></span>
+                                <input type="range" min="0.7" max="1.3" step="0.05" value="1.0" id="slider-h-${index}"
+                                    aria-label="Boost squadra di casa"
+                                    oninput="updateSimulation(${index}, ${match.lambda_home}, ${match.lambda_away})">
                             </label>
-                            <input type="range" min="0.7" max="1.3" step="0.05" value="1.0" 
-                                class="w-full accent-emerald-500 cursor-pointer" id="slider-h-${index}"
-                                oninput="updateSimulation(${index}, ${match.lambda_home}, ${match.lambda_away})">
-                        </div>
-                        <div>
-                            <label class="text-xs text-slate-400 flex justify-between mb-1">
-                                <span>Boost/Fatica Trasferta</span>
-                                <span id="val-boost-a-${index}" class="text-sky-400 font-mono">1.00x</span>
+                            <label>
+                                <span class="slider-label"><span>Boost ospiti</span><strong id="val-boost-a-${index}">1,00×</strong></span>
+                                <input type="range" min="0.7" max="1.3" step="0.05" value="1.0" id="slider-a-${index}"
+                                    aria-label="Boost squadra ospite"
+                                    oninput="updateSimulation(${index}, ${match.lambda_home}, ${match.lambda_away})">
                             </label>
-                            <input type="range" min="0.7" max="1.3" step="0.05" value="1.0" 
-                                class="w-full accent-sky-500 cursor-pointer" id="slider-a-${index}"
-                                oninput="updateSimulation(${index}, ${match.lambda_home}, ${match.lambda_away})">
                         </div>
                     </div>
-
-                    <!-- Quote e Probabilità (Confronto Modello vs Bookmaker) -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-center" id="odds-box-${index}">
-                        <!-- Segno 1 -->
-                        <div id="market-card-1-${index}" data-real-odd="${real1 || ''}" class="bg-slate-950 p-3 rounded-lg border ${kelly1 && kelly1.isValue ? 'border-emerald-500 shadow-emerald-900/30 shadow-lg' : 'border-slate-800'}">
-                            <span class="block text-xs text-slate-400 mb-1">1 (Casa)</span>
-                            <div class="flex justify-center items-center gap-3 my-1">
-                                <div>
-                                    <span class="block text-[10px] text-slate-500 uppercase">Modello</span>
-                                    <span class="text-base font-bold text-slate-300" id="odd-1-${index}">${match.odds["1"]}</span>
-                                </div>
-                                ${real1 ? `
-                                    <div class="border-l border-slate-800 pl-3">
-                                        <span class="block text-[10px] text-emerald-400 uppercase font-bold">Bookmaker</span>
-                                        <span class="text-lg font-black text-white">${real1}</span>
-                                        ${realOddsBookmakers[key1] ? `<span class="block text-[9px] text-slate-400">${escapeHtml(realOddsBookmakers[key1])}</span>` : ''}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <span class="block text-[10px] text-emerald-400 mt-1" id="prob-1-${index}">Prob: ${match.probabilities["1"]}%</span>
-                            <div id="value-bet-1-${index}" class="mt-2 pt-2 border-t border-emerald-900/50 text-[11px] text-emerald-300 font-mono ${real1 ? '' : 'hidden'}">${real1 ? formatValueBet(kelly1) : ''}</div>
-                        </div>
-
-                        <!-- Segno X -->
-                        <div id="market-card-X-${index}" data-real-odd="${realX || ''}" class="bg-slate-950 p-3 rounded-lg border ${kellyX && kellyX.isValue ? 'border-amber-500 shadow-amber-900/30 shadow-lg' : 'border-slate-800'}">
-                            <span class="block text-xs text-slate-400 mb-1">X (Pareggio)</span>
-                            <div class="flex justify-center items-center gap-3 my-1">
-                                <div>
-                                    <span class="block text-[10px] text-slate-500 uppercase">Modello</span>
-                                    <span class="text-base font-bold text-slate-300" id="odd-X-${index}">${match.odds["X"]}</span>
-                                </div>
-                                ${realX ? `
-                                    <div class="border-l border-slate-800 pl-3">
-                                        <span class="block text-[10px] text-amber-400 uppercase font-bold">Bookmaker</span>
-                                        <span class="text-lg font-black text-white">${realX}</span>
-                                        ${realOddsBookmakers[keyX] ? `<span class="block text-[9px] text-slate-400">${escapeHtml(realOddsBookmakers[keyX])}</span>` : ''}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <span class="block text-[10px] text-amber-400 mt-1" id="prob-X-${index}">Prob: ${match.probabilities["X"]}%</span>
-                            <div id="value-bet-X-${index}" class="mt-2 pt-2 border-t border-amber-900/50 text-[11px] text-amber-300 font-mono ${realX ? '' : 'hidden'}">${realX ? formatValueBet(kellyX) : ''}</div>
-                        </div>
-
-                        <!-- Segno 2 -->
-                        <div id="market-card-2-${index}" data-real-odd="${real2 || ''}" class="bg-slate-950 p-3 rounded-lg border ${kelly2 && kelly2.isValue ? 'border-sky-500 shadow-sky-900/30 shadow-lg' : 'border-slate-800'}">
-                            <span class="block text-xs text-slate-400 mb-1">2 (Ospite)</span>
-                            <div class="flex justify-center items-center gap-3 my-1">
-                                <div>
-                                    <span class="block text-[10px] text-slate-500 uppercase">Modello</span>
-                                    <span class="text-base font-bold text-slate-300" id="odd-2-${index}">${match.odds["2"]}</span>
-                                </div>
-                                ${real2 ? `
-                                    <div class="border-l border-slate-800 pl-3">
-                                        <span class="block text-[10px] text-sky-400 uppercase font-bold">Bookmaker</span>
-                                        <span class="text-lg font-black text-white">${real2}</span>
-                                        ${realOddsBookmakers[key2] ? `<span class="block text-[9px] text-slate-400">${escapeHtml(realOddsBookmakers[key2])}</span>` : ''}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <span class="block text-[10px] text-sky-400 mt-1" id="prob-2-${index}">Prob: ${match.probabilities["2"]}%</span>
-                            <div id="value-bet-2-${index}" class="mt-2 pt-2 border-t border-sky-900/50 text-[11px] text-sky-300 font-mono ${real2 ? '' : 'hidden'}">${real2 ? formatValueBet(kelly2) : ''}</div>
-                        </div>
+                    <div class="match-footer">
+                        <span>λ casa <strong id="lam-h-${index}">${match.lambda_home}</strong> · λ ospiti <strong id="lam-a-${index}">${match.lambda_away}</strong></span>
+                        <span>Modello statistico</span>
                     </div>
-
-                    <!-- Risultati Esatti Consigliati -->
-                    <div class="mt-4 pt-3 border-t border-slate-800/80">
-                        <span class="block text-xs font-semibold text-slate-400 mb-2">Top Risultati Esatti:</span>
-                        <div class="flex flex-wrap gap-2">
-                            ${match.exact_scores ? match.exact_scores.map(es => `
-                                <div class="bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-800 text-xs flex items-center gap-2">
-                                    <span class="font-bold text-white">${es.score}</span>
-                                    <span class="text-emerald-400 font-mono">${es.odd}</span>
-                                    <span class="text-[10px] text-slate-500">(${es.probability}%)</span>
-                                </div>
-                            `).join('') : ''}
+                    ${match.exact_scores && match.exact_scores.length ? `
+                        <div class="exact-section">
+                            <span class="exact-title">Risultati esatti più probabili</span>
+                            <div class="exact-scores">
+                                ${match.exact_scores.slice(0, 5).map(es => `
+                                    <div class="exact-score">
+                                        <strong>${escapeHtml(es.score)}</strong>
+                                        <span class="odd">${escapeHtml(es.odd)}</span>
+                                        <span class="prob">${escapeHtml(es.probability)}%</span>
+                                    </div>
+                                `).join('')}
+                            </div>
                         </div>
-                    </div>
+                    ` : ''}
                 `;
                 container.appendChild(card);
             });
