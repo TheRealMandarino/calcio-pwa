@@ -432,52 +432,6 @@
         "away_goals": 1
     },
     {
-        "date": "2026-11-02 21:00:00",
-        "league": "ENG-Premier League",
-        "home_team": "Newcastle United",
-        "away_team": "Everton",
-        "status": "scheduled",
-        "lambda_home": 1.72,
-        "lambda_away": 1.37,
-        "probabilities": {
-            "1": 44.5,
-            "X": 25.9,
-            "2": 29.6
-        },
-        "odds": {
-            "1": 2.25,
-            "X": 3.86,
-            "2": 3.38
-        },
-        "exact_scores": [
-            {
-                "score": "1-1",
-                "probability": 11.9,
-                "odd": 8.4
-            },
-            {
-                "score": "2-1",
-                "probability": 9.2,
-                "odd": 10.83
-            },
-            {
-                "score": "1-2",
-                "probability": 7.4,
-                "odd": 13.57
-            },
-            {
-                "score": "2-0",
-                "probability": 6.7,
-                "odd": 14.88
-            },
-            {
-                "score": "1-0",
-                "probability": 6.6,
-                "odd": 15.11
-            }
-        ]
-    },
-    {
         "date": "2026-11-06 21:00:00",
         "league": "ENG-Premier League",
         "home_team": "Everton",

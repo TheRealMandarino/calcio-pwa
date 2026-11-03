@@ -432,52 +432,6 @@
         "away_goals": 1
     },
     {
-        "date": "2026-11-02 21:00:00",
-        "league": "ESP-La Liga",
-        "home_team": "Deportivo La Coruña",
-        "away_team": "CA Osasuna",
-        "status": "scheduled",
-        "lambda_home": 1.36,
-        "lambda_away": 1.36,
-        "probabilities": {
-            "1": 35.8,
-            "X": 28.4,
-            "2": 35.8
-        },
-        "odds": {
-            "1": 2.79,
-            "X": 3.52,
-            "2": 2.79
-        },
-        "exact_scores": [
-            {
-                "score": "1-1",
-                "probability": 13.5,
-                "odd": 7.39
-            },
-            {
-                "score": "1-2",
-                "probability": 8.3,
-                "odd": 12.06
-            },
-            {
-                "score": "2-1",
-                "probability": 8.3,
-                "odd": 12.06
-            },
-            {
-                "score": "0-0",
-                "probability": 7.9,
-                "odd": 12.59
-            },
-            {
-                "score": "0-1",
-                "probability": 7.6,
-                "odd": 13.11
-            }
-        ]
-    },
-    {
         "date": "2026-11-06 21:00:00",
         "league": "ESP-La Liga",
         "home_team": "Sevilla",
