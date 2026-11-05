@@ -1,101 +1,5 @@
 [
     {
-        "date": "2026-10-29 17:30:00",
-        "league": "ITA-Serie A",
-        "home_team": "Frosinone",
-        "away_team": "Lecce",
-        "status": "finished",
-        "lambda_home": 2.59,
-        "lambda_away": 1.43,
-        "probabilities": {
-            "1": 61.1,
-            "X": 19.6,
-            "2": 19.2
-        },
-        "odds": {
-            "1": 1.64,
-            "X": 5.09,
-            "2": 5.2
-        },
-        "exact_scores": [
-            {
-                "score": "2-1",
-                "probability": 8.8,
-                "odd": 11.4
-            },
-            {
-                "score": "3-1",
-                "probability": 7.6,
-                "odd": 13.22
-            },
-            {
-                "score": "1-1",
-                "probability": 7.5,
-                "odd": 13.3
-            },
-            {
-                "score": "2-2",
-                "probability": 6.3,
-                "odd": 15.96
-            },
-            {
-                "score": "2-0",
-                "probability": 6.1,
-                "odd": 16.3
-            }
-        ],
-        "home_goals": 5,
-        "away_goals": 1
-    },
-    {
-        "date": "2026-10-29 19:45:00",
-        "league": "ITA-Serie A",
-        "home_team": "Fiorentina",
-        "away_team": "Atalanta",
-        "status": "finished",
-        "lambda_home": 1.89,
-        "lambda_away": 1.98,
-        "probabilities": {
-            "1": 36.7,
-            "X": 22.9,
-            "2": 40.4
-        },
-        "odds": {
-            "1": 2.73,
-            "X": 4.36,
-            "2": 2.48
-        },
-        "exact_scores": [
-            {
-                "score": "1-1",
-                "probability": 8.7,
-                "odd": 11.45
-            },
-            {
-                "score": "1-2",
-                "probability": 7.8,
-                "odd": 12.82
-            },
-            {
-                "score": "2-1",
-                "probability": 7.4,
-                "odd": 13.47
-            },
-            {
-                "score": "2-2",
-                "probability": 7.4,
-                "odd": 13.59
-            },
-            {
-                "score": "1-3",
-                "probability": 5.2,
-                "odd": 19.4
-            }
-        ],
-        "home_goals": 2,
-        "away_goals": 2
-    },
-    {
         "date": "2026-10-31 14:00:00",
         "league": "ITA-Serie A",
         "home_team": "Bologna",
@@ -110,24 +14,24 @@
         },
         "odds": {
             "1": 2.01,
-            "X": 4.41,
+            "X": 4.4,
             "2": 3.62
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 9.1,
-                "odd": 10.96
+                "odd": 10.94
             },
             {
                 "score": "2-1",
                 "probability": 8.8,
-                "odd": 11.33
+                "odd": 11.31
             },
             {
                 "score": "2-2",
                 "probability": 7.0,
-                "odd": 14.33
+                "odd": 14.34
             },
             {
                 "score": "1-2",
@@ -150,37 +54,37 @@
         "away_team": "Roma",
         "status": "finished",
         "lambda_home": 1.54,
-        "lambda_away": 2.39,
+        "lambda_away": 2.38,
         "probabilities": {
-            "1": 23.6,
+            "1": 23.7,
             "X": 21.2,
-            "2": 55.2
+            "2": 55.1
         },
         "odds": {
-            "1": 4.23,
-            "X": 4.73,
-            "2": 1.81
+            "1": 4.21,
+            "X": 4.72,
+            "2": 1.82
         },
         "exact_scores": [
             {
                 "score": "1-2",
-                "probability": 8.7,
-                "odd": 11.43
+                "probability": 8.8,
+                "odd": 11.42
             },
             {
                 "score": "1-1",
-                "probability": 8.1,
-                "odd": 12.3
+                "probability": 8.2,
+                "odd": 12.26
             },
             {
                 "score": "1-3",
-                "probability": 7.0,
-                "odd": 14.36
+                "probability": 6.9,
+                "odd": 14.39
             },
             {
                 "score": "2-2",
                 "probability": 6.7,
-                "odd": 14.83
+                "odd": 14.82
             },
             {
                 "score": "0-2",
@@ -213,12 +117,12 @@
             {
                 "score": "1-1",
                 "probability": 8.1,
-                "odd": 12.39
+                "odd": 12.36
             },
             {
                 "score": "1-2",
-                "probability": 7.5,
-                "odd": 13.26
+                "probability": 7.6,
+                "odd": 13.24
             },
             {
                 "score": "2-2",
@@ -228,12 +132,12 @@
             {
                 "score": "2-1",
                 "probability": 7.1,
-                "odd": 14.05
+                "odd": 14.03
             },
             {
                 "score": "1-3",
                 "probability": 5.2,
-                "odd": 19.18
+                "odd": 19.19
             }
         ],
         "home_goals": 3,
@@ -248,14 +152,14 @@
         "lambda_home": 2.06,
         "lambda_away": 1.16,
         "probabilities": {
-            "1": 56.8,
+            "1": 56.7,
             "X": 23.3,
             "2": 20.0
         },
         "odds": {
             "1": 1.76,
             "X": 4.3,
-            "2": 5.01
+            "2": 5.0
         },
         "exact_scores": [
             {
@@ -281,7 +185,7 @@
             {
                 "score": "3-1",
                 "probability": 6.8,
-                "odd": 14.75
+                "odd": 14.76
             }
         ],
         "home_goals": 1,
@@ -293,38 +197,38 @@
         "home_team": "Frosinone",
         "away_team": "Torino",
         "status": "finished",
-        "lambda_home": 2.29,
+        "lambda_home": 2.28,
         "lambda_away": 1.47,
         "probabilities": {
-            "1": 54.7,
+            "1": 54.6,
             "X": 21.8,
-            "2": 23.5
+            "2": 23.6
         },
         "odds": {
             "1": 1.83,
-            "X": 4.59,
-            "2": 4.26
+            "X": 4.58,
+            "2": 4.25
         },
         "exact_scores": [
             {
                 "score": "2-1",
                 "probability": 9.1,
-                "odd": 11.03
+                "odd": 11.02
             },
             {
                 "score": "1-1",
                 "probability": 8.8,
-                "odd": 11.36
+                "odd": 11.33
             },
             {
                 "score": "3-1",
                 "probability": 6.9,
-                "odd": 14.46
+                "odd": 14.49
             },
             {
                 "score": "2-2",
                 "probability": 6.7,
-                "odd": 15.01
+                "odd": 15.0
             },
             {
                 "score": "2-0",
@@ -350,29 +254,29 @@
         },
         "odds": {
             "1": 1.69,
-            "X": 4.87,
+            "X": 4.86,
             "2": 4.91
         },
         "exact_scores": [
             {
                 "score": "2-1",
                 "probability": 9.0,
-                "odd": 11.07
+                "odd": 11.06
             },
             {
                 "score": "1-1",
                 "probability": 8.2,
-                "odd": 12.22
+                "odd": 12.19
             },
             {
                 "score": "3-1",
                 "probability": 7.4,
-                "odd": 13.54
+                "odd": 13.55
             },
             {
                 "score": "2-0",
                 "probability": 6.4,
-                "odd": 15.6
+                "odd": 15.57
             },
             {
                 "score": "2-2",
@@ -394,18 +298,18 @@
         "probabilities": {
             "1": 33.6,
             "X": 26.2,
-            "2": 40.3
+            "2": 40.2
         },
         "odds": {
             "1": 2.98,
             "X": 3.82,
-            "2": 2.48
+            "2": 2.49
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 12.0,
-                "odd": 8.34
+                "odd": 8.33
             },
             {
                 "score": "1-2",
@@ -415,17 +319,17 @@
             {
                 "score": "2-1",
                 "probability": 8.0,
-                "odd": 12.56
+                "odd": 12.55
             },
             {
                 "score": "2-2",
                 "probability": 6.5,
-                "odd": 15.41
+                "odd": 15.42
             },
             {
                 "score": "0-1",
-                "probability": 6.1,
-                "odd": 16.27
+                "probability": 6.2,
+                "odd": 16.26
             }
         ],
         "home_goals": 1,
@@ -440,7 +344,7 @@
         "lambda_home": 1.68,
         "lambda_away": 1.58,
         "probabilities": {
-            "1": 39.4,
+            "1": 39.3,
             "X": 25.5,
             "2": 35.2
         },
@@ -468,12 +372,12 @@
             {
                 "score": "2-2",
                 "probability": 6.8,
-                "odd": 14.75
+                "odd": 14.76
             },
             {
                 "score": "1-0",
                 "probability": 5.4,
-                "odd": 18.67
+                "odd": 18.64
             }
         ],
         "home_goals": 2,
@@ -494,34 +398,34 @@
         },
         "odds": {
             "1": 2.64,
-            "X": 4.74,
+            "X": 4.73,
             "2": 2.44
         },
         "exact_scores": [
             {
                 "score": "2-2",
                 "probability": 7.3,
-                "odd": 13.77
+                "odd": 13.76
             },
             {
                 "score": "1-2",
                 "probability": 6.7,
-                "odd": 15.02
+                "odd": 14.98
             },
             {
                 "score": "1-1",
                 "probability": 6.5,
-                "odd": 15.38
+                "odd": 15.29
             },
             {
                 "score": "2-1",
                 "probability": 6.4,
-                "odd": 15.64
+                "odd": 15.59
             },
             {
                 "score": "2-3",
                 "probability": 5.5,
-                "odd": 18.18
+                "odd": 18.21
             }
         ],
         "home_goals": 2,
@@ -549,17 +453,17 @@
             {
                 "score": "1-1",
                 "probability": 8.7,
-                "odd": 11.54
+                "odd": 11.53
             },
             {
                 "score": "2-1",
                 "probability": 8.7,
-                "odd": 11.48
+                "odd": 11.47
             },
             {
                 "score": "2-2",
                 "probability": 7.0,
-                "odd": 14.33
+                "odd": 14.34
             },
             {
                 "score": "3-1",
@@ -582,14 +486,14 @@
         "away_team": "Udinese",
         "status": "scheduled",
         "lambda_home": 1.83,
-        "lambda_away": 1.89,
+        "lambda_away": 1.88,
         "probabilities": {
             "1": 37.1,
-            "X": 23.5,
-            "2": 39.4
+            "X": 23.6,
+            "2": 39.3
         },
         "odds": {
-            "1": 2.7,
+            "1": 2.69,
             "X": 4.25,
             "2": 2.54
         },
@@ -597,7 +501,7 @@
             {
                 "score": "1-1",
                 "probability": 9.4,
-                "odd": 10.66
+                "odd": 10.64
             },
             {
                 "score": "1-2",
@@ -607,7 +511,7 @@
             {
                 "score": "2-1",
                 "probability": 7.7,
-                "odd": 12.94
+                "odd": 12.92
             },
             {
                 "score": "2-2",
@@ -617,7 +521,7 @@
             {
                 "score": "1-3",
                 "probability": 5.0,
-                "odd": 19.95
+                "odd": 19.97
             }
         ]
     },
@@ -628,32 +532,32 @@
         "away_team": "Frosinone",
         "status": "scheduled",
         "lambda_home": 1.84,
-        "lambda_away": 2.02,
+        "lambda_away": 2.01,
         "probabilities": {
             "1": 35.1,
-            "X": 22.9,
-            "2": 42.0
+            "X": 23.0,
+            "2": 41.9
         },
         "odds": {
             "1": 2.85,
             "X": 4.36,
-            "2": 2.38
+            "2": 2.39
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 8.8,
-                "odd": 11.39
+                "odd": 11.37
             },
             {
                 "score": "1-2",
                 "probability": 8.0,
-                "odd": 12.54
+                "odd": 12.53
             },
             {
                 "score": "2-1",
                 "probability": 7.3,
-                "odd": 13.76
+                "odd": 13.74
             },
             {
                 "score": "2-2",
@@ -663,7 +567,7 @@
             {
                 "score": "1-3",
                 "probability": 5.4,
-                "odd": 18.65
+                "odd": 18.66
             }
         ]
     },
@@ -677,39 +581,39 @@
         "lambda_away": 1.5,
         "probabilities": {
             "1": 45.1,
-            "X": 24.6,
+            "X": 24.7,
             "2": 30.2
         },
         "odds": {
             "1": 2.22,
-            "X": 4.06,
+            "X": 4.05,
             "2": 3.31
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 10.8,
-                "odd": 9.27
+                "odd": 9.24
             },
             {
                 "score": "2-1",
-                "probability": 9.0,
-                "odd": 11.05
+                "probability": 9.1,
+                "odd": 11.04
             },
             {
                 "score": "1-2",
                 "probability": 7.3,
-                "odd": 13.71
+                "odd": 13.7
             },
             {
                 "score": "2-2",
                 "probability": 6.8,
-                "odd": 14.73
+                "odd": 14.75
             },
             {
                 "score": "2-0",
                 "probability": 6.0,
-                "odd": 16.59
+                "odd": 16.54
             }
         ]
     },
@@ -724,28 +628,28 @@
         "probabilities": {
             "1": 29.8,
             "X": 25.1,
-            "2": 45.2
+            "2": 45.1
         },
         "odds": {
             "1": 3.36,
-            "X": 3.99,
-            "2": 2.21
+            "X": 3.98,
+            "2": 2.22
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 11.2,
-                "odd": 8.92
+                "odd": 8.91
             },
             {
                 "score": "1-2",
                 "probability": 9.2,
-                "odd": 10.91
+                "odd": 10.92
             },
             {
                 "score": "2-1",
                 "probability": 7.3,
-                "odd": 13.69
+                "odd": 13.68
             },
             {
                 "score": "2-2",
@@ -755,7 +659,7 @@
             {
                 "score": "0-2",
                 "probability": 6.3,
-                "odd": 15.77
+                "odd": 15.79
             }
         ]
     },
@@ -781,7 +685,7 @@
             {
                 "score": "1-1",
                 "probability": 10.5,
-                "odd": 9.5
+                "odd": 9.49
             },
             {
                 "score": "2-1",
@@ -791,7 +695,7 @@
             {
                 "score": "1-2",
                 "probability": 7.4,
-                "odd": 13.5
+                "odd": 13.48
             },
             {
                 "score": "2-2",
@@ -801,7 +705,7 @@
             {
                 "score": "2-0",
                 "probability": 5.7,
-                "odd": 17.62
+                "odd": 17.63
             }
         ]
     },
@@ -812,32 +716,32 @@
         "away_team": "Lazio",
         "status": "scheduled",
         "lambda_home": 1.85,
-        "lambda_away": 1.86,
+        "lambda_away": 1.85,
         "probabilities": {
             "1": 38.2,
             "X": 23.6,
-            "2": 38.3
+            "2": 38.2
         },
         "odds": {
             "1": 2.62,
             "X": 4.24,
-            "2": 2.61
+            "2": 2.62
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 9.4,
-                "odd": 10.64
+                "odd": 10.62
             },
             {
                 "score": "1-2",
                 "probability": 7.9,
-                "odd": 12.71
+                "odd": 12.72
             },
             {
                 "score": "2-1",
                 "probability": 7.9,
-                "odd": 12.74
+                "odd": 12.72
             },
             {
                 "score": "2-2",
@@ -847,7 +751,7 @@
             {
                 "score": "1-3",
                 "probability": 4.9,
-                "odd": 20.54
+                "odd": 20.58
             }
         ]
     },
@@ -872,8 +776,8 @@
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 12.4,
-                "odd": 8.04
+                "probability": 12.5,
+                "odd": 8.03
             },
             {
                 "score": "1-2",
@@ -883,17 +787,17 @@
             {
                 "score": "2-1",
                 "probability": 8.3,
-                "odd": 12.06
+                "odd": 12.07
             },
             {
                 "score": "0-1",
-                "probability": 6.3,
-                "odd": 15.76
+                "probability": 6.4,
+                "odd": 15.73
             },
             {
                 "score": "2-2",
                 "probability": 6.3,
-                "odd": 15.83
+                "odd": 15.84
             }
         ]
     },
@@ -904,22 +808,22 @@
         "away_team": "Atalanta BC",
         "status": "scheduled",
         "lambda_home": 1.7,
-        "lambda_away": 1.61,
+        "lambda_away": 1.6,
         "probabilities": {
             "1": 39.3,
             "X": 25.3,
             "2": 35.4
         },
         "odds": {
-            "1": 2.54,
-            "X": 3.96,
+            "1": 2.55,
+            "X": 3.95,
             "2": 2.82
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 11.2,
-                "odd": 8.97
+                "odd": 8.95
             },
             {
                 "score": "2-1",
@@ -929,17 +833,17 @@
             {
                 "score": "1-2",
                 "probability": 8.1,
-                "odd": 12.4
+                "odd": 12.39
             },
             {
                 "score": "2-2",
-                "probability": 6.9,
-                "odd": 14.59
+                "probability": 6.8,
+                "odd": 14.61
             },
             {
                 "score": "2-0",
                 "probability": 5.3,
-                "odd": 18.8
+                "odd": 18.78
             }
         ]
     },
@@ -954,18 +858,18 @@
         "probabilities": {
             "1": 28.7,
             "X": 24.9,
-            "2": 46.4
+            "2": 46.3
         },
         "odds": {
             "1": 3.48,
-            "X": 4.02,
+            "X": 4.01,
             "2": 2.16
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 11.1,
-                "odd": 8.99
+                "odd": 8.98
             },
             {
                 "score": "1-2",
@@ -975,7 +879,7 @@
             {
                 "score": "2-1",
                 "probability": 7.1,
-                "odd": 14.02
+                "odd": 14.01
             },
             {
                 "score": "2-2",
@@ -1000,38 +904,498 @@
         "probabilities": {
             "1": 35.9,
             "X": 24.7,
-            "2": 39.5
+            "2": 39.4
         },
         "odds": {
-            "1": 2.79,
-            "X": 4.06,
-            "2": 2.53
+            "1": 2.78,
+            "X": 4.05,
+            "2": 2.54
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 10.6,
-                "odd": 9.47
+                "odd": 9.46
             },
             {
                 "score": "1-2",
                 "probability": 8.4,
-                "odd": 11.91
+                "odd": 11.92
             },
             {
                 "score": "2-1",
                 "probability": 8.0,
-                "odd": 12.54
+                "odd": 12.53
             },
             {
                 "score": "2-2",
                 "probability": 7.0,
-                "odd": 14.21
+                "odd": 14.22
             },
             {
                 "score": "0-2",
                 "probability": 5.0,
-                "odd": 19.96
+                "odd": 19.98
+            }
+        ]
+    },
+    {
+        "date": "2026-11-21 15:00:00",
+        "league": "ITA-Serie A",
+        "home_team": "Como",
+        "away_team": "Cagliari",
+        "status": "scheduled",
+        "lambda_home": 2.22,
+        "lambda_away": 1.17,
+        "probabilities": {
+            "1": 59.9,
+            "X": 21.9,
+            "2": 18.3
+        },
+        "odds": {
+            "1": 1.67,
+            "X": 4.58,
+            "2": 5.47
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.8,
+                "odd": 10.21
+            },
+            {
+                "score": "2-1",
+                "probability": 9.8,
+                "odd": 10.21
+            },
+            {
+                "score": "2-0",
+                "probability": 8.4,
+                "odd": 11.94
+            },
+            {
+                "score": "3-1",
+                "probability": 7.2,
+                "odd": 13.79
+            },
+            {
+                "score": "1-0",
+                "probability": 6.6,
+                "odd": 15.21
+            }
+        ]
+    },
+    {
+        "date": "2026-11-21 15:00:00",
+        "league": "ITA-Serie A",
+        "home_team": "Lazio",
+        "away_team": "Lecce",
+        "status": "scheduled",
+        "lambda_home": 2.19,
+        "lambda_away": 1.43,
+        "probabilities": {
+            "1": 53.6,
+            "X": 22.4,
+            "2": 23.9
+        },
+        "odds": {
+            "1": 1.87,
+            "X": 4.45,
+            "2": 4.18
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.4,
+                "odd": 10.66
+            },
+            {
+                "score": "2-1",
+                "probability": 9.3,
+                "odd": 10.8
+            },
+            {
+                "score": "3-1",
+                "probability": 6.8,
+                "odd": 14.8
+            },
+            {
+                "score": "2-2",
+                "probability": 6.6,
+                "odd": 15.1
+            },
+            {
+                "score": "2-0",
+                "probability": 6.5,
+                "odd": 15.45
+            }
+        ]
+    },
+    {
+        "date": "2026-11-21 18:00:00",
+        "league": "ITA-Serie A",
+        "home_team": "Parma",
+        "away_team": "AS Roma",
+        "status": "scheduled",
+        "lambda_home": 1.3,
+        "lambda_away": 1.55,
+        "probabilities": {
+            "1": 30.7,
+            "X": 27.4,
+            "2": 41.9
+        },
+        "odds": {
+            "1": 3.25,
+            "X": 3.65,
+            "2": 2.39
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 13.0,
+                "odd": 7.72
+            },
+            {
+                "score": "1-2",
+                "probability": 9.0,
+                "odd": 11.06
+            },
+            {
+                "score": "0-1",
+                "probability": 7.7,
+                "odd": 12.99
+            },
+            {
+                "score": "2-1",
+                "probability": 7.6,
+                "odd": 13.18
+            },
+            {
+                "score": "0-0",
+                "probability": 7.1,
+                "odd": 14.13
+            }
+        ]
+    },
+    {
+        "date": "2026-11-21 20:45:00",
+        "league": "ITA-Serie A",
+        "home_team": "Napoli",
+        "away_team": "Torino",
+        "status": "scheduled",
+        "lambda_home": 2.11,
+        "lambda_away": 1.46,
+        "probabilities": {
+            "1": 51.3,
+            "X": 23.0,
+            "2": 25.6
+        },
+        "odds": {
+            "1": 1.95,
+            "X": 4.34,
+            "2": 3.9
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.7,
+                "odd": 10.29
+            },
+            {
+                "score": "2-1",
+                "probability": 9.2,
+                "odd": 10.84
+            },
+            {
+                "score": "2-2",
+                "probability": 6.7,
+                "odd": 14.88
+            },
+            {
+                "score": "3-1",
+                "probability": 6.5,
+                "odd": 15.43
+            },
+            {
+                "score": "1-2",
+                "probability": 6.4,
+                "odd": 15.68
+            }
+        ]
+    },
+    {
+        "date": "2026-11-22 12:30:00",
+        "league": "ITA-Serie A",
+        "home_team": "Juventus",
+        "away_team": "Venezia",
+        "status": "scheduled",
+        "lambda_home": 2.14,
+        "lambda_away": 1.23,
+        "probabilities": {
+            "1": 56.8,
+            "X": 22.7,
+            "2": 20.5
+        },
+        "odds": {
+            "1": 1.76,
+            "X": 4.41,
+            "2": 4.87
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 10.1,
+                "odd": 9.88
+            },
+            {
+                "score": "2-1",
+                "probability": 9.7,
+                "odd": 10.26
+            },
+            {
+                "score": "2-0",
+                "probability": 7.9,
+                "odd": 12.67
+            },
+            {
+                "score": "3-1",
+                "probability": 6.9,
+                "odd": 14.4
+            },
+            {
+                "score": "1-0",
+                "probability": 6.4,
+                "odd": 15.66
+            }
+        ]
+    },
+    {
+        "date": "2026-11-22 15:00:00",
+        "league": "ITA-Serie A",
+        "home_team": "Bologna",
+        "away_team": "Udinese",
+        "status": "scheduled",
+        "lambda_home": 1.94,
+        "lambda_away": 1.63,
+        "probabilities": {
+            "1": 44.4,
+            "X": 23.9,
+            "2": 31.8
+        },
+        "odds": {
+            "1": 2.25,
+            "X": 4.19,
+            "2": 3.15
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.9,
+                "odd": 10.06
+            },
+            {
+                "score": "2-1",
+                "probability": 8.7,
+                "odd": 11.5
+            },
+            {
+                "score": "1-2",
+                "probability": 7.3,
+                "odd": 13.73
+            },
+            {
+                "score": "2-2",
+                "probability": 7.1,
+                "odd": 14.14
+            },
+            {
+                "score": "3-1",
+                "probability": 5.6,
+                "odd": 17.77
+            }
+        ]
+    },
+    {
+        "date": "2026-11-22 15:00:00",
+        "league": "ITA-Serie A",
+        "home_team": "Sassuolo",
+        "away_team": "Genoa",
+        "status": "scheduled",
+        "lambda_home": 2.0,
+        "lambda_away": 1.77,
+        "probabilities": {
+            "1": 42.9,
+            "X": 23.2,
+            "2": 33.9
+        },
+        "odds": {
+            "1": 2.33,
+            "X": 4.31,
+            "2": 2.95
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.1,
+                "odd": 10.96
+            },
+            {
+                "score": "2-1",
+                "probability": 8.2,
+                "odd": 12.17
+            },
+            {
+                "score": "1-2",
+                "probability": 7.3,
+                "odd": 13.75
+            },
+            {
+                "score": "2-2",
+                "probability": 7.3,
+                "odd": 13.75
+            },
+            {
+                "score": "3-1",
+                "probability": 5.5,
+                "odd": 18.25
+            }
+        ]
+    },
+    {
+        "date": "2026-11-22 18:00:00",
+        "league": "ITA-Serie A",
+        "home_team": "AC Milan",
+        "away_team": "Frosinone",
+        "status": "scheduled",
+        "lambda_home": 1.74,
+        "lambda_away": 1.66,
+        "probabilities": {
+            "1": 39.4,
+            "X": 24.8,
+            "2": 35.8
+        },
+        "odds": {
+            "1": 2.54,
+            "X": 4.03,
+            "2": 2.79
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 10.7,
+                "odd": 9.32
+            },
+            {
+                "score": "2-1",
+                "probability": 8.4,
+                "odd": 11.86
+            },
+            {
+                "score": "1-2",
+                "probability": 8.0,
+                "odd": 12.48
+            },
+            {
+                "score": "2-2",
+                "probability": 7.0,
+                "odd": 14.31
+            },
+            {
+                "score": "2-0",
+                "probability": 5.1,
+                "odd": 19.65
+            }
+        ]
+    },
+    {
+        "date": "2026-11-22 20:45:00",
+        "league": "ITA-Serie A",
+        "home_team": "Atalanta BC",
+        "away_team": "Inter Milan",
+        "status": "scheduled",
+        "lambda_home": 1.39,
+        "lambda_away": 1.39,
+        "probabilities": {
+            "1": 35.9,
+            "X": 28.1,
+            "2": 35.9
+        },
+        "odds": {
+            "1": 2.78,
+            "X": 3.56,
+            "2": 2.78
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 13.4,
+                "odd": 7.49
+            },
+            {
+                "score": "1-2",
+                "probability": 8.3,
+                "odd": 12.0
+            },
+            {
+                "score": "2-1",
+                "probability": 8.3,
+                "odd": 12.0
+            },
+            {
+                "score": "0-0",
+                "probability": 7.6,
+                "odd": 13.19
+            },
+            {
+                "score": "0-1",
+                "probability": 7.4,
+                "odd": 13.6
+            }
+        ]
+    },
+    {
+        "date": "2026-11-23 20:45:00",
+        "league": "ITA-Serie A",
+        "home_team": "Monza",
+        "away_team": "Fiorentina",
+        "status": "scheduled",
+        "lambda_home": 2.13,
+        "lambda_away": 1.93,
+        "probabilities": {
+            "1": 42.6,
+            "X": 22.2,
+            "2": 35.2
+        },
+        "odds": {
+            "1": 2.35,
+            "X": 4.5,
+            "2": 2.84
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 8.0,
+                "odd": 12.54
+            },
+            {
+                "score": "2-1",
+                "probability": 7.6,
+                "odd": 13.1
+            },
+            {
+                "score": "2-2",
+                "probability": 7.4,
+                "odd": 13.58
+            },
+            {
+                "score": "1-2",
+                "probability": 6.9,
+                "odd": 14.44
+            },
+            {
+                "score": "3-1",
+                "probability": 5.4,
+                "odd": 18.48
             }
         ]
     }
