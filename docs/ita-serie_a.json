@@ -669,43 +669,43 @@
         "home_team": "AS Roma",
         "away_team": "Sassuolo",
         "status": "scheduled",
-        "lambda_home": 1.87,
-        "lambda_away": 1.56,
+        "lambda_home": 2.68,
+        "lambda_away": 1.46,
         "probabilities": {
-            "1": 44.0,
-            "X": 24.5,
-            "2": 31.5
+            "1": 62.0,
+            "X": 19.1,
+            "2": 18.9
         },
         "odds": {
-            "1": 2.27,
-            "X": 4.09,
-            "2": 3.17
+            "1": 1.61,
+            "X": 5.23,
+            "2": 5.29
         },
         "exact_scores": [
             {
-                "score": "1-1",
-                "probability": 10.5,
-                "odd": 9.49
-            },
-            {
                 "score": "2-1",
-                "probability": 8.9,
-                "odd": 11.28
+                "probability": 8.5,
+                "odd": 11.73
             },
             {
-                "score": "1-2",
-                "probability": 7.4,
-                "odd": 13.48
+                "score": "3-1",
+                "probability": 7.6,
+                "odd": 13.15
+            },
+            {
+                "score": "1-1",
+                "probability": 7.1,
+                "odd": 14.14
             },
             {
                 "score": "2-2",
-                "probability": 6.9,
-                "odd": 14.44
+                "probability": 6.2,
+                "odd": 16.05
             },
             {
                 "score": "2-0",
-                "probability": 5.7,
-                "odd": 17.63
+                "probability": 5.8,
+                "odd": 17.15
             }
         ]
     },
@@ -761,43 +761,43 @@
         "home_team": "Genoa",
         "away_team": "AC Milan",
         "status": "scheduled",
-        "lambda_home": 1.48,
-        "lambda_away": 1.52,
+        "lambda_home": 1.52,
+        "lambda_away": 1.95,
         "probabilities": {
-            "1": 35.6,
-            "X": 26.8,
-            "2": 37.6
+            "1": 29.4,
+            "X": 24.1,
+            "2": 46.5
         },
         "odds": {
-            "1": 2.81,
-            "X": 3.73,
-            "2": 2.66
+            "1": 3.4,
+            "X": 4.16,
+            "2": 2.15
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 12.5,
-                "odd": 8.03
+                "probability": 10.3,
+                "odd": 9.72
             },
             {
                 "score": "1-2",
-                "probability": 8.5,
-                "odd": 11.71
+                "probability": 9.0,
+                "odd": 11.08
             },
             {
                 "score": "2-1",
-                "probability": 8.3,
-                "odd": 12.07
-            },
-            {
-                "score": "0-1",
-                "probability": 6.4,
-                "odd": 15.73
+                "probability": 7.1,
+                "odd": 14.15
             },
             {
                 "score": "2-2",
-                "probability": 6.3,
-                "odd": 15.84
+                "probability": 6.9,
+                "odd": 14.54
+            },
+            {
+                "score": "0-2",
+                "probability": 5.9,
+                "odd": 16.89
             }
         ]
     },
@@ -807,43 +807,43 @@
         "home_team": "Monza",
         "away_team": "Atalanta BC",
         "status": "scheduled",
-        "lambda_home": 1.7,
-        "lambda_away": 1.6,
+        "lambda_home": 1.9,
+        "lambda_away": 2.1,
         "probabilities": {
-            "1": 39.3,
-            "X": 25.3,
-            "2": 35.4
+            "1": 35.1,
+            "X": 22.4,
+            "2": 42.5
         },
         "odds": {
-            "1": 2.55,
-            "X": 3.95,
-            "2": 2.82
+            "1": 2.85,
+            "X": 4.46,
+            "2": 2.35
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 11.2,
-                "odd": 8.95
-            },
-            {
-                "score": "2-1",
-                "probability": 8.5,
-                "odd": 11.71
+                "probability": 8.2,
+                "odd": 12.18
             },
             {
                 "score": "1-2",
-                "probability": 8.1,
-                "odd": 12.39
+                "probability": 7.8,
+                "odd": 12.9
             },
             {
                 "score": "2-2",
-                "probability": 6.8,
-                "odd": 14.61
+                "probability": 7.4,
+                "odd": 13.59
             },
             {
-                "score": "2-0",
-                "probability": 5.3,
-                "odd": 18.78
+                "score": "2-1",
+                "probability": 7.0,
+                "odd": 14.24
+            },
+            {
+                "score": "1-3",
+                "probability": 5.4,
+                "odd": 18.47
             }
         ]
     },
@@ -853,43 +853,43 @@
         "home_team": "Inter Milan",
         "away_team": "Como",
         "status": "scheduled",
-        "lambda_home": 1.42,
-        "lambda_away": 1.85,
+        "lambda_home": 2.43,
+        "lambda_away": 1.79,
         "probabilities": {
-            "1": 28.7,
-            "X": 24.9,
-            "2": 46.3
+            "1": 51.1,
+            "X": 21.0,
+            "2": 27.9
         },
         "odds": {
-            "1": 3.48,
-            "X": 4.01,
-            "2": 2.16
+            "1": 1.96,
+            "X": 4.76,
+            "2": 3.58
         },
         "exact_scores": [
             {
-                "score": "1-1",
-                "probability": 11.1,
-                "odd": 8.98
-            },
-            {
-                "score": "1-2",
-                "probability": 9.3,
-                "odd": 10.8
-            },
-            {
                 "score": "2-1",
-                "probability": 7.1,
-                "odd": 14.01
+                "probability": 7.9,
+                "odd": 12.67
+            },
+            {
+                "score": "1-1",
+                "probability": 7.2,
+                "odd": 13.85
             },
             {
                 "score": "2-2",
-                "probability": 6.6,
-                "odd": 15.18
+                "probability": 7.1,
+                "odd": 14.17
             },
             {
-                "score": "0-2",
-                "probability": 6.5,
-                "odd": 15.37
+                "score": "3-1",
+                "probability": 6.4,
+                "odd": 15.66
+            },
+            {
+                "score": "1-2",
+                "probability": 5.8,
+                "odd": 17.2
             }
         ]
     },
@@ -1037,43 +1037,43 @@
         "home_team": "Parma",
         "away_team": "AS Roma",
         "status": "scheduled",
-        "lambda_home": 1.3,
-        "lambda_away": 1.55,
+        "lambda_home": 1.4,
+        "lambda_away": 2.14,
         "probabilities": {
-            "1": 30.7,
-            "X": 27.4,
-            "2": 41.9
+            "1": 23.9,
+            "X": 22.8,
+            "2": 53.3
         },
         "odds": {
-            "1": 3.25,
-            "X": 3.65,
-            "2": 2.39
+            "1": 4.18,
+            "X": 4.39,
+            "2": 1.88
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 13.0,
-                "odd": 7.72
+                "probability": 9.7,
+                "odd": 10.3
             },
             {
                 "score": "1-2",
-                "probability": 9.0,
-                "odd": 11.06
+                "probability": 9.4,
+                "odd": 10.68
             },
             {
-                "score": "0-1",
-                "probability": 7.7,
-                "odd": 12.99
+                "score": "0-2",
+                "probability": 6.7,
+                "odd": 14.94
             },
             {
-                "score": "2-1",
-                "probability": 7.6,
-                "odd": 13.18
+                "score": "1-3",
+                "probability": 6.7,
+                "odd": 14.95
             },
             {
-                "score": "0-0",
-                "probability": 7.1,
-                "odd": 14.13
+                "score": "2-2",
+                "probability": 6.6,
+                "odd": 15.26
             }
         ]
     },
@@ -1267,43 +1267,43 @@
         "home_team": "AC Milan",
         "away_team": "Frosinone",
         "status": "scheduled",
-        "lambda_home": 1.74,
-        "lambda_away": 1.66,
+        "lambda_home": 2.51,
+        "lambda_away": 1.78,
         "probabilities": {
-            "1": 39.4,
-            "X": 24.8,
-            "2": 35.8
+            "1": 52.9,
+            "X": 20.5,
+            "2": 26.5
         },
         "odds": {
-            "1": 2.54,
-            "X": 4.03,
-            "2": 2.79
+            "1": 1.89,
+            "X": 4.87,
+            "2": 3.77
         },
         "exact_scores": [
             {
-                "score": "1-1",
-                "probability": 10.7,
-                "odd": 9.32
-            },
-            {
                 "score": "2-1",
-                "probability": 8.4,
-                "odd": 11.86
+                "probability": 7.8,
+                "odd": 12.78
             },
             {
-                "score": "1-2",
-                "probability": 8.0,
-                "odd": 12.48
+                "score": "1-1",
+                "probability": 6.9,
+                "odd": 14.47
             },
             {
                 "score": "2-2",
-                "probability": 7.0,
-                "odd": 14.31
+                "probability": 6.9,
+                "odd": 14.4
             },
             {
-                "score": "2-0",
-                "probability": 5.1,
-                "odd": 19.65
+                "score": "3-1",
+                "probability": 6.6,
+                "odd": 15.25
+            },
+            {
+                "score": "3-2",
+                "probability": 5.8,
+                "odd": 17.18
             }
         ]
     },
@@ -1313,43 +1313,43 @@
         "home_team": "Atalanta BC",
         "away_team": "Inter Milan",
         "status": "scheduled",
-        "lambda_home": 1.39,
-        "lambda_away": 1.39,
+        "lambda_home": 1.83,
+        "lambda_away": 2.34,
         "probabilities": {
-            "1": 35.9,
-            "X": 28.1,
-            "2": 35.9
+            "1": 30.0,
+            "X": 21.4,
+            "2": 48.5
         },
         "odds": {
-            "1": 2.78,
-            "X": 3.56,
-            "2": 2.78
+            "1": 3.33,
+            "X": 4.67,
+            "2": 2.06
         },
         "exact_scores": [
             {
-                "score": "1-1",
-                "probability": 13.4,
-                "odd": 7.49
+                "score": "1-2",
+                "probability": 7.8,
+                "odd": 12.77
             },
             {
-                "score": "1-2",
-                "probability": 8.3,
-                "odd": 12.0
+                "score": "1-1",
+                "probability": 7.4,
+                "odd": 13.46
+            },
+            {
+                "score": "2-2",
+                "probability": 7.2,
+                "odd": 13.93
+            },
+            {
+                "score": "1-3",
+                "probability": 6.1,
+                "odd": 16.37
             },
             {
                 "score": "2-1",
-                "probability": 8.3,
-                "odd": 12.0
-            },
-            {
-                "score": "0-0",
-                "probability": 7.6,
-                "odd": 13.19
-            },
-            {
-                "score": "0-1",
-                "probability": 7.4,
-                "odd": 13.6
+                "probability": 6.1,
+                "odd": 16.3
             }
         ]
     },

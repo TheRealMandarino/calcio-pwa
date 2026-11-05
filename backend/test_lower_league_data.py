@@ -277,6 +277,62 @@ class LowerLeagueDataTests(unittest.TestCase):
         self.assertEqual(resolve_team_name("Norwich City", {"Norwich"}), "Norwich")
         self.assertEqual(resolve_team_name("S\u00fcdtirol", {"Sudtirol"}), "Sudtirol")
 
+    def test_primary_league_fixture_names_resolve_historical_team_names(self):
+        aliases = {
+            "AC Milan": "Milan",
+            "AS Monaco": "Monaco",
+            "AS Roma": "Roma",
+            "Atalanta BC": "Atalanta",
+            "Cardiff City": "Cardiff",
+            "Brighton and Hove Albion": "Brighton",
+            "Coventry City": "Coventry",
+            "Derby County": "Derby",
+            "Hull City": "Hull",
+            "Ipswich Town": "Ipswich",
+            "Inter Milan": "Inter",
+            "Leeds United": "Leeds",
+            "Le Mans FC": "Le Mans",
+            "Manchester City": "Man City",
+            "Manchester United": "Man United",
+            "Newcastle United": "Newcastle",
+            "Nottingham Forest": "Nott'm Forest",
+            "Tottenham Hotspur": "Tottenham",
+            "Athletic Bilbao": "Ath Bilbao",
+            "Atl\u00e9tico Madrid": "Ath Madrid",
+            "CA Osasuna": "Osasuna",
+            "Celta Vigo": "Celta",
+            "Deportivo La Coru\u00f1a": "La Coruna",
+            "Elche CF": "Elche",
+            "Espanyol": "Espanol",
+            "Rayo Vallecano": "Vallecano",
+            "Real Betis": "Betis",
+            "Real Racing Club de Santander": "Santander",
+            "Real Sociedad": "Sociedad",
+            "Paris Saint Germain": "Paris SG",
+            "RC Lens": "Lens",
+            "1. FC K\u00f6ln": "FC Koln",
+            "Bayer Leverkusen": "Leverkusen",
+            "Borussia Dortmund": "Dortmund",
+            "Borussia Monchengladbach": "M'gladbach",
+            "Eintracht Frankfurt": "Ein Frankfurt",
+            "FC Schalke 04": "Schalke 04",
+            "FSV Mainz 05": "Mainz",
+            "Hamburger SV": "Hamburg",
+            "SC Freiburg": "Freiburg",
+            "SC Paderborn": "Paderborn",
+            "TSG Hoffenheim": "Hoffenheim",
+            "VfB Stuttgart": "Stuttgart",
+            "West Bromwich Albion": "West Brom",
+            "Wrexham AFC": "Wrexham",
+        }
+        known_teams = set(aliases.values())
+        for fixture_name, historical_name in aliases.items():
+            with self.subTest(fixture_name=fixture_name):
+                self.assertEqual(
+                    resolve_team_name(fixture_name, known_teams),
+                    historical_name,
+                )
+
     def test_walk_forward_backtest_reports_both_leagues(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             db_path = str(Path(temp_dir) / "backtest.db")
