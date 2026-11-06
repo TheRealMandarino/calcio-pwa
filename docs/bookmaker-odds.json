@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T21:16:17+00:00",
+  "generated_at": "2026-11-06T06:09:08+00:00",
   "leagues": {
     "ita-serie_a.json": [
       {
@@ -12,7 +12,7 @@
             "bookmaker": "Matchbook"
           },
           "1": {
-            "price": 2.36,
+            "price": 2.38,
             "bookmaker": "Matchbook"
           },
           "X": {
@@ -27,8 +27,8 @@
         "commence_time": "2026-11-07T14:00:00Z",
         "odds": {
           "1": {
-            "price": 2.82,
-            "bookmaker": "1xBet"
+            "price": 2.84,
+            "bookmaker": "Matchbook"
           },
           "2": {
             "price": 2.56,
@@ -65,11 +65,11 @@
         "commence_time": "2026-11-07T17:00:00Z",
         "odds": {
           "2": {
-            "price": 1.91,
-            "bookmaker": "Matchbook"
+            "price": 1.92,
+            "bookmaker": "Unibet (SE)"
           },
           "1": {
-            "price": 4.8,
+            "price": 4.9,
             "bookmaker": "Matchbook"
           },
           "X": {
@@ -84,15 +84,15 @@
         "commence_time": "2026-11-07T19:45:00Z",
         "odds": {
           "1": {
-            "price": 1.35,
-            "bookmaker": "1xBet"
+            "price": 1.34,
+            "bookmaker": "Unibet (SE)"
           },
           "2": {
-            "price": 9.8,
+            "price": 10.0,
             "bookmaker": "Matchbook"
           },
           "X": {
-            "price": 6.6,
+            "price": 6.8,
             "bookmaker": "Matchbook"
           }
         }
@@ -103,15 +103,15 @@
         "commence_time": "2026-11-08T11:30:00Z",
         "odds": {
           "2": {
-            "price": 3.27,
+            "price": 3.15,
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 2.36,
+            "price": 2.4,
             "bookmaker": "Matchbook"
           },
           "X": {
-            "price": 3.77,
+            "price": 3.73,
             "bookmaker": "1xBet"
           }
         }
@@ -126,8 +126,8 @@
             "bookmaker": "Unibet (SE)"
           },
           "1": {
-            "price": 4.9,
-            "bookmaker": "Tipico"
+            "price": 5.1,
+            "bookmaker": "Matchbook"
           },
           "X": {
             "price": 3.73,
@@ -141,8 +141,8 @@
         "commence_time": "2026-11-08T14:00:00Z",
         "odds": {
           "2": {
-            "price": 2.12,
-            "bookmaker": "Unibet (SE)"
+            "price": 2.16,
+            "bookmaker": "Betfair"
           },
           "1": {
             "price": 3.5,
@@ -164,7 +164,7 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 1.91,
+            "price": 1.94,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -179,16 +179,16 @@
         "commence_time": "2026-11-08T19:45:00Z",
         "odds": {
           "1": {
-            "price": 3.8,
+            "price": 3.75,
             "bookmaker": "Unibet (SE)"
           },
           "2": {
             "price": 2.14,
-            "bookmaker": "Matchbook"
+            "bookmaker": "Codere (IT)"
           },
           "X": {
-            "price": 3.75,
-            "bookmaker": "Unibet (SE)"
+            "price": 3.71,
+            "bookmaker": "1xBet"
           }
         }
       },
@@ -335,7 +335,7 @@
             "bookmaker": "1xBet"
           },
           "2": {
-            "price": 5.3,
+            "price": 5.65,
             "bookmaker": "Betsson"
           },
           "X": {
@@ -390,11 +390,11 @@
         "commence_time": "2026-11-06T19:30:00Z",
         "odds": {
           "1": {
-            "price": 3.21,
+            "price": 3.25,
             "bookmaker": "Pinnacle"
           },
           "2": {
-            "price": 2.36,
+            "price": 2.34,
             "bookmaker": "Matchbook"
           },
           "X": {
@@ -409,12 +409,12 @@
         "commence_time": "2026-11-07T14:00:00Z",
         "odds": {
           "2": {
-            "price": 4.72,
-            "bookmaker": "Pinnacle"
+            "price": 4.8,
+            "bookmaker": "Betfair"
           },
           "1": {
-            "price": 1.8,
-            "bookmaker": "Codere (IT)"
+            "price": 1.83,
+            "bookmaker": "Matchbook"
           },
           "X": {
             "price": 3.75,
@@ -451,8 +451,8 @@
             "bookmaker": "Unibet (SE)"
           },
           "1": {
-            "price": 2.25,
-            "bookmaker": "Codere (IT)"
+            "price": 2.26,
+            "bookmaker": "Matchbook"
           },
           "X": {
             "price": 3.4,
@@ -470,8 +470,8 @@
             "bookmaker": "Unibet (NL)"
           },
           "2": {
-            "price": 5.9,
-            "bookmaker": "Matchbook"
+            "price": 6.2,
+            "bookmaker": "Betfair"
           },
           "X": {
             "price": 4.2,
@@ -489,8 +489,8 @@
             "bookmaker": "Pinnacle"
           },
           "1": {
-            "price": 2.55,
-            "bookmaker": "Unibet (NL)"
+            "price": 2.6,
+            "bookmaker": "Coolbet"
           },
           "X": {
             "price": 3.5,
@@ -508,8 +508,8 @@
             "bookmaker": "Codere (IT)"
           },
           "1": {
-            "price": 1.9,
-            "bookmaker": "Codere (IT)"
+            "price": 1.92,
+            "bookmaker": "Matchbook"
           },
           "X": {
             "price": 3.65,
@@ -523,8 +523,8 @@
         "commence_time": "2026-11-08T14:00:00Z",
         "odds": {
           "2": {
-            "price": 2.58,
-            "bookmaker": "Matchbook"
+            "price": 2.51,
+            "bookmaker": "Pinnacle"
           },
           "1": {
             "price": 3.15,
@@ -586,8 +586,8 @@
             "bookmaker": "Betfair"
           },
           "1": {
-            "price": 1.75,
-            "bookmaker": "Betfair"
+            "price": 1.74,
+            "bookmaker": "1xBet"
           },
           "X": {
             "price": 4.21,
@@ -601,7 +601,7 @@
         "commence_time": "2026-11-07T12:30:00Z",
         "odds": {
           "1": {
-            "price": 2.92,
+            "price": 2.94,
             "bookmaker": "Betfair"
           },
           "2": {
@@ -624,12 +624,12 @@
             "bookmaker": "1xBet"
           },
           "2": {
-            "price": 22.0,
+            "price": 23.0,
             "bookmaker": "Betfair"
           },
           "X": {
-            "price": 8.72,
-            "bookmaker": "Coolbet"
+            "price": 9.0,
+            "bookmaker": "Betfair"
           }
         }
       },
@@ -643,8 +643,8 @@
             "bookmaker": "GTbets"
           },
           "2": {
-            "price": 3.65,
-            "bookmaker": "Betfair"
+            "price": 3.64,
+            "bookmaker": "Coolbet"
           },
           "X": {
             "price": 3.88,
@@ -662,12 +662,12 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 4.9,
+            "price": 5.1,
             "bookmaker": "Betfair"
           },
           "X": {
-            "price": 4.26,
-            "bookmaker": "1xBet"
+            "price": 4.3,
+            "bookmaker": "Winamax (DE)"
           }
         }
       },
@@ -678,10 +678,10 @@
         "odds": {
           "2": {
             "price": 2.0,
-            "bookmaker": "Matchbook"
+            "bookmaker": "Unibet (SE)"
           },
           "1": {
-            "price": 4.0,
+            "price": 4.1,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -696,12 +696,12 @@
         "commence_time": "2026-11-08T14:00:00Z",
         "odds": {
           "2": {
-            "price": 3.95,
+            "price": 4.0,
             "bookmaker": "Betfair"
           },
           "1": {
-            "price": 2.0,
-            "bookmaker": "Matchbook"
+            "price": 1.98,
+            "bookmaker": "1xBet"
           },
           "X": {
             "price": 4.05,
@@ -742,8 +742,8 @@
             "bookmaker": "1xBet"
           },
           "X": {
-            "price": 4.57,
-            "bookmaker": "1xBet"
+            "price": 4.6,
+            "bookmaker": "Matchbook"
           }
         }
       },
@@ -753,16 +753,16 @@
         "commence_time": "2026-11-08T16:30:00Z",
         "odds": {
           "2": {
-            "price": 3.3,
-            "bookmaker": "Betfair"
+            "price": 4.5,
+            "bookmaker": "BetAnything"
           },
           "1": {
             "price": 2.28,
             "bookmaker": "Unibet (NL)"
           },
           "X": {
-            "price": 3.94,
-            "bookmaker": "1xBet"
+            "price": 4.1,
+            "bookmaker": "BetAnything"
           }
         }
       },
@@ -810,8 +810,8 @@
         "commence_time": "2026-11-21T15:00:00Z",
         "odds": {
           "1": {
-            "price": 2.02,
-            "bookmaker": "Unibet (SE)"
+            "price": 2.01,
+            "bookmaker": "1xBet"
           },
           "2": {
             "price": 3.86,
@@ -964,11 +964,11 @@
         "commence_time": "2026-11-06T20:00:00Z",
         "odds": {
           "2": {
-            "price": 2.95,
+            "price": 2.9,
             "bookmaker": "LeoVegas (SE)"
           },
           "1": {
-            "price": 2.6,
+            "price": 2.66,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -983,8 +983,8 @@
         "commence_time": "2026-11-07T12:30:00Z",
         "odds": {
           "1": {
-            "price": 2.82,
-            "bookmaker": "Betfair"
+            "price": 2.86,
+            "bookmaker": "Matchbook"
           },
           "2": {
             "price": 2.64,
@@ -1007,11 +1007,11 @@
           },
           "2": {
             "price": 3.4,
-            "bookmaker": "Matchbook"
+            "bookmaker": "Betfair"
           },
           "X": {
-            "price": 3.4,
-            "bookmaker": "Betfair"
+            "price": 3.35,
+            "bookmaker": "LeoVegas (SE)"
           }
         }
       },
@@ -1025,12 +1025,12 @@
             "bookmaker": "LeoVegas (SE)"
           },
           "1": {
-            "price": 3.35,
+            "price": 3.45,
             "bookmaker": "Betfair"
           },
           "X": {
             "price": 3.6,
-            "bookmaker": "Betfair"
+            "bookmaker": "Matchbook"
           }
         }
       },
@@ -1059,16 +1059,16 @@
         "commence_time": "2026-11-07T15:00:00Z",
         "odds": {
           "1": {
-            "price": 5.5,
-            "bookmaker": "Matchbook"
+            "price": 5.4,
+            "bookmaker": "Betfair"
           },
           "2": {
             "price": 1.72,
             "bookmaker": "LeoVegas (SE)"
           },
           "X": {
-            "price": 4.4,
-            "bookmaker": "Matchbook"
+            "price": 4.3,
+            "bookmaker": "Betfair"
           }
         }
       },
@@ -1079,7 +1079,7 @@
         "odds": {
           "2": {
             "price": 3.2,
-            "bookmaker": "Matchbook"
+            "bookmaker": "LeoVegas (SE)"
           },
           "1": {
             "price": 2.26,
@@ -1097,8 +1097,8 @@
         "commence_time": "2026-11-07T15:00:00Z",
         "odds": {
           "1": {
-            "price": 3.85,
-            "bookmaker": "Matchbook"
+            "price": 3.8,
+            "bookmaker": "Betfair"
           },
           "2": {
             "price": 2.12,
@@ -1135,8 +1135,8 @@
         "commence_time": "2026-11-07T15:00:00Z",
         "odds": {
           "2": {
-            "price": 1.6,
-            "bookmaker": "Betfair"
+            "price": 1.61,
+            "bookmaker": "Matchbook"
           },
           "1": {
             "price": 5.8,
@@ -1177,7 +1177,7 @@
             "bookmaker": "LeoVegas (SE)"
           },
           "2": {
-            "price": 1.73,
+            "price": 1.72,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -1194,15 +1194,15 @@
         "commence_time": "2026-11-06T20:00:00Z",
         "odds": {
           "2": {
-            "price": 4.5,
-            "bookmaker": "Betfair"
+            "price": 4.6,
+            "bookmaker": "Matchbook"
           },
           "1": {
-            "price": 2.05,
+            "price": 1.98,
             "bookmaker": "1xBet"
           },
           "X": {
-            "price": 3.55,
+            "price": 3.6,
             "bookmaker": "Unibet (SE)"
           }
         }
@@ -1213,12 +1213,12 @@
         "commence_time": "2026-11-07T13:00:00Z",
         "odds": {
           "1": {
-            "price": 2.52,
-            "bookmaker": "Betfair"
+            "price": 2.5,
+            "bookmaker": "Matchbook"
           },
           "2": {
             "price": 3.0,
-            "bookmaker": "Coolbet"
+            "bookmaker": "Betfair"
           },
           "X": {
             "price": 3.72,
@@ -1236,7 +1236,7 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 2.4,
+            "price": 2.42,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -1255,12 +1255,12 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 3.95,
+            "price": 3.9,
             "bookmaker": "Betfair"
           },
           "X": {
-            "price": 3.58,
-            "bookmaker": "Pinnacle"
+            "price": 3.6,
+            "bookmaker": "Matchbook"
           }
         }
       },
@@ -1274,7 +1274,7 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 12.0,
+            "price": 11.5,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -1308,16 +1308,16 @@
         "commence_time": "2026-11-08T15:15:00Z",
         "odds": {
           "2": {
-            "price": 5.0,
-            "bookmaker": "Coolbet"
+            "price": 4.92,
+            "bookmaker": "1xBet"
           },
           "1": {
             "price": 1.75,
-            "bookmaker": "Betfair"
+            "bookmaker": "Matchbook"
           },
           "X": {
-            "price": 4.4,
-            "bookmaker": "Betfair"
+            "price": 4.33,
+            "bookmaker": "BetOnline.ag"
           }
         }
       },
@@ -1327,12 +1327,12 @@
         "commence_time": "2026-11-08T17:30:00Z",
         "odds": {
           "1": {
-            "price": 1.89,
+            "price": 1.94,
             "bookmaker": "Betfair"
           },
           "2": {
-            "price": 4.6,
-            "bookmaker": "Matchbook"
+            "price": 4.5,
+            "bookmaker": "Unibet (SE)"
           },
           "X": {
             "price": 4.0,
@@ -1346,16 +1346,16 @@
         "commence_time": "2026-11-08T17:30:00Z",
         "odds": {
           "2": {
-            "price": 8.0,
-            "bookmaker": "Unibet (NL)"
+            "price": 8.2,
+            "bookmaker": "Betfair"
           },
           "1": {
             "price": 1.5,
             "bookmaker": "1xBet"
           },
           "X": {
-            "price": 4.75,
-            "bookmaker": "Unibet (NL)"
+            "price": 4.82,
+            "bookmaker": "Pinnacle"
           }
         }
       },
@@ -1365,12 +1365,12 @@
         "commence_time": "2026-11-08T20:00:00Z",
         "odds": {
           "1": {
-            "price": 3.9,
+            "price": 3.95,
             "bookmaker": "Betfair"
           },
           "2": {
-            "price": 1.91,
-            "bookmaker": "Unibet (SE)"
+            "price": 1.9,
+            "bookmaker": "1xBet"
           },
           "X": {
             "price": 4.6,
@@ -1487,7 +1487,7 @@
             "bookmaker": "Betsson"
           },
           "X": {
-            "price": 9.0,
+            "price": 8.5,
             "bookmaker": "Tipico"
           }
         }
@@ -1498,15 +1498,15 @@
         "commence_time": "2026-11-22T15:15:00Z",
         "odds": {
           "1": {
-            "price": 3.15,
-            "bookmaker": "Pinnacle"
+            "price": 3.27,
+            "bookmaker": "1xBet"
           },
           "2": {
-            "price": 2.24,
+            "price": 2.16,
             "bookmaker": "1xBet"
           },
           "X": {
-            "price": 4.03,
+            "price": 4.06,
             "bookmaker": "1xBet"
           }
         }
@@ -1540,7 +1540,7 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 5.9,
+            "price": 5.85,
             "bookmaker": "Betsson"
           },
           "X": {
@@ -1559,7 +1559,7 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 2.27,
+            "price": 2.26,
             "bookmaker": "1xBet"
           },
           "X": {
@@ -1576,15 +1576,15 @@
         "commence_time": "2026-11-06T19:30:00Z",
         "odds": {
           "2": {
-            "price": 2.95,
-            "bookmaker": "Unibet (SE)"
+            "price": 3.0,
+            "bookmaker": "Betfair"
           },
           "1": {
-            "price": 2.52,
+            "price": 2.48,
             "bookmaker": "Betfair"
           },
           "X": {
-            "price": 3.86,
+            "price": 3.82,
             "bookmaker": "1xBet"
           }
         }
@@ -1603,8 +1603,8 @@
             "bookmaker": "1xBet"
           },
           "X": {
-            "price": 5.7,
-            "bookmaker": "Betfair"
+            "price": 5.62,
+            "bookmaker": "BetOnline.ag"
           }
         }
       },
@@ -1615,7 +1615,7 @@
         "odds": {
           "2": {
             "price": 1.36,
-            "bookmaker": "1xBet"
+            "bookmaker": "Unibet (SE)"
           },
           "1": {
             "price": 8.2,
@@ -1656,7 +1656,7 @@
             "bookmaker": "Betfair"
           },
           "1": {
-            "price": 3.2,
+            "price": 3.25,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -1671,15 +1671,15 @@
         "commence_time": "2026-11-07T17:30:00Z",
         "odds": {
           "1": {
-            "price": 1.69,
+            "price": 1.72,
             "bookmaker": "Betfair"
           },
           "2": {
-            "price": 4.93,
-            "bookmaker": "1xBet"
+            "price": 4.9,
+            "bookmaker": "Unibet (NL)"
           },
           "X": {
-            "price": 4.99,
+            "price": 4.83,
             "bookmaker": "1xBet"
           }
         }
@@ -1690,11 +1690,11 @@
         "commence_time": "2026-11-08T14:30:00Z",
         "odds": {
           "1": {
-            "price": 4.3,
-            "bookmaker": "Betfair"
+            "price": 4.21,
+            "bookmaker": "1xBet"
           },
           "2": {
-            "price": 1.87,
+            "price": 1.89,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -1728,16 +1728,16 @@
         "commence_time": "2026-11-08T18:30:00Z",
         "odds": {
           "2": {
-            "price": 5.13,
-            "bookmaker": "1xBet"
+            "price": 5.3,
+            "bookmaker": "Betfair"
           },
           "1": {
             "price": 1.68,
             "bookmaker": "Unibet (SE)"
           },
           "X": {
-            "price": 4.63,
-            "bookmaker": "BetOnline.ag"
+            "price": 4.7,
+            "bookmaker": "Betfair"
           }
         }
       },
@@ -1846,8 +1846,8 @@
             "bookmaker": "1xBet"
           },
           "1": {
-            "price": 4.4,
-            "bookmaker": "Tipico"
+            "price": 4.65,
+            "bookmaker": "Nordic Bet"
           },
           "X": {
             "price": 4.47,
@@ -1928,7 +1928,7 @@
             "bookmaker": "Betfair"
           },
           "X": {
-            "price": 4.0,
+            "price": 3.92,
             "bookmaker": "1xBet"
           }
         }
@@ -1962,11 +1962,11 @@
             "bookmaker": "1xBet"
           },
           "2": {
-            "price": 24.0,
+            "price": 27.0,
             "bookmaker": "Betfair"
           },
           "X": {
-            "price": 13.0,
+            "price": 14.0,
             "bookmaker": "Betfair"
           }
         }
@@ -1981,8 +1981,8 @@
             "bookmaker": "LeoVegas (SE)"
           },
           "1": {
-            "price": 2.2,
-            "bookmaker": "1xBet"
+            "price": 2.22,
+            "bookmaker": "Betfair"
           },
           "X": {
             "price": 3.95,
@@ -2015,8 +2015,8 @@
         "commence_time": "2026-11-08T16:15:00Z",
         "odds": {
           "1": {
-            "price": 3.6,
-            "bookmaker": "Pinnacle"
+            "price": 3.75,
+            "bookmaker": "Betfair"
           },
           "2": {
             "price": 2.12,
@@ -2038,7 +2038,7 @@
             "bookmaker": "1xBet"
           },
           "2": {
-            "price": 2.56,
+            "price": 2.58,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -2057,8 +2057,8 @@
             "bookmaker": "Betfair"
           },
           "2": {
-            "price": 2.64,
-            "bookmaker": "1xBet"
+            "price": 2.66,
+            "bookmaker": "Betfair"
           },
           "X": {
             "price": 3.52,
@@ -2076,7 +2076,7 @@
             "bookmaker": "LeoVegas (SE)"
           },
           "1": {
-            "price": 2.28,
+            "price": 2.32,
             "bookmaker": "Betfair"
           },
           "X": {
@@ -2130,7 +2130,7 @@
         "odds": {
           "1": {
             "price": 1.43,
-            "bookmaker": "1xBet"
+            "bookmaker": "Unibet (SE)"
           },
           "2": {
             "price": 7.7,
@@ -2157,7 +2157,7 @@
           },
           "X": {
             "price": 3.9,
-            "bookmaker": "1xBet"
+            "bookmaker": "Unibet (SE)"
           }
         }
       },
@@ -2186,16 +2186,16 @@
         "commence_time": "2026-11-21T19:45:00Z",
         "odds": {
           "1": {
-            "price": 1.91,
+            "price": 1.89,
             "bookmaker": "LeoVegas (SE)"
           },
           "2": {
-            "price": 4.35,
+            "price": 4.5,
             "bookmaker": "Betsson"
           },
           "X": {
-            "price": 4.21,
-            "bookmaker": "Pinnacle"
+            "price": 4.3,
+            "bookmaker": "Tipico"
           }
         }
       },
