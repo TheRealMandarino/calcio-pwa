@@ -480,52 +480,6 @@
         "away_goals": 1
     },
     {
-        "date": "2026-11-06 20:30:00",
-        "league": "ITA-Serie B",
-        "home_team": "Ascoli",
-        "away_team": "Palermo",
-        "status": "scheduled",
-        "lambda_home": 1.44,
-        "lambda_away": 1.46,
-        "probabilities": {
-            "1": 35.9,
-            "X": 27.4,
-            "2": 36.7
-        },
-        "odds": {
-            "1": 2.79,
-            "X": 3.65,
-            "2": 2.72
-        },
-        "exact_scores": [
-            {
-                "score": "1-1",
-                "probability": 12.9,
-                "odd": 7.77
-            },
-            {
-                "score": "1-2",
-                "probability": 8.5,
-                "odd": 11.83
-            },
-            {
-                "score": "2-1",
-                "probability": 8.3,
-                "odd": 11.98
-            },
-            {
-                "score": "0-0",
-                "probability": 6.8,
-                "odd": 14.71
-            },
-            {
-                "score": "0-1",
-                "probability": 6.8,
-                "odd": 14.75
-            }
-        ]
-    },
-    {
         "date": "2026-11-07 15:00:00",
         "league": "ITA-Serie B",
         "home_team": "Juve Stabia",

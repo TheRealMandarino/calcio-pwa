@@ -288,52 +288,6 @@
         "away_goals": 2
     },
     {
-        "date": "2026-11-06 20:45:00",
-        "league": "FRA-Ligue 1",
-        "home_team": "Toulouse",
-        "away_team": "Strasbourg",
-        "status": "scheduled",
-        "lambda_home": 2.03,
-        "lambda_away": 1.9,
-        "probabilities": {
-            "1": 41.1,
-            "X": 22.7,
-            "2": 36.1
-        },
-        "odds": {
-            "1": 2.43,
-            "X": 4.4,
-            "2": 2.77
-        },
-        "exact_scores": [
-            {
-                "score": "1-1",
-                "probability": 8.5,
-                "odd": 11.76
-            },
-            {
-                "score": "2-1",
-                "probability": 7.8,
-                "odd": 12.88
-            },
-            {
-                "score": "2-2",
-                "probability": 7.4,
-                "odd": 13.58
-            },
-            {
-                "score": "1-2",
-                "probability": 7.3,
-                "odd": 13.76
-            },
-            {
-                "score": "3-1",
-                "probability": 5.2,
-                "odd": 19.06
-            }
-        ]
-    },
-    {
         "date": "2026-11-07 19:00:00",
         "league": "FRA-Ligue 1",
         "home_team": "Auxerre",
