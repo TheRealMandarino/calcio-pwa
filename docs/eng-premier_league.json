@@ -5,43 +5,43 @@
         "home_team": "Manchester City",
         "away_team": "Fulham",
         "status": "scheduled",
-        "lambda_home": 2.68,
+        "lambda_home": 2.7,
         "lambda_away": 1.45,
         "probabilities": {
-            "1": 62.4,
+            "1": 62.5,
             "X": 19.0,
-            "2": 18.6
+            "2": 18.5
         },
         "odds": {
             "1": 1.6,
-            "X": 5.25,
-            "2": 5.38
+            "X": 5.28,
+            "2": 5.4
         },
         "exact_scores": [
             {
                 "score": "2-1",
-                "probability": 8.6,
-                "odd": 11.69
+                "probability": 8.5,
+                "odd": 11.75
             },
             {
                 "score": "3-1",
                 "probability": 7.7,
-                "odd": 13.07
+                "odd": 13.06
             },
             {
                 "score": "1-1",
-                "probability": 7.1,
-                "odd": 14.13
+                "probability": 7.0,
+                "odd": 14.27
             },
             {
                 "score": "2-2",
                 "probability": 6.2,
-                "odd": 16.16
+                "odd": 16.18
             },
             {
                 "score": "2-0",
                 "probability": 5.9,
-                "odd": 16.91
+                "odd": 17.05
             }
         ]
     },
@@ -54,7 +54,7 @@
         "lambda_home": 2.59,
         "lambda_away": 1.75,
         "probabilities": {
-            "1": 54.7,
+            "1": 54.8,
             "X": 20.1,
             "2": 25.1
         },
@@ -67,7 +67,7 @@
             {
                 "score": "2-1",
                 "probability": 7.8,
-                "odd": 12.81
+                "odd": 12.83
             },
             {
                 "score": "2-2",
@@ -77,7 +77,7 @@
             {
                 "score": "1-1",
                 "probability": 6.7,
-                "odd": 14.94
+                "odd": 14.97
             },
             {
                 "score": "3-1",
@@ -87,7 +87,7 @@
             {
                 "score": "3-2",
                 "probability": 5.9,
-                "odd": 16.98
+                "odd": 16.97
             }
         ]
     },
@@ -101,29 +101,29 @@
         "lambda_away": 1.59,
         "probabilities": {
             "1": 50.9,
-            "X": 22.3,
+            "X": 22.2,
             "2": 26.8
         },
         "odds": {
             "1": 1.96,
-            "X": 4.49,
+            "X": 4.5,
             "2": 3.73
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 8.8,
-                "odd": 11.42
+                "probability": 8.7,
+                "odd": 11.47
             },
             {
                 "score": "2-1",
-                "probability": 8.8,
-                "odd": 11.42
+                "probability": 8.7,
+                "odd": 11.44
             },
             {
                 "score": "2-2",
                 "probability": 7.0,
-                "odd": 14.36
+                "odd": 14.35
             },
             {
                 "score": "3-1",
@@ -133,7 +133,7 @@
             {
                 "score": "1-2",
                 "probability": 6.3,
-                "odd": 15.94
+                "odd": 15.97
             }
         ]
     },
@@ -143,33 +143,33 @@
         "home_team": "Chelsea",
         "away_team": "Leeds United",
         "status": "scheduled",
-        "lambda_home": 2.33,
+        "lambda_home": 2.34,
         "lambda_away": 1.61,
         "probabilities": {
-            "1": 52.8,
+            "1": 52.9,
             "X": 21.5,
             "2": 25.6
         },
         "odds": {
             "1": 1.89,
-            "X": 4.64,
+            "X": 4.65,
             "2": 3.9
         },
         "exact_scores": [
             {
                 "score": "2-1",
                 "probability": 8.6,
-                "odd": 11.62
+                "odd": 11.66
             },
             {
                 "score": "1-1",
-                "probability": 8.2,
-                "odd": 12.22
+                "probability": 8.1,
+                "odd": 12.3
             },
             {
                 "score": "2-2",
                 "probability": 6.9,
-                "odd": 14.47
+                "odd": 14.46
             },
             {
                 "score": "3-1",
@@ -179,7 +179,7 @@
             {
                 "score": "1-2",
                 "probability": 5.9,
-                "odd": 16.88
+                "odd": 16.93
             }
         ]
     },
@@ -198,34 +198,34 @@
         },
         "odds": {
             "1": 1.77,
-            "X": 4.85,
-            "2": 4.38
+            "X": 4.86,
+            "2": 4.37
         },
         "exact_scores": [
             {
                 "score": "2-1",
                 "probability": 8.6,
-                "odd": 11.65
+                "odd": 11.67
             },
             {
                 "score": "1-1",
                 "probability": 7.7,
-                "odd": 12.99
+                "odd": 13.03
             },
             {
                 "score": "3-1",
                 "probability": 7.1,
-                "odd": 14.11
+                "odd": 14.12
             },
             {
                 "score": "2-2",
                 "probability": 6.7,
-                "odd": 14.97
+                "odd": 14.96
             },
             {
                 "score": "2-0",
                 "probability": 5.5,
-                "odd": 18.12
+                "odd": 18.21
             }
         ]
     },
@@ -235,43 +235,43 @@
         "home_team": "Tottenham Hotspur",
         "away_team": "Ipswich Town",
         "status": "scheduled",
-        "lambda_home": 2.62,
-        "lambda_away": 2.03,
+        "lambda_home": 2.63,
+        "lambda_away": 2.04,
         "probabilities": {
-            "1": 50.0,
+            "1": 50.1,
             "X": 20.0,
-            "2": 30.0
+            "2": 29.9
         },
         "odds": {
             "1": 2.0,
-            "X": 4.99,
+            "X": 5.0,
             "2": 3.34
         },
         "exact_scores": [
             {
                 "score": "2-2",
                 "probability": 6.9,
-                "odd": 14.45
+                "odd": 14.47
             },
             {
                 "score": "2-1",
                 "probability": 6.8,
-                "odd": 14.7
+                "odd": 14.74
             },
             {
                 "score": "3-2",
                 "probability": 6.0,
-                "odd": 16.55
+                "odd": 16.53
             },
             {
                 "score": "3-1",
                 "probability": 5.9,
-                "odd": 16.83
+                "odd": 16.84
             },
             {
                 "score": "1-1",
-                "probability": 5.8,
-                "odd": 17.34
+                "probability": 5.7,
+                "odd": 17.44
             }
         ]
     },
@@ -281,43 +281,43 @@
         "home_team": "Newcastle United",
         "away_team": "Arsenal",
         "status": "scheduled",
-        "lambda_home": 1.7,
-        "lambda_away": 1.91,
+        "lambda_home": 1.71,
+        "lambda_away": 1.92,
         "probabilities": {
-            "1": 34.0,
+            "1": 34.1,
             "X": 23.8,
             "2": 42.2
         },
         "odds": {
-            "1": 2.95,
-            "X": 4.19,
+            "1": 2.94,
+            "X": 4.2,
             "2": 2.37
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 9.8,
-                "odd": 10.21
+                "probability": 9.7,
+                "odd": 10.28
             },
             {
                 "score": "1-2",
                 "probability": 8.4,
-                "odd": 11.87
+                "odd": 11.91
             },
             {
                 "score": "2-1",
                 "probability": 7.5,
-                "odd": 13.32
+                "odd": 13.33
             },
             {
                 "score": "2-2",
                 "probability": 7.2,
-                "odd": 13.94
+                "odd": 13.91
             },
             {
                 "score": "1-3",
                 "probability": 5.4,
-                "odd": 18.64
+                "odd": 18.65
             }
         ]
     },
@@ -331,11 +331,11 @@
         "lambda_away": 1.95,
         "probabilities": {
             "1": 37.5,
-            "X": 23.1,
-            "2": 39.5
+            "X": 23.0,
+            "2": 39.4
         },
         "odds": {
-            "1": 2.67,
+            "1": 2.66,
             "X": 4.34,
             "2": 2.53
         },
@@ -343,22 +343,22 @@
             {
                 "score": "1-1",
                 "probability": 8.8,
-                "odd": 11.31
+                "odd": 11.37
             },
             {
                 "score": "1-2",
-                "probability": 7.8,
-                "odd": 12.89
+                "probability": 7.7,
+                "odd": 12.93
             },
             {
                 "score": "2-1",
-                "probability": 7.6,
-                "odd": 13.24
+                "probability": 7.5,
+                "odd": 13.26
             },
             {
                 "score": "2-2",
                 "probability": 7.4,
-                "odd": 13.6
+                "odd": 13.59
             },
             {
                 "score": "1-3",
@@ -373,43 +373,43 @@
         "home_team": "Liverpool",
         "away_team": "Manchester United",
         "status": "scheduled",
-        "lambda_home": 2.41,
+        "lambda_home": 2.43,
         "lambda_away": 1.48,
         "probabilities": {
-            "1": 56.9,
-            "X": 20.9,
-            "2": 22.1
+            "1": 57.1,
+            "X": 20.8,
+            "2": 22.0
         },
         "odds": {
-            "1": 1.76,
-            "X": 4.77,
-            "2": 4.52
+            "1": 1.75,
+            "X": 4.8,
+            "2": 4.54
         },
         "exact_scores": [
             {
                 "score": "2-1",
                 "probability": 8.9,
-                "odd": 11.23
+                "odd": 11.27
             },
             {
                 "score": "1-1",
-                "probability": 8.2,
-                "odd": 12.2
+                "probability": 8.1,
+                "odd": 12.31
             },
             {
                 "score": "3-1",
                 "probability": 7.2,
-                "odd": 13.98
+                "odd": 13.94
             },
             {
                 "score": "2-2",
                 "probability": 6.6,
-                "odd": 15.19
+                "odd": 15.21
             },
             {
                 "score": "2-0",
                 "probability": 6.0,
-                "odd": 16.6
+                "odd": 16.7
             }
         ]
     },
@@ -419,43 +419,503 @@
         "home_team": "Brentford",
         "away_team": "Everton",
         "status": "scheduled",
-        "lambda_home": 2.15,
-        "lambda_away": 1.47,
+        "lambda_home": 2.16,
+        "lambda_away": 1.48,
         "probabilities": {
-            "1": 52.0,
+            "1": 52.1,
             "X": 22.7,
             "2": 25.3
         },
         "odds": {
             "1": 1.92,
-            "X": 4.4,
+            "X": 4.41,
             "2": 3.96
         },
         "exact_scores": [
             {
                 "score": "1-1",
                 "probability": 9.4,
-                "odd": 10.59
+                "odd": 10.65
             },
             {
                 "score": "2-1",
-                "probability": 9.2,
-                "odd": 10.91
+                "probability": 9.1,
+                "odd": 10.94
             },
             {
                 "score": "2-2",
                 "probability": 6.7,
-                "odd": 14.84
+                "odd": 14.82
             },
             {
                 "score": "3-1",
                 "probability": 6.6,
-                "odd": 15.19
+                "odd": 15.18
             },
             {
                 "score": "1-2",
-                "probability": 6.3,
-                "odd": 15.99
+                "probability": 6.2,
+                "odd": 16.02
+            }
+        ]
+    },
+    {
+        "date": "2026-11-27 21:00:00",
+        "league": "ENG-Premier League",
+        "home_team": "Nottingham Forest",
+        "away_team": "Chelsea",
+        "status": "scheduled",
+        "lambda_home": 1.76,
+        "lambda_away": 1.75,
+        "probabilities": {
+            "1": 38.0,
+            "X": 24.4,
+            "2": 37.6
+        },
+        "odds": {
+            "1": 2.63,
+            "X": 4.1,
+            "2": 2.66
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 10.3,
+                "odd": 9.74
+            },
+            {
+                "score": "1-2",
+                "probability": 8.1,
+                "odd": 12.36
+            },
+            {
+                "score": "2-1",
+                "probability": 8.1,
+                "odd": 12.28
+            },
+            {
+                "score": "2-2",
+                "probability": 7.1,
+                "odd": 14.04
+            },
+            {
+                "score": "3-1",
+                "probability": 4.8,
+                "odd": 20.92
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 16:00:00",
+        "league": "ENG-Premier League",
+        "home_team": "Manchester United",
+        "away_team": "Brentford",
+        "status": "scheduled",
+        "lambda_home": 2.35,
+        "lambda_away": 1.92,
+        "probabilities": {
+            "1": 47.2,
+            "X": 21.3,
+            "2": 31.5
+        },
+        "odds": {
+            "1": 2.12,
+            "X": 4.7,
+            "2": 3.17
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 7.5,
+                "odd": 13.31
+            },
+            {
+                "score": "2-2",
+                "probability": 7.2,
+                "odd": 13.86
+            },
+            {
+                "score": "1-1",
+                "probability": 7.1,
+                "odd": 14.11
+            },
+            {
+                "score": "1-2",
+                "probability": 6.1,
+                "odd": 16.31
+            },
+            {
+                "score": "3-1",
+                "probability": 5.9,
+                "odd": 16.96
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 16:00:00",
+        "league": "ENG-Premier League",
+        "home_team": "Leeds United",
+        "away_team": "Coventry City",
+        "status": "scheduled",
+        "lambda_home": 2.25,
+        "lambda_away": 1.53,
+        "probabilities": {
+            "1": 52.6,
+            "X": 22.1,
+            "2": 25.3
+        },
+        "odds": {
+            "1": 1.9,
+            "X": 4.53,
+            "2": 3.95
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 8.9,
+                "odd": 11.22
+            },
+            {
+                "score": "1-1",
+                "probability": 8.8,
+                "odd": 11.35
+            },
+            {
+                "score": "2-2",
+                "probability": 6.8,
+                "odd": 14.62
+            },
+            {
+                "score": "3-1",
+                "probability": 6.7,
+                "odd": 14.99
+            },
+            {
+                "score": "1-2",
+                "probability": 6.1,
+                "odd": 16.42
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 18:30:00",
+        "league": "ENG-Premier League",
+        "home_team": "Ipswich Town",
+        "away_team": "Aston Villa",
+        "status": "scheduled",
+        "lambda_home": 2.04,
+        "lambda_away": 1.94,
+        "probabilities": {
+            "1": 40.5,
+            "X": 22.6,
+            "2": 36.9
+        },
+        "odds": {
+            "1": 2.47,
+            "X": 4.43,
+            "2": 2.71
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 8.3,
+                "odd": 12.06
+            },
+            {
+                "score": "2-1",
+                "probability": 7.6,
+                "odd": 13.15
+            },
+            {
+                "score": "2-2",
+                "probability": 7.4,
+                "odd": 13.54
+            },
+            {
+                "score": "1-2",
+                "probability": 7.3,
+                "odd": 13.79
+            },
+            {
+                "score": "3-1",
+                "probability": 5.2,
+                "odd": 19.38
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 13:00:00",
+        "league": "ENG-Premier League",
+        "home_team": "Everton",
+        "away_team": "Liverpool",
+        "status": "scheduled",
+        "lambda_home": 1.76,
+        "lambda_away": 2.21,
+        "probabilities": {
+            "1": 30.5,
+            "X": 22.1,
+            "2": 47.4
+        },
+        "odds": {
+            "1": 3.28,
+            "X": 4.51,
+            "2": 2.11
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 8.2,
+                "odd": 12.18
+            },
+            {
+                "score": "1-2",
+                "probability": 8.2,
+                "odd": 12.23
+            },
+            {
+                "score": "2-2",
+                "probability": 7.2,
+                "odd": 13.86
+            },
+            {
+                "score": "2-1",
+                "probability": 6.5,
+                "odd": 15.34
+            },
+            {
+                "score": "1-3",
+                "probability": 6.0,
+                "odd": 16.58
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 15:05:00",
+        "league": "ENG-Premier League",
+        "home_team": "Fulham",
+        "away_team": "Bournemouth",
+        "status": "scheduled",
+        "lambda_home": 2.26,
+        "lambda_away": 2.02,
+        "probabilities": {
+            "1": 43.5,
+            "X": 21.5,
+            "2": 35.0
+        },
+        "odds": {
+            "1": 2.3,
+            "X": 4.65,
+            "2": 2.86
+        },
+        "exact_scores": [
+            {
+                "score": "2-2",
+                "probability": 7.3,
+                "odd": 13.68
+            },
+            {
+                "score": "2-1",
+                "probability": 7.2,
+                "odd": 13.84
+            },
+            {
+                "score": "1-1",
+                "probability": 7.1,
+                "odd": 14.08
+            },
+            {
+                "score": "1-2",
+                "probability": 6.5,
+                "odd": 15.45
+            },
+            {
+                "score": "3-2",
+                "probability": 5.5,
+                "odd": 18.16
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 15:05:00",
+        "league": "ENG-Premier League",
+        "home_team": "Brighton and Hove Albion",
+        "away_team": "Newcastle United",
+        "status": "scheduled",
+        "lambda_home": 2.42,
+        "lambda_away": 1.6,
+        "probabilities": {
+            "1": 54.5,
+            "X": 21.0,
+            "2": 24.4
+        },
+        "odds": {
+            "1": 1.83,
+            "X": 4.76,
+            "2": 4.09
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 8.5,
+                "odd": 11.72
+            },
+            {
+                "score": "1-1",
+                "probability": 7.8,
+                "odd": 12.76
+            },
+            {
+                "score": "3-1",
+                "probability": 6.9,
+                "odd": 14.55
+            },
+            {
+                "score": "2-2",
+                "probability": 6.8,
+                "odd": 14.65
+            },
+            {
+                "score": "1-2",
+                "probability": 5.6,
+                "odd": 17.71
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 15:05:00",
+        "league": "ENG-Premier League",
+        "home_team": "Crystal Palace",
+        "away_team": "Hull City",
+        "status": "scheduled",
+        "lambda_home": 1.79,
+        "lambda_away": 1.74,
+        "probabilities": {
+            "1": 38.9,
+            "X": 24.3,
+            "2": 36.9
+        },
+        "odds": {
+            "1": 2.57,
+            "X": 4.12,
+            "2": 2.71
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 10.2,
+                "odd": 9.82
+            },
+            {
+                "score": "2-1",
+                "probability": 8.2,
+                "odd": 12.18
+            },
+            {
+                "score": "1-2",
+                "probability": 8.0,
+                "odd": 12.53
+            },
+            {
+                "score": "2-2",
+                "probability": 7.1,
+                "odd": 14.01
+            },
+            {
+                "score": "3-1",
+                "probability": 4.9,
+                "odd": 20.42
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 15:05:00",
+        "league": "ENG-Premier League",
+        "home_team": "Sunderland",
+        "away_team": "Tottenham Hotspur",
+        "status": "scheduled",
+        "lambda_home": 1.55,
+        "lambda_away": 1.51,
+        "probabilities": {
+            "1": 37.6,
+            "X": 26.5,
+            "2": 35.9
+        },
+        "odds": {
+            "1": 2.66,
+            "X": 3.78,
+            "2": 2.79
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 12.2,
+                "odd": 8.19
+            },
+            {
+                "score": "2-1",
+                "probability": 8.5,
+                "odd": 11.73
+            },
+            {
+                "score": "1-2",
+                "probability": 8.3,
+                "odd": 12.05
+            },
+            {
+                "score": "2-2",
+                "probability": 6.4,
+                "odd": 15.54
+            },
+            {
+                "score": "1-0",
+                "probability": 6.1,
+                "odd": 16.47
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 17:30:00",
+        "league": "ENG-Premier League",
+        "home_team": "Arsenal",
+        "away_team": "Manchester City",
+        "status": "scheduled",
+        "lambda_home": 2.1,
+        "lambda_away": 1.78,
+        "probabilities": {
+            "1": 44.9,
+            "X": 22.7,
+            "2": 32.4
+        },
+        "odds": {
+            "1": 2.23,
+            "X": 4.4,
+            "2": 3.08
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 8.7,
+                "odd": 11.56
+            },
+            {
+                "score": "2-1",
+                "probability": 8.2,
+                "odd": 12.21
+            },
+            {
+                "score": "2-2",
+                "probability": 7.3,
+                "odd": 13.76
+            },
+            {
+                "score": "1-2",
+                "probability": 6.9,
+                "odd": 14.45
+            },
+            {
+                "score": "3-1",
+                "probability": 5.7,
+                "odd": 17.44
             }
         ]
     }

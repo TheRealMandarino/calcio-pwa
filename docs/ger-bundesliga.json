@@ -14,34 +14,34 @@
         },
         "odds": {
             "1": 1.18,
-            "X": 12.1,
-            "2": 14.1
+            "X": 12.06,
+            "2": 14.03
         },
         "exact_scores": [
             {
                 "score": "4-1",
                 "probability": 6.2,
-                "odd": 16.15
+                "odd": 16.14
             },
             {
                 "score": "3-1",
                 "probability": 5.2,
-                "odd": 19.16
+                "odd": 19.12
             },
             {
                 "score": "4-2",
-                "probability": 5.0,
-                "odd": 19.81
+                "probability": 5.1,
+                "odd": 19.79
             },
             {
                 "score": "3-2",
                 "probability": 4.3,
-                "odd": 23.5
+                "odd": 23.44
             },
             {
                 "score": "4-0",
                 "probability": 3.8,
-                "odd": 26.34
+                "odd": 26.33
             }
         ]
     },
@@ -60,8 +60,8 @@
         },
         "odds": {
             "1": 1.59,
-            "X": 5.57,
-            "2": 5.24
+            "X": 5.58,
+            "2": 5.25
         },
         "exact_scores": [
             {
@@ -98,10 +98,10 @@
         "away_team": "Borussia Dortmund",
         "status": "scheduled",
         "lambda_home": 2.32,
-        "lambda_away": 2.63,
+        "lambda_away": 2.64,
         "probabilities": {
-            "1": 35.2,
-            "X": 18.8,
+            "1": 35.3,
+            "X": 18.7,
             "2": 46.0
         },
         "odds": {
@@ -113,27 +113,27 @@
             {
                 "score": "2-2",
                 "probability": 6.6,
-                "odd": 15.15
+                "odd": 15.16
             },
             {
                 "score": "2-3",
                 "probability": 5.8,
-                "odd": 17.25
+                "odd": 17.26
             },
             {
                 "score": "1-2",
                 "probability": 5.7,
-                "odd": 17.57
+                "odd": 17.62
             },
             {
                 "score": "3-2",
                 "probability": 5.1,
-                "odd": 19.59
+                "odd": 19.56
             },
             {
                 "score": "1-3",
                 "probability": 5.0,
-                "odd": 20.01
+                "odd": 20.06
             }
         ]
     },
@@ -146,7 +146,7 @@
         "lambda_home": 3.11,
         "lambda_away": 2.25,
         "probabilities": {
-            "1": 55.6,
+            "1": 55.5,
             "X": 17.0,
             "2": 27.4
         },
@@ -179,7 +179,7 @@
             {
                 "score": "4-2",
                 "probability": 4.7,
-                "odd": 21.43
+                "odd": 21.44
             }
         ]
     },
@@ -192,40 +192,40 @@
         "lambda_home": 3.76,
         "lambda_away": 2.5,
         "probabilities": {
-            "1": 61.1,
+            "1": 61.2,
             "X": 14.9,
             "2": 23.9
         },
         "odds": {
             "1": 1.64,
-            "X": 6.7,
+            "X": 6.71,
             "2": 4.18
         },
         "exact_scores": [
             {
                 "score": "3-2",
                 "probability": 5.4,
-                "odd": 18.58
+                "odd": 18.59
             },
             {
                 "score": "4-2",
                 "probability": 5.1,
-                "odd": 19.78
+                "odd": 19.77
             },
             {
                 "score": "3-3",
                 "probability": 4.5,
-                "odd": 22.31
+                "odd": 22.32
             },
             {
                 "score": "2-2",
                 "probability": 4.3,
-                "odd": 23.27
+                "odd": 23.3
             },
             {
                 "score": "3-1",
                 "probability": 4.3,
-                "odd": 23.2
+                "odd": 23.22
             }
         ]
     },
@@ -236,16 +236,16 @@
         "away_team": "RB Leipzig",
         "status": "scheduled",
         "lambda_home": 2.44,
-        "lambda_away": 2.14,
+        "lambda_away": 2.15,
         "probabilities": {
-            "1": 45.5,
+            "1": 45.4,
             "X": 19.6,
-            "2": 34.8
+            "2": 34.9
         },
         "odds": {
             "1": 2.2,
-            "X": 5.1,
-            "2": 2.87
+            "X": 5.09,
+            "2": 2.86
         },
         "exact_scores": [
             {
@@ -256,17 +256,17 @@
             {
                 "score": "2-1",
                 "probability": 6.5,
-                "odd": 15.32
+                "odd": 15.33
             },
             {
                 "score": "1-2",
                 "probability": 5.7,
-                "odd": 17.45
+                "odd": 17.42
             },
             {
                 "score": "3-2",
                 "probability": 5.7,
-                "odd": 17.56
+                "odd": 17.58
             },
             {
                 "score": "1-1",
@@ -281,43 +281,43 @@
         "home_team": "FC Schalke 04",
         "away_team": "VfB Stuttgart",
         "status": "scheduled",
-        "lambda_home": 1.69,
-        "lambda_away": 2.31,
+        "lambda_home": 1.7,
+        "lambda_away": 2.32,
         "probabilities": {
             "1": 28.0,
             "X": 20.6,
             "2": 51.4
         },
         "odds": {
-            "1": 3.58,
-            "X": 4.86,
-            "2": 1.94
+            "1": 3.57,
+            "X": 4.87,
+            "2": 1.95
         },
         "exact_scores": [
             {
                 "score": "1-2",
-                "probability": 8.3,
-                "odd": 12.11
+                "probability": 8.2,
+                "odd": 12.16
             },
             {
                 "score": "1-1",
                 "probability": 7.5,
-                "odd": 13.32
+                "odd": 13.41
             },
             {
                 "score": "2-2",
                 "probability": 7.0,
-                "odd": 14.31
+                "odd": 14.3
             },
             {
                 "score": "1-3",
-                "probability": 6.4,
-                "odd": 15.73
+                "probability": 6.3,
+                "odd": 15.76
             },
             {
                 "score": "2-1",
                 "probability": 6.0,
-                "odd": 16.53
+                "odd": 16.56
             }
         ]
     },
@@ -328,11 +328,11 @@
         "away_team": "FSV Mainz 05",
         "status": "scheduled",
         "lambda_home": 2.46,
-        "lambda_away": 2.48,
+        "lambda_away": 2.47,
         "probabilities": {
             "1": 40.2,
             "X": 19.0,
-            "2": 40.9
+            "2": 40.8
         },
         "odds": {
             "1": 2.49,
@@ -343,27 +343,27 @@
             {
                 "score": "2-2",
                 "probability": 6.7,
-                "odd": 14.97
+                "odd": 14.95
             },
             {
                 "score": "2-3",
                 "probability": 5.5,
-                "odd": 18.14
+                "odd": 18.15
             },
             {
                 "score": "3-2",
                 "probability": 5.5,
-                "odd": 18.28
+                "odd": 18.27
             },
             {
                 "score": "1-2",
                 "probability": 5.4,
-                "odd": 18.38
+                "odd": 18.36
             },
             {
                 "score": "2-1",
                 "probability": 5.4,
-                "odd": 18.53
+                "odd": 18.48
             }
         ]
     },
@@ -373,7 +373,7 @@
         "home_team": "Werder Bremen",
         "away_team": "Hamburger SV",
         "status": "scheduled",
-        "lambda_home": 3.24,
+        "lambda_home": 3.23,
         "lambda_away": 1.95,
         "probabilities": {
             "1": 62.9,
@@ -383,7 +383,7 @@
         "odds": {
             "1": 1.59,
             "X": 6.24,
-            "2": 4.75
+            "2": 4.74
         },
         "exact_scores": [
             {
@@ -399,17 +399,431 @@
             {
                 "score": "2-1",
                 "probability": 5.8,
-                "odd": 17.36
+                "odd": 17.35
             },
             {
                 "score": "2-2",
                 "probability": 5.6,
-                "odd": 17.84
+                "odd": 17.82
             },
             {
                 "score": "4-1",
                 "probability": 5.0,
-                "odd": 19.91
+                "odd": 19.92
+            }
+        ]
+    },
+    {
+        "date": "2026-11-27 20:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "Werder Bremen",
+        "away_team": "Borussia Monchengladbach",
+        "status": "scheduled",
+        "lambda_home": 3.22,
+        "lambda_away": 2.22,
+        "probabilities": {
+            "1": 57.9,
+            "X": 16.5,
+            "2": 25.6
+        },
+        "odds": {
+            "1": 1.73,
+            "X": 6.05,
+            "2": 3.91
+        },
+        "exact_scores": [
+            {
+                "score": "3-2",
+                "probability": 6.0,
+                "odd": 16.7
+            },
+            {
+                "score": "2-2",
+                "probability": 5.6,
+                "odd": 17.95
+            },
+            {
+                "score": "3-1",
+                "probability": 5.4,
+                "odd": 18.54
+            },
+            {
+                "score": "2-1",
+                "probability": 5.0,
+                "odd": 19.93
+            },
+            {
+                "score": "4-2",
+                "probability": 4.8,
+                "odd": 20.72
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 15:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "1. FC Köln",
+        "away_team": "Elversberg",
+        "status": "scheduled",
+        "lambda_home": 2.69,
+        "lambda_away": 1.78,
+        "probabilities": {
+            "1": 57.0,
+            "X": 18.5,
+            "2": 24.5
+        },
+        "odds": {
+            "1": 1.75,
+            "X": 5.4,
+            "2": 4.09
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 7.4,
+                "odd": 13.55
+            },
+            {
+                "score": "2-2",
+                "probability": 6.6,
+                "odd": 15.23
+            },
+            {
+                "score": "3-1",
+                "probability": 6.6,
+                "odd": 15.08
+            },
+            {
+                "score": "3-2",
+                "probability": 5.9,
+                "odd": 16.96
+            },
+            {
+                "score": "1-1",
+                "probability": 5.8,
+                "odd": 17.38
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 15:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "Hamburger SV",
+        "away_team": "Bayern Munich",
+        "status": "scheduled",
+        "lambda_home": 2.15,
+        "lambda_away": 3.21,
+        "probabilities": {
+            "1": 24.7,
+            "X": 16.5,
+            "2": 58.8
+        },
+        "odds": {
+            "1": 4.05,
+            "X": 6.05,
+            "2": 1.7
+        },
+        "exact_scores": [
+            {
+                "score": "2-3",
+                "probability": 6.0,
+                "odd": 16.59
+            },
+            {
+                "score": "1-3",
+                "probability": 5.6,
+                "odd": 17.88
+            },
+            {
+                "score": "2-2",
+                "probability": 5.6,
+                "odd": 17.73
+            },
+            {
+                "score": "1-2",
+                "probability": 5.2,
+                "odd": 19.1
+            },
+            {
+                "score": "2-4",
+                "probability": 4.8,
+                "odd": 20.7
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 15:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "SC Paderborn",
+        "away_team": "FC Schalke 04",
+        "status": "scheduled",
+        "lambda_home": 2.27,
+        "lambda_away": 1.69,
+        "probabilities": {
+            "1": 50.9,
+            "X": 20.8,
+            "2": 28.4
+        },
+        "odds": {
+            "1": 1.97,
+            "X": 4.81,
+            "2": 3.53
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 8.3,
+                "odd": 12.03
+            },
+            {
+                "score": "1-1",
+                "probability": 7.7,
+                "odd": 13.03
+            },
+            {
+                "score": "2-2",
+                "probability": 7.0,
+                "odd": 14.27
+            },
+            {
+                "score": "3-1",
+                "probability": 6.3,
+                "odd": 15.86
+            },
+            {
+                "score": "1-2",
+                "probability": 6.2,
+                "odd": 16.23
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 15:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "FSV Mainz 05",
+        "away_team": "Union Berlin",
+        "status": "scheduled",
+        "lambda_home": 2.8,
+        "lambda_away": 1.98,
+        "probabilities": {
+            "1": 55.2,
+            "X": 18.2,
+            "2": 26.7
+        },
+        "odds": {
+            "1": 1.81,
+            "X": 5.51,
+            "2": 3.75
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 6.5,
+                "odd": 15.29
+            },
+            {
+                "score": "2-2",
+                "probability": 6.5,
+                "odd": 15.46
+            },
+            {
+                "score": "3-1",
+                "probability": 6.1,
+                "odd": 16.38
+            },
+            {
+                "score": "3-2",
+                "probability": 6.0,
+                "odd": 16.56
+            },
+            {
+                "score": "1-1",
+                "probability": 4.9,
+                "odd": 20.4
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 18:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "VfB Stuttgart",
+        "away_team": "Eintracht Frankfurt",
+        "status": "scheduled",
+        "lambda_home": 3.14,
+        "lambda_away": 2.2,
+        "probabilities": {
+            "1": 56.9,
+            "X": 16.9,
+            "2": 26.3
+        },
+        "odds": {
+            "1": 1.76,
+            "X": 5.92,
+            "2": 3.81
+        },
+        "exact_scores": [
+            {
+                "score": "3-2",
+                "probability": 6.0,
+                "odd": 16.6
+            },
+            {
+                "score": "2-2",
+                "probability": 5.8,
+                "odd": 17.35
+            },
+            {
+                "score": "3-1",
+                "probability": 5.5,
+                "odd": 18.25
+            },
+            {
+                "score": "2-1",
+                "probability": 5.2,
+                "odd": 19.07
+            },
+            {
+                "score": "4-2",
+                "probability": 4.7,
+                "odd": 21.17
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 15:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "SC Freiburg",
+        "away_team": "RB Leipzig",
+        "status": "scheduled",
+        "lambda_home": 3.02,
+        "lambda_away": 2.2,
+        "probabilities": {
+            "1": 54.9,
+            "X": 17.4,
+            "2": 27.8
+        },
+        "odds": {
+            "1": 1.82,
+            "X": 5.75,
+            "2": 3.6
+        },
+        "exact_scores": [
+            {
+                "score": "2-2",
+                "probability": 6.0,
+                "odd": 16.66
+            },
+            {
+                "score": "3-2",
+                "probability": 6.0,
+                "odd": 16.57
+            },
+            {
+                "score": "2-1",
+                "probability": 5.5,
+                "odd": 18.32
+            },
+            {
+                "score": "3-1",
+                "probability": 5.5,
+                "odd": 18.22
+            },
+            {
+                "score": "4-2",
+                "probability": 4.5,
+                "odd": 21.98
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 17:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "TSG Hoffenheim",
+        "away_team": "Augsburg",
+        "status": "scheduled",
+        "lambda_home": 3.49,
+        "lambda_away": 2.44,
+        "probabilities": {
+            "1": 58.2,
+            "X": 15.8,
+            "2": 26.0
+        },
+        "odds": {
+            "1": 1.72,
+            "X": 6.33,
+            "2": 3.85
+        },
+        "exact_scores": [
+            {
+                "score": "3-2",
+                "probability": 5.7,
+                "odd": 17.64
+            },
+            {
+                "score": "2-2",
+                "probability": 4.9,
+                "odd": 20.52
+            },
+            {
+                "score": "4-2",
+                "probability": 4.9,
+                "odd": 20.22
+            },
+            {
+                "score": "3-1",
+                "probability": 4.6,
+                "odd": 21.51
+            },
+            {
+                "score": "3-3",
+                "probability": 4.6,
+                "odd": 21.7
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 19:30:00",
+        "league": "GER-Bundesliga",
+        "home_team": "Borussia Dortmund",
+        "away_team": "Bayer Leverkusen",
+        "status": "scheduled",
+        "lambda_home": 3.28,
+        "lambda_away": 2.33,
+        "probabilities": {
+            "1": 56.9,
+            "X": 16.4,
+            "2": 26.7
+        },
+        "odds": {
+            "1": 1.76,
+            "X": 6.08,
+            "2": 3.75
+        },
+        "exact_scores": [
+            {
+                "score": "3-2",
+                "probability": 5.9,
+                "odd": 17.0
+            },
+            {
+                "score": "2-2",
+                "probability": 5.4,
+                "odd": 18.61
+            },
+            {
+                "score": "3-1",
+                "probability": 5.0,
+                "odd": 19.85
+            },
+            {
+                "score": "4-2",
+                "probability": 4.8,
+                "odd": 20.71
+            },
+            {
+                "score": "2-1",
+                "probability": 4.6,
+                "odd": 21.73
             }
         ]
     }

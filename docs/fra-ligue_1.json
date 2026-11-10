@@ -5,43 +5,43 @@
         "home_team": "Troyes",
         "away_team": "Le Havre",
         "status": "scheduled",
-        "lambda_home": 1.94,
-        "lambda_away": 2.01,
+        "lambda_home": 1.92,
+        "lambda_away": 1.99,
         "probabilities": {
             "1": 37.3,
-            "X": 22.7,
-            "2": 40.0
+            "X": 22.8,
+            "2": 39.9
         },
         "odds": {
             "1": 2.68,
-            "X": 4.41,
-            "2": 2.5
+            "X": 4.39,
+            "2": 2.51
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 8.4,
-                "odd": 11.94
+                "probability": 8.5,
+                "odd": 11.7
             },
             {
                 "score": "1-2",
-                "probability": 7.6,
-                "odd": 13.16
+                "probability": 7.7,
+                "odd": 13.04
+            },
+            {
+                "score": "2-1",
+                "probability": 7.4,
+                "odd": 13.5
             },
             {
                 "score": "2-2",
                 "probability": 7.4,
-                "odd": 13.54
-            },
-            {
-                "score": "2-1",
-                "probability": 7.3,
-                "odd": 13.64
+                "odd": 13.56
             },
             {
                 "score": "1-3",
                 "probability": 5.1,
-                "odd": 19.6
+                "odd": 19.66
             }
         ]
     },
@@ -51,33 +51,33 @@
         "home_team": "Nice",
         "away_team": "Paris Saint Germain",
         "status": "scheduled",
-        "lambda_home": 1.8,
-        "lambda_away": 2.35,
+        "lambda_home": 1.78,
+        "lambda_away": 2.33,
         "probabilities": {
             "1": 29.2,
-            "X": 21.4,
-            "2": 49.4
+            "X": 21.5,
+            "2": 49.3
         },
         "odds": {
             "1": 3.42,
-            "X": 4.68,
-            "2": 2.02
+            "X": 4.65,
+            "2": 2.03
         },
         "exact_scores": [
             {
                 "score": "1-2",
-                "probability": 7.9,
-                "odd": 12.61
+                "probability": 8.0,
+                "odd": 12.48
             },
             {
                 "score": "1-1",
-                "probability": 7.5,
-                "odd": 13.37
+                "probability": 7.6,
+                "odd": 13.1
             },
             {
                 "score": "2-2",
                 "probability": 7.1,
-                "odd": 14.0
+                "odd": 13.99
             },
             {
                 "score": "1-3",
@@ -87,7 +87,7 @@
             {
                 "score": "2-1",
                 "probability": 6.1,
-                "odd": 16.47
+                "odd": 16.29
             }
         ]
     },
@@ -97,43 +97,43 @@
         "home_team": "AS Monaco",
         "away_team": "Auxerre",
         "status": "scheduled",
-        "lambda_home": 3.25,
-        "lambda_away": 1.73,
+        "lambda_home": 3.22,
+        "lambda_away": 1.71,
         "probabilities": {
-            "1": 65.5,
-            "X": 16.6,
-            "2": 17.9
+            "1": 65.4,
+            "X": 16.7,
+            "2": 18.0
         },
         "odds": {
             "1": 1.53,
-            "X": 6.04,
-            "2": 5.58
+            "X": 6.0,
+            "2": 5.57
         },
         "exact_scores": [
             {
                 "score": "3-1",
                 "probability": 7.2,
-                "odd": 13.96
+                "odd": 13.85
             },
             {
                 "score": "2-1",
-                "probability": 6.6,
-                "odd": 15.11
+                "probability": 6.7,
+                "odd": 14.85
             },
             {
                 "score": "3-2",
                 "probability": 6.2,
-                "odd": 16.15
+                "odd": 16.2
+            },
+            {
+                "score": "2-2",
+                "probability": 5.8,
+                "odd": 17.36
             },
             {
                 "score": "4-1",
                 "probability": 5.8,
-                "odd": 17.19
-            },
-            {
-                "score": "2-2",
-                "probability": 5.7,
-                "odd": 17.49
+                "odd": 17.24
             }
         ]
     },
@@ -143,28 +143,28 @@
         "home_team": "Strasbourg",
         "away_team": "Brest",
         "status": "scheduled",
-        "lambda_home": 2.31,
-        "lambda_away": 1.81,
+        "lambda_home": 2.28,
+        "lambda_away": 1.8,
         "probabilities": {
-            "1": 48.3,
-            "X": 21.6,
+            "1": 48.2,
+            "X": 21.7,
             "2": 30.1
         },
         "odds": {
-            "1": 2.07,
-            "X": 4.63,
+            "1": 2.08,
+            "X": 4.6,
             "2": 3.32
         },
         "exact_scores": [
             {
                 "score": "2-1",
-                "probability": 7.9,
-                "odd": 12.61
+                "probability": 8.0,
+                "odd": 12.48
             },
             {
                 "score": "1-1",
-                "probability": 7.6,
-                "odd": 13.09
+                "probability": 7.8,
+                "odd": 12.84
             },
             {
                 "score": "2-2",
@@ -173,13 +173,13 @@
             },
             {
                 "score": "1-2",
-                "probability": 6.2,
-                "odd": 16.03
+                "probability": 6.3,
+                "odd": 15.87
             },
             {
                 "score": "3-1",
                 "probability": 6.1,
-                "odd": 16.4
+                "odd": 16.39
             }
         ]
     },
@@ -189,43 +189,43 @@
         "home_team": "Lille",
         "away_team": "Lyon",
         "status": "scheduled",
-        "lambda_home": 2.01,
-        "lambda_away": 1.54,
+        "lambda_home": 2.03,
+        "lambda_away": 1.47,
         "probabilities": {
-            "1": 47.6,
+            "1": 49.3,
             "X": 23.6,
-            "2": 28.7
+            "2": 27.1
         },
         "odds": {
-            "1": 2.1,
-            "X": 4.23,
-            "2": 3.48
+            "1": 2.03,
+            "X": 4.24,
+            "2": 3.69
         },
         "exact_scores": [
             {
                 "score": "1-1",
-                "probability": 9.9,
-                "odd": 10.06
+                "probability": 10.1,
+                "odd": 9.95
             },
             {
                 "score": "2-1",
-                "probability": 9.0,
-                "odd": 11.11
-            },
-            {
-                "score": "1-2",
-                "probability": 6.9,
-                "odd": 14.54
+                "probability": 9.2,
+                "odd": 10.88
             },
             {
                 "score": "2-2",
-                "probability": 6.9,
-                "odd": 14.47
+                "probability": 6.8,
+                "odd": 14.77
             },
             {
-                "score": "3-1",
-                "probability": 6.0,
-                "odd": 16.59
+                "score": "1-2",
+                "probability": 6.7,
+                "odd": 14.98
+            },
+            {
+                "score": "2-0",
+                "probability": 6.2,
+                "odd": 16.04
             }
         ]
     },
@@ -235,43 +235,43 @@
         "home_team": "RC Lens",
         "away_team": "Toulouse",
         "status": "scheduled",
-        "lambda_home": 2.31,
-        "lambda_away": 1.7,
+        "lambda_home": 2.24,
+        "lambda_away": 1.73,
         "probabilities": {
-            "1": 50.6,
-            "X": 21.7,
-            "2": 27.7
+            "1": 48.7,
+            "X": 22.0,
+            "2": 29.3
         },
         "odds": {
-            "1": 1.97,
-            "X": 4.62,
-            "2": 3.61
+            "1": 2.05,
+            "X": 4.54,
+            "2": 3.42
         },
         "exact_scores": [
             {
                 "score": "2-1",
                 "probability": 8.3,
-                "odd": 12.0
+                "odd": 12.07
             },
             {
                 "score": "1-1",
-                "probability": 8.0,
-                "odd": 12.5
+                "probability": 8.2,
+                "odd": 12.21
             },
             {
                 "score": "2-2",
-                "probability": 7.1,
-                "odd": 14.15
-            },
-            {
-                "score": "3-1",
-                "probability": 6.4,
-                "odd": 15.58
+                "probability": 7.2,
+                "odd": 13.98
             },
             {
                 "score": "1-2",
-                "probability": 6.1,
-                "odd": 16.36
+                "probability": 6.4,
+                "odd": 15.69
+            },
+            {
+                "score": "3-1",
+                "probability": 6.2,
+                "odd": 16.14
             }
         ]
     },
@@ -281,23 +281,23 @@
         "home_team": "Paris FC",
         "away_team": "Angers",
         "status": "scheduled",
-        "lambda_home": 2.81,
-        "lambda_away": 1.45,
+        "lambda_home": 2.78,
+        "lambda_away": 1.44,
         "probabilities": {
-            "1": 64.5,
-            "X": 18.2,
+            "1": 64.2,
+            "X": 18.3,
             "2": 17.4
         },
         "odds": {
-            "1": 1.55,
-            "X": 5.5,
-            "2": 5.76
+            "1": 1.56,
+            "X": 5.45,
+            "2": 5.73
         },
         "exact_scores": [
             {
                 "score": "2-1",
-                "probability": 8.3,
-                "odd": 12.06
+                "probability": 8.4,
+                "odd": 11.93
             },
             {
                 "score": "3-1",
@@ -306,18 +306,18 @@
             },
             {
                 "score": "1-1",
-                "probability": 6.5,
-                "odd": 15.29
+                "probability": 6.7,
+                "odd": 14.97
             },
             {
                 "score": "2-2",
                 "probability": 6.0,
-                "odd": 16.64
+                "odd": 16.6
             },
             {
                 "score": "2-0",
-                "probability": 5.7,
-                "odd": 17.48
+                "probability": 5.8,
+                "odd": 17.16
             }
         ]
     },
@@ -327,43 +327,43 @@
         "home_team": "Lorient",
         "away_team": "Rennes",
         "status": "scheduled",
-        "lambda_home": 2.33,
-        "lambda_away": 2.02,
+        "lambda_home": 2.3,
+        "lambda_away": 2.0,
         "probabilities": {
-            "1": 44.9,
-            "X": 21.2,
+            "1": 44.8,
+            "X": 21.4,
             "2": 33.8
         },
         "odds": {
-            "1": 2.22,
-            "X": 4.71,
+            "1": 2.23,
+            "X": 4.68,
             "2": 2.96
         },
         "exact_scores": [
             {
-                "score": "2-2",
+                "score": "2-1",
                 "probability": 7.3,
-                "odd": 13.78
+                "odd": 13.74
             },
             {
-                "score": "2-1",
-                "probability": 7.2,
-                "odd": 13.91
+                "score": "2-2",
+                "probability": 7.3,
+                "odd": 13.74
             },
             {
                 "score": "1-1",
-                "probability": 6.9,
-                "odd": 14.59
+                "probability": 7.0,
+                "odd": 14.25
             },
             {
                 "score": "1-2",
-                "probability": 6.2,
-                "odd": 16.05
+                "probability": 6.3,
+                "odd": 15.82
             },
             {
                 "score": "3-1",
                 "probability": 5.6,
-                "odd": 17.92
+                "odd": 17.9
             }
         ]
     },
@@ -373,43 +373,457 @@
         "home_team": "Marseille",
         "away_team": "Le Mans FC",
         "status": "scheduled",
-        "lambda_home": 2.96,
-        "lambda_away": 1.54,
+        "lambda_home": 2.93,
+        "lambda_away": 1.53,
         "probabilities": {
-            "1": 64.9,
-            "X": 17.6,
+            "1": 64.7,
+            "X": 17.7,
             "2": 17.6
         },
         "odds": {
             "1": 1.54,
-            "X": 5.69,
-            "2": 5.7
+            "X": 5.65,
+            "2": 5.69
         },
         "exact_scores": [
             {
                 "score": "2-1",
-                "probability": 7.7,
-                "odd": 12.92
+                "probability": 7.8,
+                "odd": 12.76
             },
             {
                 "score": "3-1",
-                "probability": 7.6,
-                "odd": 13.1
+                "probability": 7.7,
+                "odd": 13.05
             },
             {
                 "score": "2-2",
                 "probability": 6.0,
-                "odd": 16.75
+                "odd": 16.7
+            },
+            {
+                "score": "1-1",
+                "probability": 5.9,
+                "odd": 16.85
             },
             {
                 "score": "3-2",
                 "probability": 5.9,
-                "odd": 16.97
+                "odd": 17.09
+            }
+        ]
+    },
+    {
+        "date": "2026-11-27 20:45:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Brest",
+        "away_team": "Paris FC",
+        "status": "scheduled",
+        "lambda_home": 1.86,
+        "lambda_away": 1.68,
+        "probabilities": {
+            "1": 41.5,
+            "X": 24.2,
+            "2": 34.3
+        },
+        "odds": {
+            "1": 2.41,
+            "X": 4.14,
+            "2": 2.91
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 10.1,
+                "odd": 9.88
+            },
+            {
+                "score": "2-1",
+                "probability": 8.5,
+                "odd": 11.8
+            },
+            {
+                "score": "1-2",
+                "probability": 7.7,
+                "odd": 13.06
+            },
+            {
+                "score": "2-2",
+                "probability": 7.1,
+                "odd": 14.06
+            },
+            {
+                "score": "3-1",
+                "probability": 5.2,
+                "odd": 19.05
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 17:15:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Angers",
+        "away_team": "RC Lens",
+        "status": "scheduled",
+        "lambda_home": 1.53,
+        "lambda_away": 2.2,
+        "probabilities": {
+            "1": 25.9,
+            "X": 22.4,
+            "2": 51.8
+        },
+        "odds": {
+            "1": 3.87,
+            "X": 4.47,
+            "2": 1.93
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.0,
+                "odd": 11.07
+            },
+            {
+                "score": "1-2",
+                "probability": 9.0,
+                "odd": 11.16
+            },
+            {
+                "score": "2-2",
+                "probability": 6.9,
+                "odd": 14.59
+            },
+            {
+                "score": "1-3",
+                "probability": 6.6,
+                "odd": 15.21
+            },
+            {
+                "score": "2-1",
+                "probability": 6.2,
+                "odd": 16.06
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 20:45:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Le Havre",
+        "away_team": "Strasbourg",
+        "status": "scheduled",
+        "lambda_home": 1.81,
+        "lambda_away": 2.27,
+        "probabilities": {
+            "1": 30.6,
+            "X": 21.8,
+            "2": 47.7
+        },
+        "odds": {
+            "1": 3.27,
+            "X": 4.59,
+            "2": 2.1
+        },
+        "exact_scores": [
+            {
+                "score": "1-2",
+                "probability": 8.0,
+                "odd": 12.55
             },
             {
                 "score": "1-1",
-                "probability": 5.8,
-                "odd": 17.23
+                "probability": 7.8,
+                "odd": 12.84
+            },
+            {
+                "score": "2-2",
+                "probability": 7.2,
+                "odd": 13.86
+            },
+            {
+                "score": "2-1",
+                "probability": 6.4,
+                "odd": 15.75
+            },
+            {
+                "score": "1-3",
+                "probability": 6.0,
+                "odd": 16.56
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 20:45:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Le Mans FC",
+        "away_team": "Lille",
+        "status": "scheduled",
+        "lambda_home": 1.62,
+        "lambda_away": 2.14,
+        "probabilities": {
+            "1": 28.5,
+            "X": 22.7,
+            "2": 48.7
+        },
+        "odds": {
+            "1": 3.5,
+            "X": 4.4,
+            "2": 2.05
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 9.1,
+                "odd": 11.03
+            },
+            {
+                "score": "1-2",
+                "probability": 8.7,
+                "odd": 11.47
+            },
+            {
+                "score": "2-2",
+                "probability": 7.0,
+                "odd": 14.19
+            },
+            {
+                "score": "2-1",
+                "probability": 6.6,
+                "odd": 15.16
+            },
+            {
+                "score": "1-3",
+                "probability": 6.2,
+                "odd": 16.1
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 20:45:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Paris Saint Germain",
+        "away_team": "Lorient",
+        "status": "scheduled",
+        "lambda_home": 2.52,
+        "lambda_away": 1.39,
+        "probabilities": {
+            "1": 60.8,
+            "X": 20.0,
+            "2": 19.2
+        },
+        "odds": {
+            "1": 1.64,
+            "X": 5.0,
+            "2": 5.22
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 9.0,
+                "odd": 11.12
+            },
+            {
+                "score": "1-1",
+                "probability": 7.9,
+                "odd": 12.63
+            },
+            {
+                "score": "3-1",
+                "probability": 7.6,
+                "odd": 13.24
+            },
+            {
+                "score": "2-0",
+                "probability": 6.5,
+                "odd": 15.43
+            },
+            {
+                "score": "2-2",
+                "probability": 6.2,
+                "odd": 16.05
+            }
+        ]
+    },
+    {
+        "date": "2026-11-28 20:45:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Nice",
+        "away_team": "Troyes",
+        "status": "scheduled",
+        "lambda_home": 2.28,
+        "lambda_away": 1.3,
+        "probabilities": {
+            "1": 58.3,
+            "X": 21.6,
+            "2": 20.1
+        },
+        "odds": {
+            "1": 1.72,
+            "X": 4.63,
+            "2": 4.96
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 9.5,
+                "odd": 10.52
+            },
+            {
+                "score": "1-1",
+                "probability": 9.2,
+                "odd": 10.82
+            },
+            {
+                "score": "2-0",
+                "probability": 7.3,
+                "odd": 13.67
+            },
+            {
+                "score": "3-1",
+                "probability": 7.2,
+                "odd": 13.82
+            },
+            {
+                "score": "2-2",
+                "probability": 6.2,
+                "odd": 16.19
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 15:00:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Auxerre",
+        "away_team": "Marseille",
+        "status": "scheduled",
+        "lambda_home": 1.6,
+        "lambda_away": 1.9,
+        "probabilities": {
+            "1": 31.9,
+            "X": 24.2,
+            "2": 43.9
+        },
+        "odds": {
+            "1": 3.13,
+            "X": 4.13,
+            "2": 2.28
+        },
+        "exact_scores": [
+            {
+                "score": "1-1",
+                "probability": 10.3,
+                "odd": 9.75
+            },
+            {
+                "score": "1-2",
+                "probability": 8.8,
+                "odd": 11.42
+            },
+            {
+                "score": "2-1",
+                "probability": 7.4,
+                "odd": 13.52
+            },
+            {
+                "score": "2-2",
+                "probability": 7.0,
+                "odd": 14.27
+            },
+            {
+                "score": "0-2",
+                "probability": 5.5,
+                "odd": 18.28
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 17:15:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Toulouse",
+        "away_team": "Rennes",
+        "status": "scheduled",
+        "lambda_home": 2.35,
+        "lambda_away": 1.99,
+        "probabilities": {
+            "1": 45.8,
+            "X": 21.2,
+            "2": 33.0
+        },
+        "odds": {
+            "1": 2.18,
+            "X": 4.72,
+            "2": 3.03
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 7.3,
+                "odd": 13.78
+            },
+            {
+                "score": "2-2",
+                "probability": 7.2,
+                "odd": 13.83
+            },
+            {
+                "score": "1-1",
+                "probability": 6.8,
+                "odd": 14.6
+            },
+            {
+                "score": "1-2",
+                "probability": 6.1,
+                "odd": 16.27
+            },
+            {
+                "score": "3-1",
+                "probability": 5.7,
+                "odd": 17.57
+            }
+        ]
+    },
+    {
+        "date": "2026-11-29 20:45:00",
+        "league": "FRA-Ligue 1",
+        "home_team": "Lyon",
+        "away_team": "AS Monaco",
+        "status": "scheduled",
+        "lambda_home": 2.41,
+        "lambda_away": 1.79,
+        "probabilities": {
+            "1": 50.8,
+            "X": 21.1,
+            "2": 28.1
+        },
+        "odds": {
+            "1": 1.97,
+            "X": 4.75,
+            "2": 3.56
+        },
+        "exact_scores": [
+            {
+                "score": "2-1",
+                "probability": 7.9,
+                "odd": 12.65
+            },
+            {
+                "score": "1-1",
+                "probability": 7.3,
+                "odd": 13.76
+            },
+            {
+                "score": "2-2",
+                "probability": 7.1,
+                "odd": 14.14
+            },
+            {
+                "score": "3-1",
+                "probability": 6.4,
+                "odd": 15.71
+            },
+            {
+                "score": "1-2",
+                "probability": 5.9,
+                "odd": 17.07
             }
         ]
     }
