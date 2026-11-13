@@ -31,7 +31,10 @@ jobs:
       - name: Refresh fixtures, results, predictions and odds
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: python -m backend.daily_refresh
+        run: python -m backend.calcio.daily_refresh
+
+      - name: Refresh Formula 1 data and predictions
+        run: python -m backend.formula1 --update --start-year 2024 --no-details
 
       - name: Publish updated static data
         run: |
@@ -41,10 +44,11 @@ jobs:
             docs/eng-championship.json docs/eng-premier_league.json \
             docs/esp-la_liga.json docs/fra-ligue_1.json \
             docs/ger-bundesliga.json docs/ita-serie_a.json \
-            docs/ita-serie_b.json
+            docs/ita-serie_b.json \
+            docs/formula1/formula1-data.json docs/formula1/formula1-data.js
           if git diff --cached --quiet; then
             echo "No data changes to publish."
             exit 0
           fi
-          git commit -m "Update match data"
+          git commit -m "Update match and motorsport data"
           git push

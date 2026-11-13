@@ -1,8 +1,8 @@
 import sqlite3
 import pandas as pd
 import numpy as np
-from backend.stats import compute_team_stats
-from backend.model import calculate_match_probabilities
+from backend.calcio.stats import compute_team_stats
+from backend.calcio.model import calculate_match_probabilities
 
 def run_backtest_1x2(db_path="data/database.db"):
     conn = sqlite3.connect(db_path)

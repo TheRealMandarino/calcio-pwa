@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from backend.daily_refresh import LEAGUE_NAMES_BY_FILE, write_publication_data
+from backend.calcio.daily_refresh import LEAGUE_NAMES_BY_FILE, write_publication_data
 
 
 class PublicationDataTests(unittest.TestCase):

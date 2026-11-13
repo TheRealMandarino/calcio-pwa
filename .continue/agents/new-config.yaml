@@ -1,0 +1,14 @@
+name: Locale Qwen Config
+version: 1.0.0
+schema: v1
+
+# Modelli locali attivi tramite Ollama
+models:
+  - name: qwen2.5-coder 7b
+    provider: ollama
+    model: qwen2.5-coder:7b
+    roles:
+      - apply
+      - autocomplete
+      - chat
+      - edit

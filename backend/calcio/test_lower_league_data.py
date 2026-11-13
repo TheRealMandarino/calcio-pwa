@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from backend.backtest_lower_leagues import load_matches, run_backtest
-from backend.lower_league_data import (
+from backend.calcio.backtest_lower_leagues import load_matches, run_backtest
+from backend.calcio.lower_league_data import (
     download_lower_league_data,
     download_primary_league_data,
     parse_season_csv,
@@ -16,9 +16,9 @@ from backend.lower_league_data import (
     update_lower_leagues,
     update_primary_leagues,
 )
-from backend.model import calculate_match_probabilities, get_h2h_factor, resolve_team_name
-from backend.scraper import init_db
-from backend.stats import compute_team_stats
+from backend.calcio.model import calculate_match_probabilities, get_h2h_factor, resolve_team_name
+from backend.calcio.scraper import init_db
+from backend.calcio.stats import compute_team_stats
 
 
 CSV_CONTENT = (

@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pandas as pd
 
-from backend.model import calculate_match_probabilities, get_h2h_factor
-from backend.stats import compute_team_stats
+from backend.calcio.model import calculate_match_probabilities, get_h2h_factor
+from backend.calcio.stats import compute_team_stats
 
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 DEFAULT_DB_PATH = ROOT_DIR / "data" / "database.db"
 LEAGUES = ("ITA-Serie B", "ENG-Championship")
 MARKETS = ("1", "X", "2")

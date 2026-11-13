@@ -1,10 +1,10 @@
 import sqlite3
 from pathlib import Path
 
-from backend.lower_league_data import update_primary_leagues
+from backend.calcio.lower_league_data import update_primary_leagues
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DEFAULT_DB_PATH = BASE_DIR / "data" / "database.db"
 
 

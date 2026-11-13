@@ -4,8 +4,8 @@ import pandas as pd
 import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from backend.stats import compute_team_stats
-from backend.model import calculate_match_probabilities
+from backend.calcio.stats import compute_team_stats
+from backend.calcio.model import calculate_match_probabilities
 
 LOWER_LEAGUE_PARAMETERS = {
     "ITA-Serie B": {
@@ -25,7 +25,7 @@ LOWER_LEAGUE_PARAMETERS = {
 
 def generate_league_json():
     # Trova automaticamente la cartella radice del progetto
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     db_path = os.path.join(BASE_DIR, "data", "database.db")
     output_dir = os.path.join(BASE_DIR, "docs")
     

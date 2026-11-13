@@ -300,7 +300,7 @@ def update_championship_fixtures(db_path, events, now=None):
 
 
 if __name__ == "__main__":
-    from backend.scraper import DEFAULT_DB_PATH, init_db
+    from backend.calcio.scraper import DEFAULT_DB_PATH, init_db
 
     init_db(DEFAULT_DB_PATH)
     update_lower_leagues(DEFAULT_DB_PATH)

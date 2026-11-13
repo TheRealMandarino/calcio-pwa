@@ -2,17 +2,17 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from backend.batch_analyzer import generate_league_json
-from backend.lower_league_data import (
+from backend.calcio.batch_analyzer import generate_league_json
+from backend.calcio.lower_league_data import (
     ALL_LEAGUES,
     update_lower_leagues,
     update_scheduled_fixtures,
 )
-from backend.scraper import init_db, update_soccer_data
-from backend.scraper import DEFAULT_DB_PATH
+from backend.calcio.scraper import init_db, update_soccer_data
+from backend.calcio.scraper import DEFAULT_DB_PATH
 from backend.server import LEAGUES, fetch_odds, load_api_key
 
-DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
+DOCS_DIR = Path(__file__).resolve().parent.parent.parent / "docs"
 LEAGUE_NAMES_BY_FILE = {
     f"{league.replace(' ', '_').lower()}.json": league
     for league in ALL_LEAGUES.values()

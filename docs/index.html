@@ -194,6 +194,125 @@
         .exact-score .odd { color: var(--green); }
         .exact-score .prob { color: #81909b; }
         .empty-state { padding: 30px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--muted); text-align: center; }
+        .extra-markets { margin-top: 13px; padding-top: 11px; border-top: 1px solid #ffffff0c; }
+        .extra-markets-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+        .extra-markets-title { color: #bdc8cf; font-size: 10px; font-weight: 650; letter-spacing: .04em; }
+        .extra-markets-toggle { padding: 2px 8px; border: 1px solid #293540; border-radius: 6px; background: none; color: #72818c; cursor: pointer; font-size: 9px; }
+        .extra-markets-toggle:hover { border-color: #3a745c; color: var(--green); }
+        .extra-markets-body { display: none; }
+        .extra-markets-body.open { display: block; }
+        .extra-market-group { margin-bottom: 10px; }
+        .extra-market-group-label { display: block; margin-bottom: 5px; color: #72818c; font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
+        .extra-odds-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+        .extra-odds-grid.cols2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .extra-market-card { min-width: 0; padding: 7px 4px; border: 1px solid #293540; border-radius: 10px; background: #0a1118; text-align: center; }
+        .extra-market-name { display: block; color: #a1afb9; font-size: 9px; }
+        .extra-market-odd { display: block; color: #e2e9ed; font-size: 15px; font-weight: 750; margin: 2px 0; }
+        .extra-market-prob { display: block; color: #91a0ad; font-size: 9px; }
+
+        .view-tabs { display: flex; gap: 7px; padding: 12px 0 0; }
+        .view-tab { padding: 8px 14px; border: 1px solid var(--line); border-radius: 9px 9px 0 0; background: #101720; color: var(--muted); font-weight: 650; }
+        .view-tab[aria-selected="true"] { border-color: #3a745c; background: #14251f; color: var(--green); }
+        .tennis-view { --green: #c6ef73; --green-soft: #313e1b; }
+        .tennis-view .hero { background: radial-gradient(ellipse at 87% 45%, #354321 0, transparent 38%); }
+        .tennis-panel { margin: 0 0 20px; padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: linear-gradient(145deg, #121b25, #0e151d 75%); }
+        .formula1-view { --green: #f2c879; --green-soft: #3d301d; }
+        .formula1-view .hero { background: radial-gradient(ellipse at 87% 45%, #463516 0, transparent 38%); }
+        .formula1-status { margin: 0 0 12px; }
+        .formula1-status.is-error { border-color: #704247; background: #29191d; color: #ffb8bd; }
+        .formula1-source-note { margin-top: 14px; color: var(--muted); font-size: 11px; }
+        .formula1-source-note a { color: #f2c879; }
+        .formula1-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .formula1-feature { padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #0c131a; }
+        .formula1-feature strong { display: block; margin-bottom: 4px; font-size: 12px; }
+        .formula1-feature span { color: var(--muted); font-size: 10px; }
+
+        /* Formula 1 UI & Tables */
+        .formula1-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+        .formula1-badge.next { background: #3d301d; color: #f2c879; border: 1px solid #755b29; }
+        .formula1-badge.completed { background: #14271f; color: #6ee7b7; border: 1px solid #23543d; }
+        .formula1-badge.upcoming { background: #151d28; color: var(--muted); border: 1px solid var(--line); }
+
+        .f1-card-highlight { background: linear-gradient(135deg, #182230 0%, #111822 100%); border: 1px solid #2b3d52; border-radius: 14px; padding: 18px; margin-top: 12px; }
+        .f1-card-highlight .f1-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .f1-card-highlight h3 { margin: 0; font-size: 17px; color: #f2c879; font-weight: 700; }
+        .f1-card-meta { display: flex; gap: 14px; color: var(--muted); font-size: 11.5px; flex-wrap: wrap; margin-top: 4px; }
+        .f1-card-meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+        .f1-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; border: 1px solid var(--line); background: #0c131a; margin-top: 12px; }
+        .f1-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; white-space: nowrap; }
+        .f1-table th { padding: 10px 14px; background: #111a24; color: var(--muted); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--line); }
+        .f1-table td { padding: 9px 14px; border-bottom: 1px solid #16202c; color: var(--text); vertical-align: middle; }
+        .f1-table tbody tr:hover td { background: #131c26; }
+        .f1-table tbody tr:last-child td { border-bottom: none; }
+
+        .f1-rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; font-weight: 800; font-size: 11px; background: #1b2636; color: #94a3b8; }
+        .f1-rank-badge.top-1 { background: #4a3818; color: #ffd700; border: 1px solid #856424; }
+        .f1-rank-badge.top-2 { background: #333c46; color: #e2e8f0; border: 1px solid #576472; }
+        .f1-rank-badge.top-3 { background: #3d281a; color: #f97316; border: 1px solid #784825; }
+
+        .f1-driver-cell { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .f1-code-badge { font-family: monospace; font-size: 10.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #1a2533; color: #cbd5e1; }
+        .f1-odds-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; padding: 3px 8px; border-radius: 7px; background: #261f13; border: 1px solid #5e471f; color: #f2c879; font-weight: 700; font-size: 12px; }
+        .f1-prob-cell { min-width: 140px; }
+        .f1-prob-bar-wrap { display: flex; align-items: center; gap: 8px; }
+        .f1-prob-bar-bg { flex: 1; height: 6px; background: #16222f; border-radius: 3px; overflow: hidden; min-width: 50px; }
+        .f1-prob-bar-fill { height: 100%; background: linear-gradient(90deg, #d49f3e, #f2c879); border-radius: 3px; }
+        .f1-prob-val { font-weight: 700; font-size: 11px; min-width: 36px; text-align: right; color: #f2c879; }
+
+        .f1-subnav { display: inline-flex; gap: 6px; }
+        .f1-subtab { padding: 6px 13px; border: 1px solid var(--line); border-radius: 8px; background: #0c131a; color: var(--muted); font-size: 11.5px; font-weight: 650; cursor: pointer; transition: all 0.15s ease; }
+        .f1-subtab:hover { color: var(--text); border-color: #3b4d61; }
+        .f1-subtab.active { background: #2a2012; border-color: #6d5124; color: #f2c879; }
+        .tennis-panel h2, .tennis-panel h3 { margin: 0; }
+        .tennis-panel > p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+        .tennis-import { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; margin-top: 20px; }
+        .tennis-dashboard-toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-top: 14px; }
+        .tennis-dashboard-toolbar .tennis-field { min-width: 180px; }
+        .tennis-calendar-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 12px; }
+        .tennis-calendar-card { display: grid; gap: 7px; padding: 13px; border: 1px solid #293540; border-radius: 11px; background: #0a1118; }
+        .tennis-calendar-card h3 { margin: 0; color: var(--text); font-size: 13px; }
+        .tennis-calendar-card p { margin: 0; color: var(--muted); font-size: 10px; }
+        .tennis-calendar-players { font-size: 12px; font-weight: 650; }
+        .tennis-calendar-card .action-button { width: 100%; margin-top: 3px; }
+        .tennis-advanced { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 11px; }
+        .tennis-advanced summary { color: #aab6bd; cursor: pointer; font-size: 11px; }
+        .tennis-import-copy { color: var(--muted); font-size: 11px; }
+        .tennis-import-copy strong { color: var(--text); }
+        .tennis-file { max-width: 100%; padding: 9px; border: 1px solid var(--line); border-radius: 9px; background: #0a1118; font-size: 11px; }
+        .tennis-source-note { margin-top: 9px; color: #83929c; font-size: 10px; }
+        .tennis-source-note a { color: #c6ef73; }
+        .tennis-status { margin-top: 11px; padding: 9px 11px; border: 1px solid #293540; border-radius: 9px; color: #aebbc4; font-size: 11px; }
+        .tennis-status.is-error { border-color: #6b3035; background: #241316; color: #ffb6b6; }
+        .tennis-form-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 15px; }
+        .tennis-field { min-width: 0; display: grid; gap: 5px; color: #aab6bd; font-size: 10px; }
+        .tennis-field input, .tennis-field select { width: 100%; min-height: 39px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 9px; background: #0a1118; color: var(--text); font-size: 12px; }
+        .tennis-field small { color: #778792; font-size: 9px; line-height: 1.4; }
+        .tennis-form-actions { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+        .tennis-form-actions .action-button.primary { border-color: #c6ef73; background: #c6ef73; color: #17200c; }
+        .tennis-results { margin-top: 18px; }
+        .tennis-results-heading { display: flex; justify-content: space-between; align-items: start; gap: 12px; margin-bottom: 12px; }
+        .tennis-results-heading p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
+        .tennis-results-heading .date-tag { color: #c6ef73; }
+        .tennis-winbar { display: flex; overflow: hidden; height: 12px; margin: 12px 0 7px; border-radius: 999px; background: #24303a; }
+        .tennis-winbar-a { background: #c6ef73; }
+        .tennis-winbar-b { background: #8eb8fa; }
+        .tennis-win-labels { display: flex; justify-content: space-between; gap: 8px; color: #b7c2c9; font-size: 10px; }
+        .tennis-output-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 13px; }
+        .tennis-output-card { padding: 12px; border: 1px solid #293540; border-radius: 11px; background: #0a1118; }
+        .tennis-output-label { color: var(--muted); font-size: 9px; }
+        .tennis-output-value { margin-top: 4px; font-size: 20px; font-weight: 730; letter-spacing: -.03em; }
+        .tennis-output-detail { margin-top: 3px; color: #82909b; font-size: 9px; }
+        .tennis-subheading { margin: 18px 0 9px !important; color: #d3dde2; font-size: 12px; }
+        .tennis-player-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .tennis-player-card { padding: 12px; border: 1px solid #293540; border-radius: 11px; background: #0a1118; }
+        .tennis-player-card h4 { margin: 0 0 9px; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+        .tennis-stat-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; }
+        .tennis-stat { display: flex; justify-content: space-between; gap: 8px; color: #8998a2; font-size: 9px; }
+        .tennis-stat strong { color: #d5dfe3; font-weight: 650; text-align: right; }
+        .tennis-note { margin-top: 12px; padding: 10px 11px; border-left: 2px solid #c6ef73; background: #141c15; color: #a9b5ad; font-size: 10px; line-height: 1.55; }
+        .tennis-empty { margin-top: 14px; }
+        .tennis-view .app-footer a { color: #c6ef73; }
 
         .status-banner { margin: 12px 0; padding: 10px 12px; border: 1px solid #244c3c; border-radius: 10px; background: #101a18; color: #a6e2c3; font-size: 11px; }
         .status-banner.is-error { border-color: #6b3035; background: #241316; color: #ffb6b6; }
@@ -225,6 +344,8 @@
             .header-actions .action-button { min-height: 38px; padding: 0 10px; font-size: 11px; }
             #fetchOddsButton { grid-column: 1 / -1; }
             .hero { padding: 25px 0 18px; align-items: flex-start; flex-direction: column; gap: 12px; }
+            .view-tabs { padding-top: 9px; }
+            .view-tab { flex: 1; padding: 8px 10px; font-size: 11px; }
             .hero h1 { margin-top: 9px; font-size: 29px; }
             .hero p { font-size: 12px; }
             .refresh-pill { margin: 0; padding: 6px 9px; font-size: 10px; }
@@ -237,6 +358,12 @@
             .section-heading p { font-size: 10px; }
             .date-tag { padding: 5px 7px; font-size: 9px; }
             .match-list { grid-template-columns: 1fr; gap: 10px; }
+            .tennis-import { grid-template-columns: 1fr; gap: 10px; }
+            .tennis-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+            .tennis-output-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .tennis-player-grid { grid-template-columns: 1fr; }
+            .tennis-panel { padding: 13px; }
+            .formula1-features { grid-template-columns: 1fr; }
             .match-card { padding: 13px; border-radius: 14px; }
             .fixture-meta { padding-bottom: 10px; }
             .teams-line { grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr); padding: 14px 0 13px; }
@@ -338,6 +465,13 @@
             </div>
         </header>
 
+        <nav class="view-tabs" role="tablist" aria-label="Sezione sport">
+            <button type="button" class="view-tab" role="tab" id="footballTab" aria-selected="true" aria-controls="footballView" onclick="switchSportView('football')">Calcio</button>
+            <button type="button" class="view-tab" role="tab" id="tennisTab" aria-selected="false" aria-controls="tennisView" onclick="switchSportView('tennis')">Tennis</button>
+            <button type="button" class="view-tab" role="tab" id="formula1Tab" aria-selected="false" aria-controls="formula1View" onclick="switchSportView('formula1')">Formula 1</button>
+        </nav>
+
+        <main id="footballView">
         <section class="hero">
             <div>
                 <div class="eyebrow"><span class="status-dot"></span> MODELLO POISSON · DIXON–COLES</div>
@@ -402,15 +536,424 @@
             Stemmi: <a href="https://www.football-data.org/" target="_blank" rel="noopener noreferrer">football-data.org</a>.
             Marchi e loghi appartengono ai rispettivi titolari.
         </footer>
+        </main>
+
+        <main id="tennisView" class="tennis-view" hidden>
+            <section class="hero">
+                <div>
+                    <div class="eyebrow"><span class="status-dot"></span> MODELLO PUNTO PER PUNTO · SUPERFICIE SPECIFICA</div>
+                    <h1>Il tennis, punto per punto.</h1>
+                    <p>Calendario automatico e quote eque stimate da servizio, risposta, forma e scontri diretti.</p>
+                </div>
+                <div class="refresh-pill"><span class="status-dot"></span> Analisi pre-partita · best of 3/5</div>
+            </section>
+
+            <section class="tennis-panel" aria-labelledby="tennisDashboardHeading">
+                <h2 id="tennisDashboardHeading">Partite in programma</h2>
+                <p>Il calendario e gli ultimi cinque anni di statistiche si caricano automaticamente quando apri Tennis.</p>
+                <div class="tennis-dashboard-toolbar">
+                    <label class="tennis-field">Circuito
+                        <select id="tennisTour">
+                            <option value="atp">ATP</option>
+                            <option value="wta">WTA</option>
+                        </select>
+                    </label>
+                    <button id="tennisRefresh" class="action-button secondary" type="button">Aggiorna calendario e dati</button>
+                </div>
+                <div id="tennisHistoryStatus" class="tennis-status" role="status" aria-live="polite">
+                    Apri la sezione Tennis per caricare automaticamente gli ultimi cinque anni.
+                </div>
+                <div id="tennisCalendarStatus" class="tennis-status" role="status" aria-live="polite">
+                    Il calendario dei prossimi 14 giorni verrà aggiornato automaticamente.
+                </div>
+                <div id="tennisCalendarMatches" class="tennis-calendar-list"></div>
+                <div id="tennisDataStatus" class="tennis-status" role="status" aria-live="polite">
+                    I pronostici mostrano anche la quota equa calcolata dal modello, non quote bookmaker.
+                </div>
+                <div class="tennis-source-note">
+                    Il calendario è fornito da <a href="https://www.espn.com/tennis/" target="_blank" rel="noopener noreferrer">ESPN</a>.
+                    Lo storico annuale è di Jeff Sackmann / Tennis Abstract tramite il mirror archivistico
+                    <a href="https://github.com/Aneeshers/tennis-sackmann-archive" target="_blank" rel="noopener noreferrer">tennis-sackmann-archive</a>,
+                    con licenza <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
+                    (attribuzione, uso non commerciale e condivisione allo stesso modo). I match senza superficie storica verificabile richiedono conferma manuale.
+                </div>
+                <details class="tennis-advanced">
+                    <summary>Importazioni manuali (facoltative)</summary>
+                    <div class="tennis-import">
+                        <div>
+                            <h3>Importa CSV aggiuntivi</h3>
+                            <p class="tennis-import-copy">CSV Tennis Abstract / Jeff Sackmann; non mescolare circuiti ATP e WTA.</p>
+                        </div>
+                        <input id="tennisCsvFile" class="tennis-file" type="file" accept=".csv,text/csv" multiple aria-label="Importa CSV storici aggiuntivi">
+                    </div>
+                    <form id="tennisScrapeForm" class="tennis-form-grid" aria-label="Importa risultati dal torneo Tennis Abstract">
+                        <label class="tennis-field">URL pagina torneo Tennis Abstract
+                            <input id="tennisTournamentUrl" name="url" type="url" required placeholder="https://www.tennisabstract.com/current/2026ATPParis.html">
+                        </label>
+                        <label class="tennis-field">Superficie del torneo
+                            <select id="tennisTournamentSurface" name="surface" required>
+                                <option value="clay">Terra battuta</option>
+                                <option value="hard_outdoor">Cemento outdoor</option>
+                                <option value="hard_indoor">Cemento indoor</option>
+                                <option value="grass">Erba</option>
+                                <option value="hard_unspecified">Cemento non specificato</option>
+                            </select>
+                        </label>
+                        <label class="tennis-field">Data d'inizio torneo
+                            <input id="tennisTournamentDate" name="date" type="date" required>
+                        </label>
+                        <div class="tennis-form-actions">
+                            <button class="action-button secondary" type="submit">Importa risultati del torneo</button>
+                        </div>
+                    </form>
+                    <div id="tennisScrapeStatus" class="tennis-status" role="status" aria-live="polite">Importazione opzionale dal server locale.</div>
+                </details>
+            </section>
+
+            <section class="tennis-panel" aria-labelledby="tennisMatchHeading">
+                <h2 id="tennisMatchHeading">Analizza un match</h2>
+                <p>Le metriche di gioco e gli H2H usano solo la superficie selezionata. Il cemento non classificato indoor/outdoor resta separato.</p>
+                <form id="tennisMatchForm">
+                    <div class="tennis-form-grid">
+                        <label class="tennis-field">Giocatore A
+                            <input id="tennisPlayerA" name="playerA" list="tennisPlayers" autocomplete="off" required placeholder="Seleziona un giocatore">
+                        </label>
+                        <label class="tennis-field">Giocatore B
+                            <input id="tennisPlayerB" name="playerB" list="tennisPlayers" autocomplete="off" required placeholder="Seleziona un giocatore">
+                        </label>
+                        <label class="tennis-field">Superficie del match
+                            <select id="tennisSurface" name="surface">
+                                <option value="" selected>Da confermare</option>
+                                <option value="clay">Terra battuta</option>
+                                <option value="hard_outdoor">Cemento outdoor</option>
+                                <option value="hard_indoor">Cemento indoor</option>
+                                <option value="grass">Erba</option>
+                                <option value="hard_unspecified">Cemento non specificato (dataset)</option>
+                            </select>
+                        </label>
+                        <label class="tennis-field">Formato
+                            <select id="tennisBestOf" name="bestOf">
+                                <option value="3">Al meglio dei 3 set</option>
+                                <option value="5">Al meglio dei 5 set</option>
+                            </select>
+                        </label>
+                        <label class="tennis-field">Data del match
+                            <input id="tennisMatchDate" name="matchDate" type="date" required>
+                            <small>Riferimento per le partite disputate negli ultimi 21 giorni.</small>
+                        </label>
+                        <label class="tennis-field">Linea game (Over/Under)
+                            <input id="tennisGameLine" name="gameLine" type="number" min="0.5" max="100.5" step="0.5" value="21.5" required>
+                        </label>
+                        <label class="tennis-field">Minuti A nel torneo in corso
+                            <input id="tennisTournamentMinutesA" name="minutesA" type="number" min="0" max="2000" step="1" value="0">
+                            <small>Inserimento manuale: il CSV storico riporta la data del torneo, non quella di ogni singolo match.</small>
+                        </label>
+                        <label class="tennis-field">Minuti B nel torneo in corso
+                            <input id="tennisTournamentMinutesB" name="minutesB" type="number" min="0" max="2000" step="1" value="0">
+                            <small>Somma i minuti già giocati prima del match da analizzare.</small>
+                        </label>
+                    </div>
+                    <datalist id="tennisPlayers"></datalist>
+                    <div class="tennis-form-actions">
+                        <button class="action-button primary" type="submit">Calcola pronostico</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="tennisResults" class="tennis-panel tennis-results" aria-live="polite" hidden>
+                <div id="tennisPrediction"></div>
+                <h3 class="tennis-subheading">Metriche sulla superficie selezionata</h3>
+                <div id="tennisPlayerMetrics" class="tennis-player-grid"></div>
+                <h3 class="tennis-subheading">Forma, carico e scontri diretti</h3>
+                <div id="tennisContextMetrics" class="tennis-output-grid"></div>
+                <div id="tennisModelNote" class="tennis-note"></div>
+            </section>
+
+            <footer class="app-footer">
+                Pronostici basati sugli ultimi cinque anni disponibili; le quote sono stime del modello, non quote bookmaker né garanzie di esito. <a href="tennis/README.md">Note su modello e dati</a>.
+            </footer>
+        </main>
+
+        <main id="formula1View" class="formula1-view" hidden>
+            <section class="hero">
+                <div>
+                    <div class="eyebrow"><span class="status-dot"></span> FORMULA 1 · STAGIONE 2026 · QUOTE & PROBABILITÀ</div>
+                    <h1>La Formula 1, giro per giro.</h1>
+                    <p>Previsioni del prossimo GP, quote stimate del modello, classifiche mondiali e calendario.</p>
+                </div>
+                <div class="refresh-pill"><span class="status-dot"></span> Analisi pre-gara</div>
+            </section>
+
+            <p id="formula1Status" class="status-banner formula1-status" role="status" aria-live="polite">
+                Caricamento dati Formula 1 in corso…
+            </p>
+
+            <section class="summary-grid" aria-label="Riepilogo Formula 1">
+                <div class="summary-card">
+                    <div class="summary-label">PROSSIMO GRAN PREMIO</div>
+                    <div id="f1NextGpSummary" class="summary-value">—</div>
+                    <div id="f1NextGpDateSummary" class="summary-detail">data Gran Premio</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">LEADER MONDIALE</div>
+                    <div id="f1LeaderSummary" class="summary-value">—</div>
+                    <div id="f1LeaderPointsSummary" class="summary-detail">classifica piloti</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">GARE STAGIONE 2026</div>
+                    <div id="formula1RaceCount" class="summary-value">—</div>
+                    <div id="formula1ScheduleCount" class="summary-detail">concluse / in calendario</div>
+                </div>
+            </section>
+
+            <!-- Sezione 1: Prossimo Gran Premio & Previsioni Vittoria -->
+            <section class="tennis-panel" id="f1NextRaceSection" aria-labelledby="f1NextRaceHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="f1NextRaceHeading">Prossimo Gran Premio · Probabilità di Vittoria</h2>
+                        <p id="f1NextRaceSubheading">Stime e quote implicite calcolate per ogni pilota partecipante</p>
+                    </div>
+                    <button id="formula1Refresh" class="action-button secondary" type="button">Aggiorna dati</button>
+                </div>
+
+                <div id="f1NextRaceCard" class="f1-card-highlight">
+                    <div class="f1-card-header">
+                        <div>
+                            <h3 id="f1NextRaceTitle">Caricamento Gran Premio…</h3>
+                            <div class="f1-card-meta">
+                                <span id="f1NextRaceCircuit">🏁 Circuito: —</span>
+                                <span id="f1NextRaceLocation">📍 Località: —</span>
+                                <span id="f1NextRaceDate">📅 Data: —</span>
+                            </div>
+                        </div>
+                        <span id="f1NextRaceBadge" class="formula1-badge next">In arrivo</span>
+                    </div>
+                    <p style="margin: 0 0 10px; font-size: 11px; color: var(--muted);">
+                        Quote e probabilità calcolate con modello probabilistico di forza (punti pilota, vittorie stagionali e competitività monoposto).
+                    </p>
+                    <div class="f1-table-wrap">
+                        <table class="f1-table" id="f1PredictionsTable" aria-label="Tabella probabilità vittoria piloti">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45px; text-align: center;">Rank</th>
+                                    <th>Pilota</th>
+                                    <th>Scuderia</th>
+                                    <th style="text-align: center;">Vittorie</th>
+                                    <th style="text-align: center;">Punti</th>
+                                    <th style="text-align: center;">Quota Modello</th>
+                                    <th style="min-width: 150px;">Probabilità Vittoria</th>
+                                </tr>
+                            </thead>
+                            <tbody id="f1PredictionsTbody">
+                                <tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento previsioni…</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sezione 2: Classifiche Mondiali -->
+            <section class="tennis-panel" id="f1StandingsSection" aria-labelledby="f1StandingsHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="f1StandingsHeading">Classifiche Mondiali 2026</h2>
+                        <p id="formula1SeasonHeading">Classifica aggiornata piloti e scuderie costruttori</p>
+                    </div>
+                    <div class="f1-subnav" role="tablist" aria-label="Selettore classifiche Formula 1">
+                        <button type="button" class="f1-subtab active" id="f1BtnDriversStandings" role="tab" aria-selected="true">Piloti</button>
+                        <button type="button" class="f1-subtab" id="f1BtnConstructorsStandings" role="tab" aria-selected="false">Costruttori</button>
+                    </div>
+                </div>
+
+                <div id="f1DriversStandingsWrap" class="f1-table-wrap">
+                    <table class="f1-table" id="f1DriversTable" aria-label="Classifica Piloti">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">Pos</th>
+                                <th>Pilota</th>
+                                <th>Scuderia</th>
+                                <th style="text-align: center;">Vittorie</th>
+                                <th style="text-align: right; padding-right: 18px;">Punti</th>
+                            </tr>
+                        </thead>
+                        <tbody id="f1DriversStandingsTbody">
+                            <tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento classifica piloti…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="f1ConstructorsStandingsWrap" class="f1-table-wrap" hidden>
+                    <table class="f1-table" id="f1ConstructorsTable" aria-label="Classifica Costruttori">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">Pos</th>
+                                <th>Scuderia</th>
+                                <th>Nazionalità</th>
+                                <th style="text-align: center;">Vittorie</th>
+                                <th style="text-align: right; padding-right: 18px;">Punti</th>
+                            </tr>
+                        </thead>
+                        <tbody id="f1ConstructorsStandingsTbody">
+                            <tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento classifica costruttori…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sezione 3: Calendario della Stagione -->
+            <section class="tennis-panel" id="f1CalendarSection" aria-labelledby="f1CalendarHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="f1CalendarHeading">Calendario Gran Premi 2026</h2>
+                        <p>Tutti i Gran Premi disputati e in programma</p>
+                    </div>
+                </div>
+                <div class="f1-table-wrap">
+                    <table class="f1-table" id="f1CalendarTable" aria-label="Calendario Formula 1">
+                        <thead>
+                            <tr>
+                                <th style="width: 55px; text-align: center;">Round</th>
+                                <th>Data</th>
+                                <th>Gran Premio</th>
+                                <th>Circuito & Località</th>
+                                <th style="text-align: center;">Stato</th>
+                                <th>Vincitore / Esito</th>
+                            </tr>
+                        </thead>
+                        <tbody id="f1CalendarTbody">
+                            <tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento calendario…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sezione 4: Dettagli Tecnici & Archivio -->
+            <section class="tennis-panel" aria-labelledby="formula1ArchiveHeading">
+                <details class="tennis-advanced">
+                    <summary style="font-weight: 650; font-size: 12.5px; color: var(--text); cursor: pointer;">
+                        Dettagli tecnici archivio, copertura e dataset
+                    </summary>
+                    <div style="margin-top: 14px;">
+                        <div class="summary-grid" style="margin-bottom: 14px;">
+                            <div class="summary-card">
+                                <div class="summary-label">STAGIONI ARCHIVIATE</div>
+                                <div id="formula1SeasonCount" class="summary-value">—</div>
+                                <div id="formula1SeasonRange" class="summary-detail">dal 2016 alla stagione corrente</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">SESSIONI CON GIRI</div>
+                                <div id="formula1LapCount" class="summary-value">—</div>
+                                <div id="formula1FeatureCount" class="summary-detail">righe feature pre-gara</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">FONTI DATI</div>
+                                <div class="summary-value" style="font-size: 18px; color: #f2c879;">Jolpica + OpenF1</div>
+                                <div id="formula1ResultsDetail" class="summary-detail">Storico sincronizzato</div>
+                            </div>
+                        </div>
+                        <div class="formula1-features">
+                            <div class="formula1-feature">
+                                <strong>Risultati, qualifiche e classifiche</strong>
+                                <span>Storico stagionale fornito da Jolpica-F1 (compatibile Ergast).</span>
+                            </div>
+                            <div class="formula1-feature">
+                                <strong>Passo gara e stint</strong>
+                                <span>Giri, settori e pneumatici disponibili da OpenF1 dal 2023.</span>
+                            </div>
+                            <div class="formula1-feature">
+                                <strong>Forma pilota e team</strong>
+                                <span>Feature pre-gara costruite su sole gare disputate per preservare la validità point-in-time.</span>
+                            </div>
+                        </div>
+                        <div class="formula1-source-note">
+                            Per aggiornare l’archivio locale esegui
+                            <code>python -m backend.formula1 --update</code>.
+                            <a href="formula1/README.md">Fonti, copertura e metodo</a>.
+                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <footer class="app-footer">
+                I dati di Formula 1 sono forniti da Jolpica-F1 e OpenF1. Le quote del modello sono stime probabilistiche pre-gara, non quote bookmaker.
+            </footer>
+        </main>
     </div>
 
     <nav class="bottom-nav" aria-label="Navigazione rapida">
+        <button id="footballMobileTab" type="button" onclick="switchSportView('football')"><span class="nav-icon" aria-hidden="true">⚽</span>Calcio</button>
         <a href="#matches-section"><span class="nav-icon" aria-hidden="true">◫</span>Partite</a>
         <a href="#finished-matches-section"><span class="nav-icon" aria-hidden="true">◷</span>Risultati</a>
+        <button id="tennisMobileTab" type="button" onclick="switchSportView('tennis')"><span class="nav-icon" aria-hidden="true">🎾</span>Tennis</button>
+        <button id="formula1MobileTab" type="button" onclick="switchSportView('formula1')"><span class="nav-icon" aria-hidden="true">🏎️</span>F1</button>
         <button onclick="toggleOddsModal()"><span class="nav-icon" aria-hidden="true">▤</span>Quote</button>
     </nav>
 
     <script>
+        function switchSportView(view) {
+            const isTennis = view === 'tennis';
+            const isFormula1 = view === 'formula1';
+            const isFootball = !isTennis && !isFormula1;
+
+            const footballView = document.getElementById('footballView');
+            const tennisView = document.getElementById('tennisView');
+            const formula1View = document.getElementById('formula1View');
+
+            if (footballView) footballView.hidden = !isFootball;
+            if (tennisView) tennisView.hidden = !isTennis;
+            if (formula1View) formula1View.hidden = !isFormula1;
+
+            const footballTab = document.getElementById('footballTab');
+            const tennisTab = document.getElementById('tennisTab');
+            const formula1Tab = document.getElementById('formula1Tab');
+
+            if (footballTab) footballTab.setAttribute('aria-selected', String(isFootball));
+            if (tennisTab) tennisTab.setAttribute('aria-selected', String(isTennis));
+            if (formula1Tab) formula1Tab.setAttribute('aria-selected', String(isFormula1));
+
+            const headerActions = document.querySelector('.header-actions');
+            if (headerActions) headerActions.hidden = !isFootball;
+
+            const brandName = document.querySelector('.brand-name');
+            if (brandName) {
+                brandName.innerHTML = isTennis
+                    ? 'TENNIS <span>/</span> ANALYTICS'
+                    : isFormula1
+                        ? 'FORMULA 1 <span>/</span> ANALYTICS'
+                        : 'CALCIO <span>/</span> ANALYTICS';
+            }
+
+            const brandCaption = document.querySelector('.brand-caption');
+            if (brandCaption) {
+                brandCaption.textContent = isTennis
+                    ? 'Match intelligence, senza quote.'
+                    : isFormula1
+                        ? 'Previsioni GP, quote e classifiche.'
+                        : 'Match intelligence, senza rumore.';
+            }
+
+            document.querySelectorAll('.bottom-nav a').forEach(link => {
+                link.hidden = !isFootball;
+            });
+            document.querySelector('.bottom-nav button[onclick*="toggleOddsModal"]')?.toggleAttribute('hidden', !isFootball);
+
+            if (isFormula1) {
+                if (formula1Tab) formula1Tab.scrollIntoView({ block: 'nearest' });
+                if (window.loadFormula1Data) {
+                    window.loadFormula1Data();
+                }
+            } else if (isTennis) {
+                if (tennisTab) tennisTab.scrollIntoView({ block: 'nearest' });
+                const tourSelector = document.getElementById('tennisTour');
+                if (window.loadTennisDashboard && tourSelector) {
+                    window.loadTennisDashboard(tourSelector.value, false);
+                }
+            } else {
+                if (footballTab) footballTab.scrollIntoView({ block: 'nearest' });
+            }
+        }
+        window.switchSportView = switchSportView;
+
         let currentMatches = [];
         let realOddsMap = {}; 
         let realOddsBookmakers = {};
@@ -943,6 +1486,136 @@
             renderMatchCards(upcomingMatches, container, finishedMatches.length);
         }
 
+        // ── Poisson helpers per mercati aggiuntivi ──────────────────────────
+        function poissonPmf(lambda, k) {
+            if (k < 0) return 0;
+            return Math.exp(-lambda) * Math.pow(lambda, k) / factorial(k);
+        }
+        function poissonCdf(lambda, k) {
+            let p = 0;
+            for (let i = 0; i <= k; i++) p += poissonPmf(lambda, i);
+            return p;
+        }
+
+        /**
+         * Calcola mercati aggiuntivi partendo dai parametri Poisson del modello.
+         * Usa la somma lambdaHome + lambdaAway per i totali gol (approssimazione
+         * indipendente; la correlazione Dixon-Coles è trascurabile per i mercati
+         * Over/Under aggregati).
+         * Per GG si mantiene l'indipendenza tra i due lambda.
+         *
+         * @param {number} lH - lambda casa
+         * @param {number} lA - lambda ospiti
+         * @param {object} probs1X2 - { "1": p, "X": p, "2": p } in [0,1]
+         * @returns {object} mercati calcolati
+         */
+        function computeExtraMarkets(lH, lA, probs1X2) {
+            const lTot = lH + lA;
+            // Over / Under
+            const pUnder15 = poissonCdf(lTot, 1);
+            const pOver15  = 1 - pUnder15;
+            const pUnder25 = poissonCdf(lTot, 2);
+            const pOver25  = 1 - pUnder25;
+            const pUnder35 = poissonCdf(lTot, 3);
+            const pOver35  = 1 - pUnder35;
+            // GG / NG (entrambi segnano)
+            const pBttsYes = (1 - poissonPmf(lH, 0)) * (1 - poissonPmf(lA, 0));
+            const pBttsNo  = 1 - pBttsYes;
+            // Doppia chance
+            const p1  = probs1X2['1'];
+            const pX  = probs1X2['X'];
+            const p2  = probs1X2['2'];
+            const pDC1X = Math.min(p1 + pX, 0.985);
+            const pDCX2 = Math.min(pX + p2, 0.985);
+            const pDC12 = Math.min(p1 + p2, 0.985);
+            // Draw No Bet
+            const pDnbHome = p1 / (p1 + p2);
+            const pDnbAway = p2 / (p1 + p2);
+
+            const fOdd = p => (p > 0.005 ? Math.min(1 / p, 50).toFixed(2) : '—');
+            const fPct = p => (p * 100).toFixed(1) + '%';
+
+            return {
+                ou: [
+                    { name: 'Over 1.5', odd: fOdd(pOver15),  prob: fPct(pOver15)  },
+                    { name: 'Under 1.5', odd: fOdd(pUnder15), prob: fPct(pUnder15) },
+                    { name: 'Over 2.5', odd: fOdd(pOver25),  prob: fPct(pOver25)  },
+                    { name: 'Under 2.5', odd: fOdd(pUnder25), prob: fPct(pUnder25) },
+                    { name: 'Over 3.5', odd: fOdd(pOver35),  prob: fPct(pOver35)  },
+                    { name: 'Under 3.5', odd: fOdd(pUnder35), prob: fPct(pUnder35) },
+                ],
+                btts: [
+                    { name: 'Goal Goal',    odd: fOdd(pBttsYes), prob: fPct(pBttsYes) },
+                    { name: 'No Goal', odd: fOdd(pBttsNo),  prob: fPct(pBttsNo)  },
+                ],
+                dc: [
+                    { name: '1X (Casa o Pari)', odd: fOdd(pDC1X), prob: fPct(pDC1X) },
+                    { name: 'X2 (Pari o Ospiti)', odd: fOdd(pDCX2), prob: fPct(pDCX2) },
+                    { name: '12 (Casa o Ospiti)', odd: fOdd(pDC12), prob: fPct(pDC12) },
+                ],
+                dnb: [
+                    { name: 'Draw No Bet Casa',    odd: fOdd(pDnbHome), prob: fPct(pDnbHome) },
+                    { name: 'Draw No Bet Ospiti', odd: fOdd(pDnbAway), prob: fPct(pDnbAway) },
+                ],
+            };
+        }
+
+        function renderExtraMarkets(match, index) {
+            const lH = match.lambda_home;
+            const lA = match.lambda_away;
+            if (!lH || !lA) return '';
+            const probs1X2 = {
+                '1': (match.probabilities['1'] || 0) / 100,
+                'X': (match.probabilities['X'] || 0) / 100,
+                '2': (match.probabilities['2'] || 0) / 100,
+            };
+            const m = computeExtraMarkets(lH, lA, probs1X2);
+
+            const renderCards = (items, cols2 = false) =>
+                `<div class="extra-odds-grid${cols2 ? ' cols2' : ''}">
+                    ${items.map(c => `
+                        <div class="extra-market-card">
+                            <span class="extra-market-name">${c.name}</span>
+                            <span class="extra-market-odd">${c.odd}</span>
+                            <span class="extra-market-prob">${c.prob}</span>
+                        </div>`).join('')}
+                </div>`;
+
+            return `
+                <div class="extra-markets">
+                    <div class="extra-markets-heading">
+                        <span class="extra-markets-title">🎯 Altri Mercati</span>
+                        <button class="extra-markets-toggle" onclick="toggleExtraMarkets('em-${index}')">Mostra</button>
+                    </div>
+                    <div class="extra-markets-body" id="em-${index}">
+                        <div class="extra-market-group">
+                            <span class="extra-market-group-label">Over / Under</span>
+                            ${renderCards(m.ou)}
+                        </div>
+                        <div class="extra-market-group">
+                            <span class="extra-market-group-label">Goal / No Goal</span>
+                            ${renderCards(m.btts, true)}
+                        </div>
+                        <div class="extra-market-group">
+                            <span class="extra-market-group-label">Doppia Chance</span>
+                            ${renderCards(m.dc)}
+                        </div>
+                        <div class="extra-market-group">
+                            <span class="extra-market-group-label">Draw No Bet</span>
+                            ${renderCards(m.dnb, true)}
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function toggleExtraMarkets(id) {
+            const body = document.getElementById(id);
+            if (!body) return;
+            const isOpen = body.classList.toggle('open');
+            const btn = body.previousElementSibling.querySelector('.extra-markets-toggle');
+            if (btn) btn.textContent = isOpen ? 'Nascondi' : 'Mostra';
+        }
+
         function renderMatchCards(matches, container, indexOffset) {
             if (matches.length === 0) {
                 container.innerHTML = `
@@ -1060,6 +1733,7 @@
                             </div>
                         </div>
                     ` : ''}
+                    ${renderExtraMarkets(match, index)}
                 `;
                 container.appendChild(card);
             });
@@ -1137,5 +1811,8 @@
 
         window.addEventListener('load', () => loadMatches(true));
     </script>
+    <script src="formula1/formula1-data.js"></script>
+    <script src="tennis/tennis.js"></script>
+    <script src="formula1/formula1.js"></script>
 </body>
 </html>

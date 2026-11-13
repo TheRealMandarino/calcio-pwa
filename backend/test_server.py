@@ -162,6 +162,8 @@ class OddsNormalizationTests(unittest.TestCase):
             with urlopen(f"{base_url}/docs/index.html") as response:
                 page = response.read().decode("utf-8")
             self.assertIn("Aggiorna quote e orari", page)
+            self.assertIn('id="formula1Tab"', page)
+            self.assertIn('src="formula1/formula1.js"', page)
 
             with patch.object(server, "load_api_key", return_value=None):
                 with self.assertRaises(HTTPError) as error:
@@ -181,6 +183,63 @@ class OddsNormalizationTests(unittest.TestCase):
                 urlopen(f"{base_url}/backend/server.py")
             self.assertEqual(error.exception.code, 404)
             error.exception.close()
+        finally:
+            http_server.shutdown()
+            http_server.server_close()
+            thread.join()
+
+    def test_formula1_status_endpoint_reports_archive_and_missing_manifest(self):
+        http_server = ThreadingHTTPServer(("127.0.0.1", 0), server.CalcioRequestHandler)
+        thread = Thread(target=http_server.serve_forever, daemon=True)
+        thread.start()
+        base_url = f"http://127.0.0.1:{http_server.server_port}"
+
+        try:
+            with TemporaryDirectory() as temp_dir:
+                data_directory = Path(temp_dir)
+                manifest_path = data_directory / "manifest.json"
+                with patch.object(server, "FORMULA1_DATA_DIR", data_directory):
+                    with self.assertRaises(HTTPError) as missing_error:
+                        urlopen(f"{base_url}/api/formula1/status")
+                    self.assertEqual(missing_error.exception.code, 503)
+                    missing_error.exception.close()
+
+                    manifest_path.write_text(json.dumps({
+                        "generated_at": "2026-11-08T20:00:00+00:00",
+                        "start_year": 2016,
+                        "end_year": 2026,
+                        "seasons": [
+                            {
+                                "year": 2026,
+                                "scheduled_races": 23,
+                                "completed_races": 20,
+                                "qualifying_records": 435,
+                                "sprint_records": 132,
+                                "driver_standings": 25,
+                                "constructor_standings": 11,
+                                "pre_race_feature_rows": 440,
+                                "lap_events_available": 20,
+                            }
+                        ],
+                        "unavailable": [],
+                    }), encoding="utf-8")
+                    with urlopen(f"{base_url}/api/formula1/status") as response:
+                        payload = json.loads(response.read().decode("utf-8"))
+
+            self.assertEqual(payload["season_count"], 1)
+            self.assertEqual(payload["completed_races"], 20)
+            self.assertEqual(payload["lap_events_available"], 20)
+            self.assertEqual(payload["pre_race_feature_rows"], 440)
+
+            with patch.object(
+                server,
+                "build_formula1_view_payload",
+                return_value={"season": 2026, "leader": {"name": "Test Leader"}, "next_race": {"race_name": "Test GP"}},
+            ):
+                with urlopen(f"{base_url}/api/formula1/data") as response:
+                    data_payload = json.loads(response.read().decode("utf-8"))
+            self.assertEqual(data_payload["season"], 2026)
+            self.assertEqual(data_payload["next_race"]["race_name"], "Test GP")
         finally:
             http_server.shutdown()
             http_server.server_close()

@@ -1,14 +1,15 @@
 import math
 import sqlite3
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 import numpy as np
 
-from backend.model import calculate_match_probabilities
+from backend.calcio.model import calculate_match_probabilities
 
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 DEFAULT_DB_PATH = ROOT_DIR / "data" / "database.db"
 LEAGUES = (
     "ITA-Serie A",
@@ -21,19 +22,57 @@ MARKETS = ("1", "X", "2")
 MIN_HISTORY = 30
 
 
-def load_matches(db_path=DEFAULT_DB_PATH):
+def load_matches(db_path=DEFAULT_DB_PATH, leagues=LEAGUES):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
+    placeholders = ",".join("?" for _ in leagues)
     try:
         rows = conn.execute("""
             SELECT date, league, home_team, away_team, home_goals, away_goals, season
             FROM matches
             WHERE home_goals IS NOT NULL AND away_goals IS NOT NULL
+              AND league IN (""" + placeholders + """)
             ORDER BY date, league, home_team, away_team
-        """).fetchall()
+        """, tuple(leagues)).fetchall()
     finally:
         conn.close()
     return [dict(row) for row in rows]
+
+
+def assign_matchdays(matches):
+    matches_by_season = defaultdict(list)
+    for match in matches:
+        matches_by_season[match["season"]].append(match)
+
+    for season_matches in matches_by_season.values():
+        rounds = []
+        current_round = []
+        current_teams = set()
+        round_start = None
+
+        for match in season_matches:
+            match_date = date.fromisoformat(match["date"][:10])
+            match_teams = {match["home_team"], match["away_team"]}
+            if current_round and (
+                (match_date - round_start).days > 6
+                or current_teams.intersection(match_teams)
+            ):
+                rounds.append(current_round)
+                current_round = []
+                current_teams = set()
+                round_start = None
+
+            if not current_round:
+                round_start = match_date
+            current_round.append(match)
+            current_teams.update(match_teams)
+
+        if current_round:
+            rounds.append(current_round)
+
+        for matchday, round_matches in enumerate(rounds, start=1):
+            for match in round_matches:
+                match["matchday"] = matchday
 
 
 def summarize(predictions):
@@ -63,11 +102,35 @@ def score_prediction(match, model):
     predicted = max(MARKETS, key=probabilities.get)
     return {
         "correct": predicted == actual,
+        "predicted": predicted,
+        "actual": actual,
         "brier": sum(
             (probabilities[market] - (1 if market == actual else 0)) ** 2
             for market in MARKETS
         ),
         "log_loss": -math.log(max(probabilities[actual], 1e-15)),
+    }
+
+
+def longest_losing_streak(predictions):
+    longest = []
+    current = []
+    for prediction in predictions:
+        if prediction["correct"]:
+            current = []
+        else:
+            current.append(prediction)
+            if len(current) > len(longest):
+                longest = current.copy()
+
+    return {
+        "length": len(longest),
+        "from": longest[0]["date"][:10] if longest else None,
+        "to": longest[-1]["date"][:10] if longest else None,
+        "matches": [
+            f'{prediction["home_team"]} - {prediction["away_team"]}'
+            for prediction in longest
+        ],
     }
 
 
@@ -174,10 +237,12 @@ def compute_primary_stats(
     )
 
 
-def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
-    matches = load_matches(db_path)
+def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY, leagues=LEAGUES):
+    leagues = tuple(leagues)
+    matches = load_matches(db_path, leagues)
     if not matches:
         raise ValueError("Non ci sono risultati conclusi nel database.")
+    assign_matchdays(matches)
 
     matches_by_date = defaultdict(list)
     for match in matches:
@@ -214,15 +279,15 @@ def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
         date_offsets[match_date] = offset
 
     h2h_totals = {}
-    predictions = {league: [] for league in LEAGUES}
+    predictions = {league: [] for league in leagues}
     predictions_by_season = {
         league: defaultdict(list)
-        for league in LEAGUES
+        for league in leagues
     }
 
     for match_date in sorted(matches_by_date):
         todays_matches = matches_by_date[match_date]
-        test_matches = [match for match in todays_matches if match["league"] in LEAGUES]
+        test_matches = [match for match in todays_matches if match["league"] in leagues]
         history_count = date_offsets[match_date] - len(todays_matches)
         if history_count >= min_history and test_matches:
             stats = compute_primary_stats(
@@ -248,32 +313,74 @@ def run_backtest(db_path=DEFAULT_DB_PATH, min_history=MIN_HISTORY):
                     ),
                 )
                 prediction = score_prediction(match, model)
+                prediction.update({
+                    "date": match["date"],
+                    "season": match["season"],
+                    "matchday": match["matchday"],
+                    "home_team": match["home_team"],
+                    "away_team": match["away_team"],
+                })
                 predictions[match["league"]].append(prediction)
                 predictions_by_season[match["league"]][match["season"]].append(prediction)
 
         update_h2h_totals(h2h_totals, todays_matches)
 
     reports = {}
-    for league in LEAGUES:
+    for league in leagues:
         league_matches = [match for match in matches if match["league"] == league]
+        matchday_predictions = defaultdict(list)
+        season_predictions = defaultdict(list)
+        for prediction in predictions[league]:
+            matchday_predictions[
+                (prediction["season"], prediction["matchday"])
+            ].append(prediction)
+            season_predictions[prediction["season"]].append(prediction)
+
         reports[league] = {
             "matches_available": len(league_matches),
             "first_date": league_matches[0]["date"][:10] if league_matches else None,
             "last_date": league_matches[-1]["date"][:10] if league_matches else None,
             **summarize(predictions[league]),
+            "longest_losing_streak": longest_losing_streak(predictions[league]),
+            "matchdays": [
+                {
+                    "season": season,
+                    "matchday": matchday,
+                    "from": min(row["date"][:10] for row in rows),
+                    "to": max(row["date"][:10] for row in rows),
+                    "predictions": len(rows),
+                    "correct": sum(row["correct"] for row in rows),
+                    "accuracy": summarize(rows)["accuracy"],
+                    "longest_losing_streak": longest_losing_streak(rows)["length"],
+                }
+                for (season, matchday), rows in sorted(matchday_predictions.items())
+            ],
             "seasons": {
-                season: summarize(rows)
-                for season, rows in sorted(predictions_by_season[league].items())
+                season: {
+                    **summarize(rows),
+                    "longest_losing_streak": longest_losing_streak(rows),
+                }
+                for season, rows in sorted(season_predictions.items())
             },
         }
     return reports
 
 
 def main():
-    reports = run_backtest()
-    print("BACKTEST WALK-FORWARD - 5 CAMPIONATI PRINCIPALI")
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Backtest walk-forward dei campionati principali.")
+    parser.add_argument(
+        "--league",
+        choices=LEAGUES,
+        help="Limita l'analisi a un campionato, per esempio ITA-Serie A.",
+    )
+    args = parser.parse_args()
+    leagues = (args.league,) if args.league else LEAGUES
+    reports = run_backtest(leagues=leagues)
+    print(f"BACKTEST WALK-FORWARD - {', '.join(leagues)}")
     print("Poisson + Dixon-Coles; statistiche e H2H usano solo risultati precedenti.")
-    print("Fatica manuale esclusa; le partite della stessa giornata non entrano nello storico.")
+    print("Le partite dello stesso giorno non entrano nello storico dei pronostici.")
     for league, report in reports.items():
         print(f"\n{league} ({report['first_date']} - {report['last_date']})")
         print(f"  Partite concluse disponibili: {report['matches_available']}")
@@ -281,13 +388,40 @@ def main():
         print(f"  Accuratezza 1X2            : {report['accuracy']:.2f}%")
         print(f"  Brier score                : {report['brier']:.4f}")
         print(f"  Log loss                   : {report['log_loss']:.4f}")
+        streak = report["longest_losing_streak"]
+        print(
+            f"  Massima striscia errata   : {streak['length']} "
+            f"({streak['from']} - {streak['to']})"
+        )
+        if streak["matches"]:
+            print(f"    {'; '.join(streak['matches'])}")
         for season, metrics in report["seasons"].items():
+            season_streak = metrics["longest_losing_streak"]
             print(
                 f"    {season}: n={metrics['predictions']}, "
                 f"accuracy={metrics['accuracy']:.2f}%, "
                 f"Brier={metrics['brier']:.4f}, "
-                f"log loss={metrics['log_loss']:.4f}"
+                f"log loss={metrics['log_loss']:.4f}, "
+                f"striscia max={season_streak['length']} "
+                f"({season_streak['from']} - {season_streak['to']})"
             )
+        if args.league:
+            latest_season = report["matchdays"][-1]["season"]
+            print(
+                f"  Turni {latest_season} (ricostruiti da date e squadre; "
+                "non presenti come campo ufficiale nel database)"
+            )
+            print("  Giornata    Intervallo                  Corretti/Pronostici  Accuracy  Striscia")
+            for matchday in report["matchdays"]:
+                if matchday["season"] != latest_season:
+                    continue
+                print(
+                    f"  G{matchday['matchday']:02d}         "
+                    f"{matchday['from']} - {matchday['to']}   "
+                    f"{matchday['correct']:>2}/{matchday['predictions']:<2}                "
+                    f"{matchday['accuracy']:>5.1f}%      "
+                    f"{matchday['longest_losing_streak']}"
+                )
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import unicodedata
 import pandas as pd
 import numpy as np
 from scipy.stats import poisson
-from backend.stats import compute_team_stats
+from backend.calcio.stats import compute_team_stats
 
 TEAM_ALIASES = {
     "acmilan": "Milan",
