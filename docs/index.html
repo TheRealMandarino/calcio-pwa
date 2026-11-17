@@ -226,6 +226,15 @@
         .formula1-feature { padding: 13px; border: 1px solid var(--line); border-radius: 12px; background: #0c131a; }
         .formula1-feature strong { display: block; margin-bottom: 4px; font-size: 12px; }
         .formula1-feature span { color: var(--muted); font-size: 10px; }
+        .motogp-view { --green: #ff765e; --green-soft: #42221f; }
+        .motogp-view .hero { background: radial-gradient(ellipse at 87% 45%, #48251f 0, transparent 38%); }
+        .motogp-status { margin: 0 0 12px; }
+        .motogp-view .f1-card-highlight h3 { color: #ff765e; }
+        .motogp-view .f1-odds-badge { border-color: #70362d; background: #2a1917; color: #ff9a84; }
+        .motogp-view .f1-prob-bar-fill { background: linear-gradient(90deg, #d84c3d, #ff765e); }
+        .motogp-view .f1-prob-val { color: #ff9a84; }
+        .motogp-source-note { margin-top: 14px; color: var(--muted); font-size: 11px; }
+        .motogp-source-note a { color: #ff9a84; }
 
         /* Formula 1 UI & Tables */
         .formula1-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
@@ -469,6 +478,7 @@
             <button type="button" class="view-tab" role="tab" id="footballTab" aria-selected="true" aria-controls="footballView" onclick="switchSportView('football')">Calcio</button>
             <button type="button" class="view-tab" role="tab" id="tennisTab" aria-selected="false" aria-controls="tennisView" onclick="switchSportView('tennis')">Tennis</button>
             <button type="button" class="view-tab" role="tab" id="formula1Tab" aria-selected="false" aria-controls="formula1View" onclick="switchSportView('formula1')">Formula 1</button>
+            <button type="button" class="view-tab" role="tab" id="motogpTab" aria-selected="false" aria-controls="motogpView" onclick="switchSportView('motogp')">MotoGP</button>
         </nav>
 
         <main id="footballView">
@@ -878,6 +888,170 @@
                 I dati di Formula 1 sono forniti da Jolpica-F1 e OpenF1. Le quote del modello sono stime probabilistiche pre-gara, non quote bookmaker.
             </footer>
         </main>
+
+        <main id="motogpView" class="motogp-view" hidden>
+            <section class="hero">
+                <div>
+                    <div class="eyebrow"><span class="status-dot"></span> MOTOGP · STAGIONE <span id="motogpSeasonEyebrow">—</span> · PROBABILITÀ</div>
+                    <h1>La MotoGP, curva dopo curva.</h1>
+                    <p>Previsioni pre-gara, classifica piloti e calendario della classe MotoGP.</p>
+                </div>
+                <div class="refresh-pill"><span class="status-dot"></span> Analisi pre-gara</div>
+            </section>
+
+            <p id="motogpStatus" class="status-banner motogp-status" role="status" aria-live="polite">
+                Caricamento dati MotoGP in corso…
+            </p>
+
+            <section class="summary-grid" aria-label="Riepilogo MotoGP">
+                <div class="summary-card">
+                    <div class="summary-label">PROSSIMO GRAN PREMIO</div>
+                    <div id="motogpNextRaceSummary" class="summary-value">—</div>
+                    <div id="motogpNextRaceDateSummary" class="summary-detail">data Gran Premio</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">LEADER MONDIALE</div>
+                    <div id="motogpLeaderSummary" class="summary-value">—</div>
+                    <div id="motogpLeaderPointsSummary" class="summary-detail">classifica piloti</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">GARE STAGIONE</div>
+                    <div id="motogpRaceCount" class="summary-value">—</div>
+                    <div id="motogpScheduleCount" class="summary-detail">concluse / in calendario</div>
+                </div>
+            </section>
+
+            <section class="tennis-panel" aria-labelledby="motogpNextRaceHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="motogpNextRaceHeading">Prossimo Gran Premio · Probabilità di vittoria</h2>
+                        <p>Modello composito: forma recente, circuito, classifica, tempi e qualifiche</p>
+                    </div>
+                    <button id="motogpRefresh" class="action-button secondary" type="button">Aggiorna dati</button>
+                </div>
+                <div class="f1-card-highlight">
+                    <div class="f1-card-header">
+                        <div>
+                            <h3 id="motogpNextRaceTitle">Caricamento Gran Premio…</h3>
+                            <div class="f1-card-meta">
+                                <span id="motogpCircuit">🏁 Circuito: —</span>
+                                <span id="motogpLocation">📍 Località: —</span>
+                                <span id="motogpDate">📅 Data: —</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <button id="motogpRaceMode" type="button" class="formula1-badge next" style="border:0;cursor:pointer;">Gara</button>
+                            <button id="motogpSprintMode" type="button" class="formula1-badge upcoming" style="border:0;cursor:pointer;">Sprint</button>
+                        </div>
+                    </div>
+                    <div class="f1-table-wrap">
+                        <table class="f1-table" aria-label="Probabilità vittoria piloti MotoGP">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45px; text-align: center;">Rank</th>
+                                    <th>Pilota</th>
+                                    <th>Team</th>
+                                    <th style="text-align: center;">Vittorie</th>
+                                    <th style="text-align: center;">Punti</th>
+                                    <th style="text-align: center;">Quota modello</th>
+                                    <th style="min-width: 150px;">Probabilità vittoria</th>
+                                </tr>
+                            </thead>
+                            <tbody id="motogpPredictionsTbody">
+                                <tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento previsioni…</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tennis-panel" aria-labelledby="motogpStandingsHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="motogpStandingsHeading">Classifica mondiale piloti</h2>
+                        <p id="motogpStandingsDetail">Punti e risultati stagionali ufficiali</p>
+                    </div>
+                </div>
+                <div class="f1-table-wrap">
+                    <table class="f1-table" aria-label="Classifica mondiale MotoGP">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">Pos</th>
+                                <th>Pilota</th>
+                                <th>Team</th>
+                                <th style="text-align: center;">Vittorie</th>
+                                <th style="text-align: right; padding-right: 18px;">Punti</th>
+                            </tr>
+                        </thead>
+                        <tbody id="motogpStandingsTbody">
+                            <tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento classifica…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="tennis-panel" aria-labelledby="motogpCalendarHeading">
+                <div class="section-heading">
+                    <div>
+                        <h2 id="motogpCalendarHeading">Calendario Gran Premi</h2>
+                        <p>Gare disputate e prossime tappe della stagione</p>
+                    </div>
+                </div>
+                <div class="f1-table-wrap">
+                    <table class="f1-table" aria-label="Calendario MotoGP">
+                        <thead>
+                            <tr>
+                                <th style="width: 55px; text-align: center;">Round</th>
+                                <th>Data</th>
+                                <th>Gran Premio</th>
+                                <th>Circuito</th>
+                                <th style="text-align: center;">Stato</th>
+                                <th>Vincitore</th>
+                            </tr>
+                        </thead>
+                        <tbody id="motogpCalendarTbody">
+                            <tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 18px;">Caricamento calendario…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="tennis-panel" aria-labelledby="motogpArchiveHeading">
+                <details class="tennis-advanced">
+                    <summary id="motogpArchiveHeading" style="font-weight: 650; font-size: 12.5px; color: var(--text); cursor: pointer;">
+                        Archivio, copertura e metodo
+                    </summary>
+                    <div style="margin-top: 14px;">
+                        <div class="summary-grid" style="margin-bottom: 14px;">
+                            <div class="summary-card">
+                                <div class="summary-label">STAGIONI ARCHIVIATE</div>
+                                <div id="motogpSeasonCount" class="summary-value">—</div>
+                                <div id="motogpSeasonRange" class="summary-detail">dal 2016 alla stagione corrente</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">GARE E SPRINT</div>
+                                <div id="motogpSprintCount" class="summary-value">—</div>
+                                <div id="motogpFeatureCount" class="summary-detail">feature pre-gara</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-label">FONTE DATI</div>
+                                <div class="summary-value" style="font-size: 16px; color: #ff9a84;">MotoGP API</div>
+                                <div id="motogpResultsDetail" class="summary-detail">Archivio non ancora sincronizzato</div>
+                            </div>
+                        </div>
+                        <p class="motogp-source-note">
+                            Aggiorna lo storico con <code>python -m backend.motogp --update</code>
+                            oppure apri <code>aggiorna_database.bat</code>.
+                            <a href="motogp/README.md">Fonti, copertura e metodo</a>.
+                        </p>
+                    </div>
+                </details>
+            </section>
+
+            <footer class="app-footer">
+                Dati della classe MotoGP dall’API pubblica del sito ufficiale; probabilità del modello, non quote bookmaker né garanzie di esito.
+            </footer>
+        </main>
     </div>
 
     <nav class="bottom-nav" aria-label="Navigazione rapida">
@@ -886,6 +1060,7 @@
         <a href="#finished-matches-section"><span class="nav-icon" aria-hidden="true">◷</span>Risultati</a>
         <button id="tennisMobileTab" type="button" onclick="switchSportView('tennis')"><span class="nav-icon" aria-hidden="true">🎾</span>Tennis</button>
         <button id="formula1MobileTab" type="button" onclick="switchSportView('formula1')"><span class="nav-icon" aria-hidden="true">🏎️</span>F1</button>
+        <button id="motogpMobileTab" type="button" onclick="switchSportView('motogp')"><span class="nav-icon" aria-hidden="true">🏍️</span>MotoGP</button>
         <button onclick="toggleOddsModal()"><span class="nav-icon" aria-hidden="true">▤</span>Quote</button>
     </nav>
 
@@ -893,23 +1068,28 @@
         function switchSportView(view) {
             const isTennis = view === 'tennis';
             const isFormula1 = view === 'formula1';
-            const isFootball = !isTennis && !isFormula1;
+            const isMotoGP = view === 'motogp';
+            const isFootball = !isTennis && !isFormula1 && !isMotoGP;
 
             const footballView = document.getElementById('footballView');
             const tennisView = document.getElementById('tennisView');
             const formula1View = document.getElementById('formula1View');
+            const motogpView = document.getElementById('motogpView');
 
             if (footballView) footballView.hidden = !isFootball;
             if (tennisView) tennisView.hidden = !isTennis;
             if (formula1View) formula1View.hidden = !isFormula1;
+            if (motogpView) motogpView.hidden = !isMotoGP;
 
             const footballTab = document.getElementById('footballTab');
             const tennisTab = document.getElementById('tennisTab');
             const formula1Tab = document.getElementById('formula1Tab');
+            const motogpTab = document.getElementById('motogpTab');
 
             if (footballTab) footballTab.setAttribute('aria-selected', String(isFootball));
             if (tennisTab) tennisTab.setAttribute('aria-selected', String(isTennis));
             if (formula1Tab) formula1Tab.setAttribute('aria-selected', String(isFormula1));
+            if (motogpTab) motogpTab.setAttribute('aria-selected', String(isMotoGP));
 
             const headerActions = document.querySelector('.header-actions');
             if (headerActions) headerActions.hidden = !isFootball;
@@ -920,7 +1100,9 @@
                     ? 'TENNIS <span>/</span> ANALYTICS'
                     : isFormula1
                         ? 'FORMULA 1 <span>/</span> ANALYTICS'
-                        : 'CALCIO <span>/</span> ANALYTICS';
+                        : isMotoGP
+                            ? 'MOTOGP <span>/</span> ANALYTICS'
+                            : 'CALCIO <span>/</span> ANALYTICS';
             }
 
             const brandCaption = document.querySelector('.brand-caption');
@@ -929,7 +1111,9 @@
                     ? 'Match intelligence, senza quote.'
                     : isFormula1
                         ? 'Previsioni GP, quote e classifiche.'
-                        : 'Match intelligence, senza rumore.';
+                        : isMotoGP
+                            ? 'Previsioni GP, quote e classifiche.'
+                            : 'Match intelligence, senza rumore.';
             }
 
             document.querySelectorAll('.bottom-nav a').forEach(link => {
@@ -941,6 +1125,11 @@
                 if (formula1Tab) formula1Tab.scrollIntoView({ block: 'nearest' });
                 if (window.loadFormula1Data) {
                     window.loadFormula1Data();
+                }
+            } else if (isMotoGP) {
+                if (motogpTab) motogpTab.scrollIntoView({ block: 'nearest' });
+                if (window.loadMotoGPData) {
+                    window.loadMotoGPData();
                 }
             } else if (isTennis) {
                 if (tennisTab) tennisTab.scrollIntoView({ block: 'nearest' });
@@ -1814,5 +2003,7 @@
     <script src="formula1/formula1-data.js"></script>
     <script src="tennis/tennis.js"></script>
     <script src="formula1/formula1.js"></script>
+    <script src="motogp/motogp-data.js"></script>
+    <script src="motogp/motogp.js"></script>
 </body>
 </html>
